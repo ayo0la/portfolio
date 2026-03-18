@@ -8,7 +8,8 @@ gsap.registerPlugin(ScrollTrigger)
 export function initSmoothScroll() {
   const lenis = new Lenis()
   lenis.on('scroll', ScrollTrigger.update)
-  gsap.ticker.add((time) => lenis.raf(time * 1000))
+  const onTick = (time) => lenis.raf(time * 1000)
+  gsap.ticker.add(onTick)
   gsap.ticker.lagSmoothing(0)
   return lenis
 }

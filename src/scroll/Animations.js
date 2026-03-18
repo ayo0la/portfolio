@@ -2,6 +2,8 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+gsap.registerPlugin(ScrollTrigger)
+
 export function initAnimations() {
   // Independent guards — mobile skips all; reduced-motion skips GSAP only
   if (window.innerWidth < 768) return
@@ -24,7 +26,7 @@ function _animateHero() {
   const lines = nameEl.innerHTML.split('<br>')
   nameEl.innerHTML = lines.map(line =>
     line.split('').map(ch =>
-      `<span class="char" style="display:inline-block">${ch}</span>`
+      `<span class="char">${ch}</span>`
     ).join('')
   ).join('<br>')
 
@@ -55,7 +57,7 @@ function _animateAbout() {
     headlineEl.innerHTML = lines.map(line =>
       line.split(' ')
         .filter(w => w.length)
-        .map(w => `<span class="word" style="display:inline-block">${w}</span>`)
+        .map(w => `<span class="word">${w}</span>`)
         .join(' ')
     ).join('<br>')
   }
@@ -95,7 +97,7 @@ function _animateMdfld() {
   if (headlineEl) {
     const lines = headlineEl.innerHTML.split('<br>')
     headlineEl.innerHTML = lines
-      .map(line => `<span class="line" style="display:block">${line}</span>`)
+      .map(line => `<span class="line">${line}</span>`)
       .join('')
   }
 
