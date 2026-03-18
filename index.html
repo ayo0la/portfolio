@@ -2,237 +2,109 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Ayoola Morakinyo — MDFLD Founder Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ayoola Morakinyo — Founder &amp; Builder</title>
+  <meta name="description" content="Ayoola Morakinyo — Founder of MDFLD, software engineer, building tools for the football industry." />
+  <meta property="og:title" content="Ayoola Morakinyo" />
+  <meta property="og:description" content="Founder of MDFLD. Builder. Atlanta." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --gold: #ffd700;
-      --blue: #00e5ff;
-      --dark: #060a14;
-      --glass: rgba(6, 10, 20, 0.72);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --font-display: 'Orbitron', sans-serif;
-      --font-body: 'Inter', sans-serif;
-    }
-
-    html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
-      background: var(--dark);
-      color: #fff;
-    }
-
-    #app {
-      display: block;
-      width: 100vw;
-      height: 100vh;
-      cursor: crosshair;
-    }
-
-    /* ─── Loading Screen ─────────────────────────────────── */
-    #loading-screen {
-      position: fixed; inset: 0;
-      background: var(--dark);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      z-index: 1000;
-      transition: opacity 0.8s ease;
-    }
-    #loading-screen.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .loading-logo {
-      font-family: var(--font-display);
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 900;
-      letter-spacing: 0.15em;
-      color: var(--gold);
-      text-shadow: 0 0 40px rgba(255,215,0,0.4);
-      margin-bottom: 0.25em;
-    }
-    .loading-subtitle {
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      color: rgba(255,255,255,0.4);
-      text-transform: uppercase;
-      margin-bottom: 3rem;
-    }
-    .loading-bar-track {
-      width: min(400px, 80vw);
-      height: 2px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 1rem;
-    }
-    .loading-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--gold), var(--blue));
-      border-radius: 2px;
-      transition: width 0.3s ease;
-    }
-    .loading-status {
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.3);
-      letter-spacing: 0.1em;
-    }
-    .loading-hint {
-      position: absolute;
-      bottom: 2rem;
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.2);
-      letter-spacing: 0.05em;
-    }
-
-    /* ─── HUD ────────────────────────────────────────────── */
-    #hud {
-      position: fixed; inset: 0;
-      pointer-events: none;
-      z-index: 100;
-    }
-    #hud-controls {
-      position: absolute;
-      top: 1.5rem; right: 1.5rem;
-      display: flex; flex-direction: column; gap: 0.25rem;
-      font-family: var(--font-body);
-      font-size: 0.65rem;
-      color: rgba(255,255,255,0.25);
-      text-align: right;
-    }
-    #hud-controls span { letter-spacing: 0.05em; }
-    #lock-indicator {
-      margin-top: 0.55rem;
-      font-family: var(--font-display);
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      color: rgba(255,215,0,0.45);
-      transition: color 0.3s ease;
-    }
-    #lock-indicator[data-locked="1"] { color: rgba(0,229,255,0.75); }
-    #fps-counter {
-      position: absolute;
-      bottom: 1.5rem; left: 50%;
-      transform: translateX(-50%);
-      font-family: var(--font-display);
-      font-size: 0.55rem;
-      color: rgba(255,255,255,0.15);
-      letter-spacing: 0.1em;
-    }
-
-    /* ─── Mobile Joystick ────────────────────────────────── */
-    #mobile-joystick {
-      display: none;
-      position: fixed;
-      bottom: 6rem; left: 2rem;
-      z-index: 150;
-    }
-    #mobile-joystick.visible { display: block; }
-    .joystick-base {
-      width: 100px; height: 100px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      position: relative;
-    }
-    .joystick-knob {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: rgba(255,215,0,0.2);
-      border: 1px solid rgba(255,215,0,0.4);
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    /* ─── Pointer Lock Overlay ───────────────────────────── */
-    #lock-overlay {
-      position: fixed; inset: 0;
-      z-index: 50;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      background: rgba(6,10,20,0.85);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      cursor: pointer;
-      transition: opacity 0.4s;
-    }
-    #lock-overlay.hidden { opacity: 0; pointer-events: none; }
-    .lock-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
-    .lock-title {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 0.5rem;
-    }
-    .lock-subtitle {
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.3);
-      letter-spacing: 0.1em;
-    }
-
-    @media (max-width: 768px) {
-      #hud-controls { display: none; }
-      #mobile-joystick { display: block; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
-  <canvas id="app"></canvas>
 
-  <!-- Loading Screen -->
-  <div id="loading-screen">
-    <div class="loading-logo">MDFLD</div>
-    <div class="loading-subtitle">Ayoola Morakinyo — Founder Portfolio</div>
-    <div class="loading-bar-track">
-      <div class="loading-bar-fill" id="loading-bar"></div>
+  <!-- Background canvas (fixed, z-index -1) -->
+  <canvas id="bg"></canvas>
+
+  <!-- §1 Hero -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1 class="hero-name">AYOOLA<br>MORAKINYO</h1>
+        <p class="hero-sub">FOUNDER · BUILDER · ATLANTA</p>
+        <div class="scroll-indicator">
+          <span class="scroll-arrow">↓</span>
+        </div>
+      </div>
+      <div class="hero-logo-wrap">
+        <canvas id="logo-canvas"></canvas>
+      </div>
     </div>
-    <div class="loading-status" id="loading-status">Initialising stadium…</div>
-    <div class="loading-hint">Click anywhere to enter</div>
-  </div>
+  </section>
 
-  <!-- Pointer Lock Overlay (desktop) -->
-  <div id="lock-overlay" class="hidden">
-    <div class="lock-icon">⚽</div>
-    <div class="lock-title">Click to Enter</div>
-    <div class="lock-subtitle">WASD / Arrow keys to drive &nbsp;·&nbsp; Space to brake</div>
-  </div>
-
-  <!-- HUD -->
-  <div id="hud">
-    <div id="hud-controls">
-      <span>W/S  ↑↓ — Drive</span>
-      <span>A/D  ←→ — Steer</span>
-      <span>Space — Brake</span>
-      <span>Shift — Boost</span>
-      <span>R — Reset</span>
-      <span>M — Match Day</span>
-      <div id="lock-indicator" data-locked="0"></div>
+  <!-- §2 About -->
+  <section id="about">
+    <div class="section-inner about-grid">
+      <div class="about-left">
+        <span class="mono-tag">// WHO I AM</span>
+        <h2 class="about-headline">Founder.<br>Builder.<br>Visionary.</h2>
+      </div>
+      <div class="about-right">
+        <p class="body-copy">Ayoola Morakinyo is a founder and software engineer building tools for the football industry. He is the creator of MDFLD, an AI-powered authentication platform. He works at the intersection of machine learning, product design, and sport.</p>
+        <div class="skill-chips">
+          <span class="chip">Python</span>
+          <span class="chip">Next.js</span>
+          <span class="chip">Three.js</span>
+          <span class="chip">ML</span>
+          <span class="chip">Node.js</span>
+        </div>
+      </div>
     </div>
-    <div id="fps-counter">60 FPS</div>
-    <div id="reset-hint" style="position:fixed;bottom:1rem;right:1rem;font-size:0.7rem;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;pointer-events:none">R — reset car</div>
-  </div>
+  </section>
 
-  <!-- Mobile Joystick -->
-  <div id="mobile-joystick">
-    <div class="joystick-base" id="joystick-base">
-      <div class="joystick-knob" id="joystick-knob"></div>
+  <!-- §3 MDFLD -->
+  <section id="mdfld">
+    <div class="section-inner mdfld-inner">
+      <div class="mdfld-topbar">
+        <span class="mdfld-badge">MDFLD</span>
+        <span class="mono-tag">FLAGSHIP PROJECT</span>
+      </div>
+      <h2 class="mdfld-headline">Football<br>Authentication<br>Platform</h2>
+      <p class="body-copy mdfld-desc">MDFLD is building the trust layer the football industry is missing — AI-powered verification that tells you instantly whether a product is authentic. Currently in beta with 500+ users on the waitlist.</p>
+      <a class="mdfld-cta" href="https://beta.mdfld.co" target="_blank" rel="noopener">VIEW PROJECT →</a>
+      <div class="mdfld-bg-word" aria-hidden="true">MDFLD</div>
     </div>
-  </div>
+  </section>
+
+  <!-- §4 Projects -->
+  <section id="projects">
+    <div class="section-inner">
+      <span class="mono-tag section-tag">// OTHER WORK</span>
+      <div class="projects-grid">
+        <a class="project-card" href="#" target="_blank" rel="noopener">
+          <span class="proj-tag">FULL-STACK · 2025</span>
+          <h3 class="proj-name">Allstar Kids Academy</h3>
+          <p class="proj-desc">Family portal and digital enrollment system for a childcare business. Replacing paper forms with a real product.</p>
+          <span class="proj-arrow">→</span>
+        </a>
+        <a class="project-card" href="#" target="_blank" rel="noopener">
+          <span class="proj-tag">DATA · 2025</span>
+          <h3 class="proj-name">Boot Scraper</h3>
+          <p class="proj-desc">Multi-site scraper collecting training images across rareboots, bootroom, and thebootchamber for the MDFLD authentication model.</p>
+          <span class="proj-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- §5 Contact -->
+  <section id="contact">
+    <div class="section-inner contact-inner">
+      <h2 class="contact-heading">Let's talk.</h2>
+      <nav class="contact-links">
+        <a href="mailto:hello@mdfld.co">EMAIL</a>
+        <a href="https://linkedin.com/in/ayoolamorakinyo" target="_blank" rel="noopener">LINKEDIN</a>
+        <a href="https://github.com/ayoolamorakinyo" target="_blank" rel="noopener">GITHUB</a>
+        <a href="https://twitter.com/mdfld_co" target="_blank" rel="noopener">TWITTER</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Custom cursor (desktop only) -->
+  <div id="cursor" aria-hidden="true"></div>
 
   <script type="module" src="/src/main.js"></script>
 </body>
