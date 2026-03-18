@@ -110,7 +110,7 @@ function _addBoots(RAPIER, world, scene) {
   const mat = new THREE.MeshLambertMaterial({ color: 0xffd700 })
   const soleMat = new THREE.MeshLambertMaterial({ color: 0x222222 })
 
-  [[-6, 0], [6, 0]].forEach(([x, z]) => {
+  ;[[-6, 0], [6, 0]].forEach(([x, z]) => {
     const body = dynBody(RAPIER, world, x, 0.2, z, 1.2, 0.7, 0.9)
     world.createCollider(RAPIER.ColliderDesc.cuboid(0.2, 0.15, 0.4).setRestitution(0.25), body)
 
