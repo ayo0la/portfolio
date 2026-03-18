@@ -382,6 +382,11 @@ section {
 
 .contact-links a:hover { color: var(--gold); }
 
+/* Animation split targets */
+.char { display: inline-block; }
+.word { display: inline-block; }
+.line { display: block; }
+
 /* ── Responsive (mobile < 768px) ────────────────────────── */
 @media (max-width: 767px) {
   .hero-inner {
