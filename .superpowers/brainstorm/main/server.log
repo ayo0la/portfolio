@@ -1,0 +1,59 @@
+{"type":"server-started","port":53140,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:53140","screen_dir":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main"}
+{"type":"screen-added","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q1-whats-wrong.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q1-whats-wrong.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q1-whats-wrong.html"}
+{"source":"user-event","type":"click","text":"E\n    \n      Doesn't look right\n      Visually it doesn't represent me the way I want — needs a completely different aesthetic","choice":"visual","id":null,"timestamp":1773843370627}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q1-whats-wrong.html"}
+{"source":"user-event","type":"click","text":"B\n    \n      Wrong concept entirely\n      The 3D stadium / car thing isn't what I want — different kind of portfolio altogether","choice":"concept","id":null,"timestamp":1773843372898}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q1-whats-wrong.html"}
+{"source":"user-event","type":"click","text":"E\n    \n      Doesn't look right\n      Visually it doesn't represent me the way I want — needs a completely different aesthetic","choice":"visual","id":null,"timestamp":1773843424577}
+{"source":"user-event","type":"click","text":"D\n    \n      Architecture is a mess\n      Too many files patched together, hard to reason about — want a clean foundation","choice":"arch","id":null,"timestamp":1773843425182}
+{"source":"user-event","type":"click","text":"D\n    \n      Architecture is a mess\n      Too many files patched together, hard to reason about — want a clean foundation","choice":"arch","id":null,"timestamp":1773843426319}
+{"source":"user-event","type":"click","text":"C\n    \n      UX isn't right\n      The concept is fine but the actual experience of using it feels off or incomplete","choice":"ux","id":null,"timestamp":1773843428067}
+{"source":"user-event","type":"click","text":"B\n    \n      Wrong concept entirely\n      The 3D stadium / car thing isn't what I want — different kind of portfolio altogether","choice":"concept","id":null,"timestamp":1773843429006}
+{"type":"screen-added","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/waiting-1.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/waiting-1.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/waiting-1.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/waiting-1.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/waiting-1.html"}
+{"type":"screen-added","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q2-vibe.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q2-vibe.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q2-vibe.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q2-vibe.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/waiting-1.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q2-vibe.html"}
+{"source":"user-event","type":"click","text":"✦\n        drag · click · explore\n      \n      \n        \n        \n        \n      \n    \n    \n      Interactive / Explorable\n      Something to play with — not necessarily 3D, but rewards curiosity. \"This is alive.\"","choice":"interactive","id":null,"timestamp":1773843691428}
+{"source":"user-event","type":"click","text":"AYO\n        SS26\n      \n      \n        \n        \n        \n      \n      MDFLD · AUTHENTICATED\n    \n    \n      Streetwear / Fashion-tech\n      Off-white palette, brutalist type, sneaker culture energy. Fits the MDFLD brand.","choice":"streetwear","id":null,"timestamp":1773843697896}
+{"source":"user-event","type":"click","text":"> whoami\n        ayo — founder @ mdfld\n        > ls projects/\n        mdfld/  allstar-kids/  portfolio/\n      \n      █\n    \n    \n      Terminal / Hacker\n      CLI aesthetic, green-on-black, command-line navigation. \"This person builds things.\"","choice":"hacker","id":null,"timestamp":1773843700482}
+{"source":"user-event","type":"click","text":"AYOMORAKINYO\n        FOUNDER · BUILDER · ATLANTA\n      \n      \n    \n    \n      Cinematic / Editorial\n      Dark, full-bleed, typographic. Feels like a brand campaign. \"This person means business.\"","choice":"cinematic","id":null,"timestamp":1773843701108}
+{"source":"user-event","type":"click","text":"✦\n        drag · click · explore\n      \n      \n        \n        \n        \n      \n    \n    \n      Interactive / Explorable\n      Something to play with — not necessarily 3D, but rewards curiosity. \"This is alive.\"","choice":"interactive","id":null,"timestamp":1773843711172}
+{"source":"user-event","type":"click","text":"✦\n        drag · click · explore\n      \n      \n        \n        \n        \n      \n    \n    \n      Interactive / Explorable\n      Something to play with — not necessarily 3D, but rewards curiosity. \"This is alive.\"","choice":"interactive","id":null,"timestamp":1773843711928}
+{"type":"screen-added","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q3-interaction.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q3-interaction.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q3-interaction.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q3-interaction.html"}
+{"source":"user-event","type":"click","text":"D\n    \n      Minimal 3D — objects, not a world\n      A rotating sneaker, an orbiting logo, a few 3D objects embedded in an otherwise flat page. Three.js as a detail, not the whole experience.","choice":"3d-minimal","id":null,"timestamp":1773843816197}
+{"source":"user-event","type":"click","text":"C\n    \n      Cursor-reactive\n      The page responds to where your mouse is — magnetic elements, distortion effects, particles that follow the cursor. The whole thing feels aware of you.","choice":"cursor","id":null,"timestamp":1773843821273}
+{"source":"user-event","type":"click","text":"B\n    \n      Scroll-driven cinematic\n      Deep scroll animations — sections snap in, text splits, images wipe. Like a film credit sequence. No game, just beautifully choreographed scrolling.","choice":"scroll","id":null,"timestamp":1773843830272}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/q3-interaction.html"}
+{"source":"user-event","type":"click","text":"B\n    \n      Scroll-driven cinematic\n      Deep scroll animations — sections snap in, text splits, images wipe. Like a film credit sequence. No game, just beautifully choreographed scrolling.","choice":"scroll","id":null,"timestamp":1773843840220}
+{"source":"user-event","type":"click","text":"C\n    \n      Cursor-reactive\n      The page responds to where your mouse is — magnetic elements, distortion effects, particles that follow the cursor. The whole thing feels aware of you.","choice":"cursor","id":null,"timestamp":1773843840825}
+{"source":"user-event","type":"click","text":"D\n    \n      Minimal 3D — objects, not a world\n      A rotating sneaker, an orbiting logo, a few 3D objects embedded in an otherwise flat page. Three.js as a detail, not the whole experience.","choice":"3d-minimal","id":null,"timestamp":1773843841446}
+{"source":"user-event","type":"click","text":"E\n    \n      Hybrid — terminal shell + rich sections\n      Starts as a terminal. Commands unlock full-screen visual sections. Dark, typographic landing → command → boom, cinematic section expands. Best of both.","choice":"hybrid","id":null,"timestamp":1773843842201}
+{"type":"screen-added","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/design-layout.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/design-layout.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/design-layout.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/design-layout.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/design-layout.html"}
+{"type":"screen-added","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options.html"}
+{"type":"screen-added","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options-v2.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options-v2.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options-v2.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options-v2.html"}
+{"type":"screen-updated","file":"/Users/ayoola/Desktop/portfolio/.superpowers/brainstorm/main/bg-options-v2.html"}
+{"type":"server-stopped","reason":"idle timeout"}
