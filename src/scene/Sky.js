@@ -5,7 +5,7 @@ export function buildSky(scene) {
   const skyGeo = new THREE.SphereGeometry(1400, 20, 10)
   const skyMat = new THREE.ShaderMaterial({
     uniforms: {
-      topColor:     { value: new THREE.Color(0x1565c0) },   // deep afternoon blue
+      topColor:     { value: new THREE.Color(0x4a90d9) },   // deep afternoon blue
       horizonColor: { value: new THREE.Color(0x87ceeb) },   // pale sky-blue horizon
       offset:       { value: 12 },
       exponent:     { value: 0.45 },
@@ -98,4 +98,9 @@ export function buildSky(scene) {
     cloud.lookAt(0, 0, 0)
     scene.add(cloud)
   })
+
+  return {
+    skyUniforms: skyMat.uniforms,
+    sunMeshes: [sun, innerGlow, halo],
+  }
 }
