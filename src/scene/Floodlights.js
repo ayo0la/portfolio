@@ -10,8 +10,8 @@ export function buildFloodlights(scene) {
   scene.add(ambientLight)
 
   // ── Hemisphere — sky blue above, grass green below ─────────
-  const hemi = new THREE.HemisphereLight(0x87ceeb, 0x3d7a3d, 2.2)
-  scene.add(hemi)
+  const hemiLight = new THREE.HemisphereLight(0x87ceeb, 0x3d7a3d, 2.2)
+  scene.add(hemiLight)
 
   // ── Directional sun ─────────────────────────────────────────
   // Position matches the sun disc in Sky.js (80, 120, 60 normalised × distance)
@@ -44,7 +44,7 @@ export function buildFloodlights(scene) {
     floodlights.push(pylon.light)
   })
 
-  return { floodlights, ambientLight }
+  return { floodlights, ambientLight, sunLight, hemiLight }
 }
 
 function buildPylon(scene, x, z) {
@@ -76,7 +76,7 @@ function buildPylon(scene, x, z) {
   }
 
   // Spot aimed at pitch — dims relative to sun during day
-  const light = new THREE.SpotLight(LIGHTS.FLOOD_COLOR, LIGHTS.FLOOD_INTENSITY)
+  const light = new THREE.SpotLight(LIGHTS.FLOOD_COLOR, LIGHTS.DAY_FLOOD_INTENSITY)
   light.position.set(x, 45, z)
   light.target.position.set(0, 0, 0)
   light.angle     = Math.PI / 5.5
@@ -88,16 +88,4 @@ function buildPylon(scene, x, z) {
   scene.add(light.target)
 
   return { light }
-}
-
-export function setMatchDayLights(active) {
-  const targetIntensity = active ? LIGHTS.FLOOD_INTENSITY_MATCHDAY : LIGHTS.FLOOD_INTENSITY
-  floodlights.forEach(l => { l.intensity = targetIntensity })
-  if (sunLight) {
-    sunLight.intensity = active ? 0.5 : LIGHTS.SUN_INTENSITY
-  }
-  if (ambientLight) {
-    ambientLight.color.set(active ? 0x001033 : LIGHTS.AMBIENT_COLOR)
-    ambientLight.intensity = active ? 0.7 : LIGHTS.AMBIENT_INTENSITY
-  }
 }
