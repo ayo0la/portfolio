@@ -38,6 +38,7 @@ import { updateLoadingProgress, hideLoadingScreen } from './ui/LoadingScreen.js'
 
 // Utils
 import { EventBus }                              from './utils/EventBus.js'
+import { initDayNight, updateDayNight }          from './scene/DayNightCycle.js'
 
 // ── Init ────────────────────────────────────────────────────────
 
@@ -76,12 +77,13 @@ function progress() {
 // ── Build visual world ──────────────────────────────────────────
 
 try {
-  progress(); buildSky(scene)
+  progress(); const { skyUniforms, sunMeshes } = buildSky(scene)
   progress(); buildPitch(scene)
   progress(); buildStadium(scene)
-  progress(); buildFloodlights(scene)
+  progress(); const { floodlights, ambientLight, sunLight, hemiLight } = buildFloodlights(scene)
   progress(); initZones(scene)
   progress(); initNPCs(scene)
+  initDayNight(scene, { ambient: ambientLight, sun: sunLight, floods: floodlights, skyUniforms, sunMeshes })
 } catch (e) {
   showFatalError('Scene build failed: ' + e.message)
   throw e
@@ -234,6 +236,7 @@ function animate() {
   }
 
   // ── Stage 9: Render ───────────────────────────────────────────
+  updateDayNight(elapsed)
   renderer.render(scene, camera)
 }
 
