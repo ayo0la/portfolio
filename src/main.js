@@ -7,6 +7,7 @@ import { buildSky }                             from './scene/Sky.js'
 import { buildPitch }                           from './scene/Pitch.js'
 import { buildStadium }                         from './scene/Stadium.js'
 import { buildFloodlights }                     from './scene/Floodlights.js'
+import { buildPitchAtmosphere }                 from './scene/PitchAtmosphere.js'
 import { initMatchDayMode, toggleMatchDay,
          updateMatchDay }                        from './scene/MatchDayMode.js'
 import { createCarMesh, updateCarMesh }          from './scene/CarMesh.js'
@@ -79,6 +80,7 @@ function progress() {
 try {
   progress(); const { skyUniforms, sunMeshes } = buildSky(scene)
   progress(); buildPitch(scene)
+  buildPitchAtmosphere(scene)
   progress(); buildStadium(scene)
   progress(); const { floodlights, ambientLight, sunLight, hemiLight } = buildFloodlights(scene)
   progress(); initZones(scene)
