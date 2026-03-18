@@ -29,7 +29,7 @@ import { initZones, updateZones }                from './zones/ZoneManager.js'
 import { initNPCs, updateNPCs }                  from './npcs/NPCManager.js'
 
 // Audio
-import { initAudio, playZoneSound, playUISound,
+import { initAudio, playZoneSound,
          playMatchDayFanfare, resetCrowdVolume }  from './audio/AudioManager.js'
 
 // UI
@@ -124,7 +124,6 @@ initMatchDayMode(scene, camera, floodlights)
 // ── EventBus wiring ─────────────────────────────────────────────
 
 EventBus.on('audio:zone', zoneId => playZoneSound(zoneId))
-EventBus.on('audio:ui',   type   => playUISound(type))
 
 // ── Match Day button ────────────────────────────────────────────
 
