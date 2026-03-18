@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Ayoola Morakinyo — MDFLD Founder Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #ffd700;
+      --blue: #00e5ff;
+      --dark: #060a14;
+      --glass: rgba(6, 10, 20, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --font-display: 'Orbitron', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--dark);
+      color: #fff;
+    }
+
+    #app {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      cursor: crosshair;
+    }
+
+    /* ─── Loading Screen ─────────────────────────────────── */
+    #loading-screen {
+      position: fixed; inset: 0;
+      background: var(--dark);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.8s ease;
+    }
+    #loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loading-logo {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-shadow: 0 0 40px rgba(255,215,0,0.4);
+      margin-bottom: 0.25em;
+    }
+    .loading-subtitle {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+    .loading-bar-track {
+      width: min(400px, 80vw);
+      height: 2px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .loading-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--blue));
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .loading-status {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.1em;
+    }
+    .loading-hint {
+      position: absolute;
+      bottom: 2rem;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── HUD ────────────────────────────────────────────── */
+    #hud {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 100;
+    }
+    #hud-zone {
+      position: absolute;
+      top: 1.5rem; left: 1.5rem;
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    #hud-zone.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #hud-prompt {
+      position: absolute;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.85);
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 0.5rem 1.25rem;
+      border-radius: 100px;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      white-space: nowrap;
+    }
+    #hud-prompt .key {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 3px;
+      padding: 0 0.35em;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin-right: 0.25em;
+    }
+    #hud-prompt.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    #hud-controls {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      display: flex; flex-direction: column; gap: 0.25rem;
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.25);
+      text-align: right;
+    }
+    #hud-controls span { letter-spacing: 0.05em; }
+    #lock-indicator {
+      margin-top: 0.55rem;
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: rgba(255,215,0,0.45);
+      transition: color 0.3s ease;
+    }
+    #lock-indicator[data-locked="1"] { color: rgba(0,229,255,0.75); }
+    #matchday-btn {
+      position: absolute;
+      bottom: 2rem; right: 1.5rem;
+      pointer-events: all;
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    #matchday-btn:hover, #matchday-btn.active {
+      color: var(--gold);
+      border-color: var(--gold);
+      box-shadow: 0 0 20px rgba(255,215,0,0.15);
+    }
+    #fps-counter {
+      position: absolute;
+      bottom: 1.5rem; left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-display);
+      font-size: 0.55rem;
+      color: rgba(255,255,255,0.15);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── Dialogue Modal ─────────────────────────────────── */
+    #dialogue-modal {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex; justify-content: center;
+      padding: 0 1rem 1.5rem;
+      pointer-events: none;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #dialogue-modal.open {
+      pointer-events: all;
+      transform: translateY(0);
+    }
+    .dialogue-card {
+      width: min(680px, 100%);
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 -8px 48px rgba(0,0,0,0.5);
+    }
+    .dialogue-header {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .dialogue-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .dialogue-name {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .dialogue-role {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.05em;
+    }
+    .dialogue-close {
+      margin-left: auto;
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,0.3);
+      font-size: 1.2rem; line-height: 1;
+      padding: 0.25rem;
+      transition: color 0.2s;
+    }
+    .dialogue-close:hover { color: rgba(255,255,255,0.8); }
+    .dialogue-body {
+      padding: 1rem 1.25rem 1.25rem;
+      min-height: 80px;
+    }
+    #dialogue-text {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.85);
+    }
+    .dialogue-cursor {
+      display: inline-block;
+      width: 2px; height: 1em;
+      background: var(--gold);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 0.8s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    .dialogue-actions {
+      display: flex; gap: 0.5rem;
+      padding: 0 1.25rem 1rem;
+    }
+    .dialogue-btn {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.5);
+    }
+    .dialogue-btn:hover { color: #fff; border-color: rgba(255,255,255,0.2); }
+    .dialogue-btn.primary { color: var(--gold); border-color: rgba(255,215,0,0.3); }
+    .dialogue-btn.primary:hover { background: rgba(255,215,0,0.08); }
+
+    /* ─── Mobile Joystick ────────────────────────────────── */
+    #mobile-joystick {
+      display: none;
+      position: fixed;
+      bottom: 6rem; left: 2rem;
+      z-index: 150;
+    }
+    #mobile-joystick.visible { display: block; }
+    .joystick-base {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+    }
+    .joystick-knob {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(255,215,0,0.2);
+      border: 1px solid rgba(255,215,0,0.4);
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* ─── Pointer Lock Overlay ───────────────────────────── */
+    #lock-overlay {
+      position: fixed; inset: 0;
+      z-index: 50;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(6,10,20,0.85);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      cursor: pointer;
+      transition: opacity 0.4s;
+    }
+    #lock-overlay.hidden { opacity: 0; pointer-events: none; }
+    .lock-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+    .lock-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 0.5rem;
+    }
+    .lock-subtitle {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 768px) {
+      #hud-controls { display: none; }
+      #mobile-joystick { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="app"></canvas>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loading-logo">MDFLD</div>
+    <div class="loading-subtitle">Ayoola Morakinyo — Founder Portfolio</div>
+    <div class="loading-bar-track">
+      <div class="loading-bar-fill" id="loading-bar"></div>
+    </div>
+    <div class="loading-status" id="loading-status">Initialising stadium…</div>
+    <div class="loading-hint">Click anywhere to enter</div>
+  </div>
+
+  <!-- Pointer Lock Overlay (desktop) -->
+  <div id="lock-overlay" class="hidden">
+    <div class="lock-icon">⚽</div>
+    <div class="lock-title">Click to Enter</div>
+    <div class="lock-subtitle">WASD / Arrow keys to drive &nbsp;·&nbsp; Space to brake &nbsp;·&nbsp; E to interact</div>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="hud-zone"></div>
+    <div id="hud-prompt"><span class="key">E</span> Interact</div>
+    <div id="hud-controls">
+      <span>W/S  ↑↓ — Drive</span>
+      <span>A/D  ←→ — Steer</span>
+      <span>Space — Brake</span>
+      <span>Shift — Boost</span>
+      <span>E — Interact</span>
+      <span>R — Reset</span>
+      <span>M — Match Day</span>
+      <div id="lock-indicator" data-locked="0"></div>
+    </div>
+    <button id="matchday-btn">⚡ Match Day</button>
+    <div id="fps-counter">60 FPS</div>
+  </div>
+
+  <!-- Dialogue Modal -->
+  <div id="dialogue-modal">
+    <div class="dialogue-card">
+      <div class="dialogue-header">
+        <div class="dialogue-avatar" id="dialogue-avatar">🧠</div>
+        <div>
+          <div class="dialogue-name" id="dialogue-name">Character</div>
+          <div class="dialogue-role" id="dialogue-role">Role</div>
+        </div>
+        <button class="dialogue-close" id="dialogue-close">✕</button>
+      </div>
+      <div class="dialogue-body">
+        <div id="dialogue-text"></div>
+      </div>
+      <div class="dialogue-actions">
+        <button class="dialogue-btn primary" id="dialogue-next">Next →</button>
+        <button class="dialogue-btn" id="dialogue-dismiss">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Joystick -->
+  <div id="mobile-joystick">
+    <div class="joystick-base" id="joystick-base">
+      <div class="joystick-knob" id="joystick-knob"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
