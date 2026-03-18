@@ -12,20 +12,15 @@ export const STADIUM = {
 
 // Zone definitions
 export const ZONES = {
-  midfield:       { id: 'midfield',       label: 'MDFLD — The Marketplace',   position: [0, 0, 0],      radius: 15 },
-  tunnel:         { id: 'tunnel',         label: 'Builder Tunnel',             position: [-58, 0, 0],    radius: 9  },
-  lockerRoom:     { id: 'lockerRoom',     label: 'Locker Room',               position: [58, 0, 26],    radius: 10 },
-  transferMarket: { id: 'transferMarket', label: 'Transfer Market',            position: [-58, 0, -26],  radius: 10 },
-  expansionWing:  { id: 'expansionWing',  label: 'Future Expansion Wing',      position: [0, 0, -52],    radius: 13 },
-  archive:        { id: 'archive',        label: 'The Archive',                position: [60, 0, 0],     radius: 12 },
+  whoIAm:   { id: 'whoIAm',   label: 'Who I Am',  position: [0,   0, -45], radius: 18 },
+  skills:   { id: 'skills',   label: 'Skills',    position: [-55, 0,   0], radius: 18 },
+  projects: { id: 'projects', label: 'Projects',  position: [55,  0,   0], radius: 18 },
 }
 
 // NPC spawn data
 export const NPCS = {
-  ayoola:    { id: 'ayoola',    position: [18,  0,  12], color: 0xffd700, label: 'Ayoola',    role: 'Founder — MDFLD' },
-  cto:       { id: 'cto',       position: [-18, 0,  12], color: 0x00e5ff, label: 'Future CTO', role: 'Engineering Mode' },
-  investor:  { id: 'investor',  position: [18,  0, -12], color: 0x00c853, label: 'Investor',   role: 'Capital Mode' },
-  community: { id: 'community', position: [-18, 0, -12], color: 0xf44336, label: 'Community',  role: 'Culture Mode' },
+  ayoola:  { id: 'ayoola',  position: [0, 0, 10], color: 0xffd700, label: 'Ayoola',  role: 'Founder — MDFLD' },
+  builder: { id: 'builder', position: [48, 0, 0], color: 0x00e5ff, label: 'Builder', role: 'What We Build' },
 }
 
 // Player config (kept for NPC proximity distances)
@@ -116,11 +111,20 @@ export const COLORS = {
 
 // Lighting — daytime
 export const LIGHTS = {
-  AMBIENT_COLOR:         0xffeedd,  // warm white
-  AMBIENT_INTENSITY:     1.2,
-  FLOOD_COLOR:           0xfff5e0,
-  FLOOD_INTENSITY:       1.8,       // dimmer during day (sun dominates)
+  // Night / current values (unchanged)
+  AMBIENT_COLOR:            0xffeedd,
+  AMBIENT_INTENSITY:        1.2,
+  FLOOD_COLOR:              0xfff5e0,
+  FLOOD_INTENSITY:          1.8,
   FLOOD_INTENSITY_MATCHDAY: 9.0,
-  SUN_COLOR:             0xfff5e0,
-  SUN_INTENSITY:         3.8,
+  SUN_COLOR:                0xfff5e0,
+  SUN_INTENSITY:            3.8,
+
+  // Day start values
+  DAY_AMBIENT_INTENSITY:    2.8,
+  DAY_SUN_INTENSITY:        4.5,
+  DAY_FLOOD_INTENSITY:      0,
+  DAY_FOG_DENSITY:          0.003,
+  NIGHT_FOG_DENSITY:        0.0018,
+  DAY_NIGHT_DURATION:       300,   // seconds for full transition
 }
