@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Background Options</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d0d; color: #fff; font-family: 'Inter', system-ui, sans-serif; overflow: hidden; height: 100vh; }
+
+  /* ── Demo canvas fills screen ── */
+  #demo { position: fixed; inset: 0; }
+  #grain-overlay {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  /* ── UI on top ── */
+  #ui {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem;
+    z-index: 10;
+  }
+
+  #label {
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+
+  #hero-text {
+    text-align: center;
+    user-select: none;
+  }
+  #hero-text h1 {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900;
+    letter-spacing: -4px;
+    line-height: 0.9;
+    color: #fff;
+    mix-blend-mode: normal;
+  }
+  #hero-text p {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 5px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 1rem;
+  }
+
+  #controls {
+    pointer-events: all;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .btn {
+    padding: 0.6rem 1.4rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    background: rgba(0,0,0,0.6);
+    color: rgba(255,255,255,0.5);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Courier New', monospace;
+  }
+  .btn:hover { border-color: rgba(255,215,0,0.4); color: #ffd700; }
+  .btn.active { border-color: #ffd700; color: #ffd700; background: rgba(255,215,0,0.08); }
+
+  #mode-title {
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'Courier New', monospace;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="demo"></canvas>
+<canvas id="grain-overlay"></canvas>
+
+<div id="ui">
+  <div id="label">MOVE YOUR MOUSE · SWITCH MODES BELOW</div>
+
+  <div id="hero-text">
+    <h1>AYO<br>MORAKINYO</h1>
+    <p>FOUNDER · BUILDER · ATLANTA</p>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:1rem;align-items:center">
+    <div id="mode-title">A — SPARSE PARTICLES</div>
+    <div id="controls">
+      <button class="btn active" onclick="setMode('particles')">A — Particles</button>
+      <button class="btn" onclick="setMode('grain')">B — Grain</button>
+      <button class="btn" onclick="setMode('both')">C — Both</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Canvas setup ──────────────────────────────────────────────────
+const canvas = document.getElementById('demo')
+const ctx = canvas.getContext('2d')
+const grainCanvas = document.getElementById('grain-overlay')
+const grainCtx = grainCanvas.getContext('2d')
+
+let W, H
+function resize() {
+  W = canvas.width = grainCanvas.width = window.innerWidth
+  H = canvas.height = grainCanvas.height = window.innerHeight
+  generateGrain()
+}
+window.addEventListener('resize', resize)
+resize()
+
+// ── Mouse ─────────────────────────────────────────────────────────
+let mx = W / 2, my = H / 2
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY })
+
+// ── Mode ──────────────────────────────────────────────────────────
+let mode = 'particles'
+const modeNames = {
+  particles: 'A — SPARSE PARTICLES',
+  grain:     'B — FILM GRAIN / NOISE',
+  both:      'C — BOTH LAYERED'
+}
+function setMode(m) {
+  mode = m
+  document.getElementById('mode-title').textContent = modeNames[m]
+  document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'))
+  event.target.classList.add('active')
+  grainCanvas.style.opacity = (m === 'grain' || m === 'both') ? '1' : '0'
+}
+
+// ── Particles ─────────────────────────────────────────────────────
+const PARTICLE_COUNT = 80
+const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+  x: Math.random() * window.innerWidth,
+  y: Math.random() * window.innerHeight,
+  vx: (Math.random() - 0.5) * 0.3,
+  vy: (Math.random() - 0.5) * 0.3,
+  r: Math.random() * 1.5 + 0.3,
+  gold: Math.random() < 0.25,
+  opacity: Math.random() * 0.5 + 0.1,
+}))
+
+function drawParticles(t) {
+  ctx.clearRect(0, 0, W, H)
+
+  for (const p of particles) {
+    // Drift
+    p.x += p.vx
+    p.y += p.vy
+
+    // Cursor attraction (subtle)
+    const dx = mx - p.x
+    const dy = my - p.y
+    const dist = Math.sqrt(dx * dx + dy * dy)
+    if (dist < 180) {
+      const force = (180 - dist) / 180 * 0.012
+      p.vx += dx * force * 0.05
+      p.vy += dy * force * 0.05
+    }
+
+    // Speed cap + slight damping
+    p.vx *= 0.995
+    p.vy *= 0.995
+    const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy)
+    if (speed > 1.5) { p.vx /= speed; p.vy /= speed }
+
+    // Wrap
+    if (p.x < -10) p.x = W + 10
+    if (p.x > W + 10) p.x = -10
+    if (p.y < -10) p.y = H + 10
+    if (p.y > H + 10) p.y = -10
+
+    // Draw dot
+    ctx.beginPath()
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+    ctx.fillStyle = p.gold
+      ? `rgba(255,215,0,${p.opacity})`
+      : `rgba(255,255,255,${p.opacity * 0.6})`
+    ctx.fill()
+
+    // Draw connection lines to nearby particles
+    for (const q of particles) {
+      if (q === p) continue
+      const dx2 = p.x - q.x
+      const dy2 = p.y - q.y
+      const d2 = Math.sqrt(dx2 * dx2 + dy2 * dy2)
+      if (d2 < 90) {
+        ctx.beginPath()
+        ctx.moveTo(p.x, p.y)
+        ctx.lineTo(q.x, q.y)
+        const alpha = (1 - d2 / 90) * 0.08
+        ctx.strokeStyle = p.gold || q.gold
+          ? `rgba(255,215,0,${alpha})`
+          : `rgba(255,255,255,${alpha})`
+        ctx.lineWidth = 0.5
+        ctx.stroke()
+      }
+    }
+  }
+
+  // Cursor glow
+  const grd = ctx.createRadialGradient(mx, my, 0, mx, my, 120)
+  grd.addColorStop(0, 'rgba(255,215,0,0.04)')
+  grd.addColorStop(1, 'transparent')
+  ctx.fillStyle = grd
+  ctx.fillRect(0, 0, W, H)
+}
+
+// ── Film grain ────────────────────────────────────────────────────
+let grainFrames = []
+const GRAIN_FRAMES = 8
+
+function generateGrain() {
+  grainFrames = []
+  for (let f = 0; f < GRAIN_FRAMES; f++) {
+    const offscreen = document.createElement('canvas')
+    offscreen.width = W
+    offscreen.height = H
+    const gctx = offscreen.getContext('2d')
+    const imageData = gctx.createImageData(W, H)
+    const data = imageData.data
+    for (let i = 0; i < data.length; i += 4) {
+      const v = Math.random() * 255
+      data[i]     = v
+      data[i + 1] = v
+      data[i + 2] = v
+      data[i + 3] = Math.random() * 28 + 4  // very subtle
+    }
+    gctx.putImageData(imageData, 0, 0)
+    grainFrames.push(offscreen)
+  }
+}
+
+let grainFrame = 0
+function drawGrain(t) {
+  // Cycle grain frames to create animated noise
+  grainFrame = Math.floor(t / 60) % GRAIN_FRAMES
+  grainCtx.clearRect(0, 0, W, H)
+
+  // Subtle vignette
+  const vig = grainCtx.createRadialGradient(W/2, H/2, H*0.1, W/2, H/2, H*0.85)
+  vig.addColorStop(0, 'transparent')
+  vig.addColorStop(1, 'rgba(0,0,0,0.55)')
+  grainCtx.fillStyle = vig
+  grainCtx.fillRect(0, 0, W, H)
+
+  // Grain
+  grainCtx.globalAlpha = 0.35
+  grainCtx.globalCompositeOperation = 'screen'
+  grainCtx.drawImage(grainFrames[grainFrame] || grainFrames[0], 0, 0)
+  grainCtx.globalAlpha = 1
+  grainCtx.globalCompositeOperation = 'source-over'
+}
+
+// ── Loop ──────────────────────────────────────────────────────────
+function loop(t) {
+  if (mode === 'particles' || mode === 'both') {
+    drawParticles(t)
+  } else {
+    ctx.clearRect(0, 0, W, H)
+  }
+  if (mode === 'grain' || mode === 'both') {
+    drawGrain(t)
+  }
+  requestAnimationFrame(loop)
+}
+requestAnimationFrame(loop)
+</script>
+</body>
+</html>
