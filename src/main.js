@@ -81,7 +81,7 @@ try {
   progress(); buildPitch(scene)
   buildPitchAtmosphere(scene)
   progress(); buildStadium(scene)
-  progress(); const { floodlights, ambientLight, sunLight, hemiLight } = buildFloodlights(scene)
+  progress(); const { floodlights: fl, ambientLight, sunLight, hemiLight } = buildFloodlights(scene); floodlights = fl
   progress(); initZones(scene)
   progress(); initNPCs(scene)
   initDayNight(scene, { ambient: ambientLight, sun: sunLight, floods: floodlights, skyUniforms, sunMeshes })
@@ -92,6 +92,7 @@ try {
 
 // ── Build physics world ─────────────────────────────────────────
 
+let floodlights
 let world, vehicle, chassisBody
 try {
   world = initPhysics(RAPIER)
