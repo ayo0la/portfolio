@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { makeLabel } from '../utils/GeometryUtils.js'
+import { SpeechBubble } from './SpeechBubble.js'
 
 export class NPCBase {
   constructor({ id, position, color, label, role }) {
@@ -46,17 +46,6 @@ export class NPCBase {
     this.glowOrb.position.set(0, 2.5, 0)
     this.group.add(this.glowOrb)
 
-    // Name label sprite
-    const labelSprite = makeLabel(this.label, '#' + new THREE.Color(this.color).getHexString())
-    labelSprite.position.set(0, 2.9, 0)
-    this.group.add(labelSprite)
-
-    // Role sub-label
-    const roleSprite = makeLabel(this.role, 'rgba(255,255,255,0.55)', 'rgba(0,0,0,0)')
-    roleSprite.position.set(0, 2.45, 0)
-    roleSprite.scale.set(2.5, 0.38, 1)
-    this.group.add(roleSprite)
-
     // Interaction ring on ground
     const ringGeo = new THREE.RingGeometry(0.7, 0.85, 24)
     const ringMat = new THREE.MeshBasicMaterial({
@@ -66,6 +55,10 @@ export class NPCBase {
     this.ring.rotation.x = -Math.PI / 2
     this.ring.position.set(0, 0.02, 0)
     this.group.add(this.ring)
+
+    // Speech bubble
+    this.bubble = new SpeechBubble(this.id)
+    this.group.add(this.bubble.sprite)
 
     // Position in world
     this.group.position.set(...this.spawnPos)
@@ -78,7 +71,7 @@ export class NPCBase {
     return mesh
   }
 
-  update(t) {
+  update(t, delta) {
     if (!this.built) return
     const phase = t + this.idlePhase
 
@@ -102,6 +95,8 @@ export class NPCBase {
     if (this.ring) {
       this.ring.material.opacity = 0.1 + Math.sin(phase * 1.1) * 0.12
     }
+
+    if (this.bubble) this.bubble.update(delta ?? 0.016)
   }
 
   // Face toward player when interacting
