@@ -76,6 +76,7 @@ function progress() {
 
 // ── Build visual world ──────────────────────────────────────────
 
+let floodlights
 try {
   progress(); const { skyUniforms, sunMeshes } = buildSky(scene)
   progress(); buildPitch(scene)
@@ -92,7 +93,6 @@ try {
 
 // ── Build physics world ─────────────────────────────────────────
 
-let floodlights
 let world, vehicle, chassisBody
 try {
   world = initPhysics(RAPIER)
