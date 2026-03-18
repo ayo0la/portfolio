@@ -34,7 +34,6 @@ import { initAudio, playZoneSound, playUISound,
 
 // UI
 import { initHUD, updateFPS }                    from './ui/HUD.js'
-import { initDialogue }                          from './ui/DialogueModal.js'
 import { updateLoadingProgress, hideLoadingScreen } from './ui/LoadingScreen.js'
 
 // Utils
@@ -117,10 +116,9 @@ initDesktop(camera, renderer.domElement)
 
 snapCamera(camera, chassisBody)
 
-// ── UI / dialogue / match day ──────────────────────────────────
+// ── UI / match day ────────────────────────────────────────────
 
 initHUD()
-initDialogue()
 initMatchDayMode(scene, camera, floodlights)
 
 // ── EventBus wiring ─────────────────────────────────────────────
