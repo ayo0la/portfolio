@@ -15,33 +15,10 @@ export const DIALOGUES = {
     "Every founder pitch talks about TAM. I think about infrastructure TAM — the value of being the layer everything else runs on. Football is global, tribal, and deeply sentimental. We're building the rails for that emotion to have commercial form.",
   ],
 
-  cto: [
-    "Supabase was the right call at this stage. You get Postgres — not some watered-down NoSQL guess — plus RLS, auth, realtime, and edge functions in one platform. The founder can move fast AND make decisions that don't become debt. That's rare.",
-
-    "AI-assisted development isn't about replacing engineers — it's about compressing the time between 'idea' and 'working proof of concept'. The real skill is knowing which 30% of the AI output to keep, which to throw away, and which to redesign entirely.",
-
-    "API-first architecture is a forcing function for clarity. If you can't describe what your system does in a clean API surface, you don't understand it yet. Supabase's auto-generated APIs give you a starting point — but you have to own the shape.",
-
-    "The hardest infrastructure problem at MDFLD isn't scale — it's trust at schema level. Row-level security means the database itself enforces who sees what. That's not just a feature, that's the product. The verification tables are the product.",
-  ],
-
-  investor: [
-    "The global football memorabilia and vintage kit market sits north of $40B annually — and it's still largely informal, opaque, and ripe for a trust crisis. The first platform to own verification and provenance will own the market. MDFLD's positioning is correct.",
-
-    "Infrastructure plays have disproportionate upside. You're not competing with one marketplace — you're building the layer that all marketplaces eventually need to run on. Think Stripe for payments, not PayPal. That's the mental model here.",
-
-    "What I look for early is: does the founder understand the unsexy parts? Customs? Cross-border tax? Authentication at scale? Ayoola talks about shipping corridors and trust scores before he talks about GMV. That's the right order of operations.",
-
-    "The network effect here is asymmetric. Every verified listing makes the next verification cheaper and more credible. Every satisfied collector reinforces the trust signal. The moat builds itself if the foundation is right. That's what we're betting on.",
-  ],
-
-  community: [
-    "You don't understand — finding an authentic 1998 France World Cup shirt in your actual size was basically impossible before this. I've been burned three times on eBay by 'original' kits that were clearly reproductions. Provenance matters. It's the story.",
-
-    "Football is the most global sport on Earth, and every era has an aesthetic. The Umbro umbros. The Kappa popper tracksuits. The Lotto keepers' kits nobody wanted until they wanted them. This stuff is cultural history, and it deserves a proper home.",
-
-    "The collector community isn't niche anymore. Sneakers went mainstream, streetwear went mainstream — vintage football is next. The gap between demand and trustworthy supply is enormous. That's why MDFLD matters right now.",
-
-    "What MDFLD gets right is that it treats us like serious collectors, not just buyers. Verification isn't just about fraud — it's about respect for the object. A shirt that was worn by someone, that has a history, that means something — that deserves to be authenticated.",
+  builder: [
+    "Every product here was built by one person. That's the point — tools are powerful enough now that a solo founder can ship what took teams five years ago.",
+    "The scraper, the ML pipeline, the family portal — all of it is production code. Not demos. Not tutorials. Real software solving real problems.",
+    "I'm proving that taste + technical skill + relentless focus beats a team without vision. Come find me when you're ready to build something that matters.",
+    "Check the Projects zone to the east. 153 scraped products, 10k boot images, a full-stack enrollment system. That's what nights and weekends look like.",
   ],
 }
