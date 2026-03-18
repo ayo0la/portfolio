@@ -119,7 +119,7 @@ snapCamera(camera, chassisBody)
 
 initHUD()
 initDialogue()
-initMatchDayMode(scene, camera)
+initMatchDayMode(scene, camera, floodlights)
 
 // ── EventBus wiring ─────────────────────────────────────────────
 

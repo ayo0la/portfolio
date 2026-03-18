@@ -1,11 +1,12 @@
 import * as THREE from 'three'
-import { setMatchDayLights } from './Floodlights.js'
+import { LIGHTS } from '../utils/Constants.js'
 import { EventBus } from '../utils/EventBus.js'
 import { lerp, easeInOutCubic } from '../utils/MathUtils.js'
 
 let active = false
 let scene = null
 let camera = null
+let _floodsRef = null
 let projectionMesh = null
 let isSweeping = false
 let sweepT = 0
@@ -30,15 +31,16 @@ const cinematicPath = new THREE.CatmullRomCurve3([
 ])
 cinematicPath.closed = true
 
-export function initMatchDayMode(sceneRef, cameraRef) {
+export function initMatchDayMode(sceneRef, cameraRef, floodsRef) {
   scene = sceneRef
   camera = cameraRef
+  _floodsRef = floodsRef
 }
 
 export function toggleMatchDay(controlsRef) {
   active = !active
-  setMatchDayLights(active)
-  document.getElementById('matchday-btn').classList.toggle('active', active)
+  applyMatchDayBoost(_floodsRef, active)
+  document.getElementById('matchday-btn')?.classList.toggle('active', active)
 
   if (active) {
     // Save player state
@@ -63,6 +65,12 @@ export function toggleMatchDay(controlsRef) {
 
 // Look-at target slightly above pitch centre so interior is visible from outside
 const _lookAt = new THREE.Vector3(0, 10, 0)
+
+function applyMatchDayBoost(floods, active) {
+  if (!floods) return
+  const target = active ? LIGHTS.FLOOD_INTENSITY_MATCHDAY : LIGHTS.FLOOD_INTENSITY
+  floods.forEach(f => { f.intensity = target })
+}
 
 export function updateMatchDay(delta) {
   if (!isSweeping) return
