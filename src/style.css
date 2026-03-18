@@ -15,7 +15,7 @@
   --font-body:   system-ui, -apple-system, sans-serif;
 }
 
-html { scroll-behavior: auto; }
+html { scroll-behavior: auto; /* Lenis handles smooth scroll */ }
 
 body {
   background: var(--bg);
