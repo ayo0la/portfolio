@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ayoola Morakinyo — Founder &amp; Builder</title>
+  <meta name="description" content="Ayoola Morakinyo — Founder of MDFLD, software engineer, building tools for the football industry." />
+  <meta property="og:title" content="Ayoola Morakinyo" />
+  <meta property="og:description" content="Founder of MDFLD. Builder. Atlanta." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- Background canvas (fixed, z-index -1) -->
+  <canvas id="bg"></canvas>
+
+  <!-- §1 Hero -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1 class="hero-name">AYOOLA<br>MORAKINYO</h1>
+        <p class="hero-sub">FOUNDER · BUILDER · ATLANTA</p>
+        <div class="scroll-indicator">
+          <span class="scroll-arrow">↓</span>
+        </div>
+      </div>
+      <div class="hero-logo-wrap">
+        <canvas id="logo-canvas"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- §2 About -->
+  <section id="about">
+    <div class="section-inner about-grid">
+      <div class="about-left">
+        <span class="mono-tag">// WHO I AM</span>
+        <h2 class="about-headline">Founder.<br>Builder.<br>Visionary.</h2>
+      </div>
+      <div class="about-right">
+        <p class="body-copy">Ayoola Morakinyo is a founder and software engineer building tools for the football industry. He is the creator of MDFLD, an AI-powered authentication platform. He works at the intersection of machine learning, product design, and sport.</p>
+        <div class="skill-chips">
+          <span class="chip">Python</span>
+          <span class="chip">Next.js</span>
+          <span class="chip">Three.js</span>
+          <span class="chip">ML</span>
+          <span class="chip">Node.js</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §3 MDFLD -->
+  <section id="mdfld">
+    <div class="section-inner mdfld-inner">
+      <div class="mdfld-topbar">
+        <span class="mdfld-badge">MDFLD</span>
+        <span class="mono-tag">FLAGSHIP PROJECT</span>
+      </div>
+      <h2 class="mdfld-headline">Football<br>Authentication<br>Platform</h2>
+      <p class="body-copy mdfld-desc">MDFLD is building the trust layer the football industry is missing — AI-powered verification that tells you instantly whether a product is authentic. Currently in beta with 500+ users on the waitlist.</p>
+      <a class="mdfld-cta" href="https://beta.mdfld.co" target="_blank" rel="noopener">VIEW PROJECT →</a>
+      <div class="mdfld-bg-word" aria-hidden="true">MDFLD</div>
+    </div>
+  </section>
+
+  <!-- §4 Projects -->
+  <section id="projects">
+    <div class="section-inner">
+      <span class="mono-tag section-tag">// OTHER WORK</span>
+      <div class="projects-grid">
+        <a class="project-card" href="#" target="_blank" rel="noopener">
+          <span class="proj-tag">FULL-STACK · 2025</span>
+          <h3 class="proj-name">Allstar Kids Academy</h3>
+          <p class="proj-desc">Family portal and digital enrollment system for a childcare business. Replacing paper forms with a real product.</p>
+          <span class="proj-arrow">→</span>
+        </a>
+        <a class="project-card" href="#" target="_blank" rel="noopener">
+          <span class="proj-tag">DATA · 2025</span>
+          <h3 class="proj-name">Boot Scraper</h3>
+          <p class="proj-desc">Multi-site scraper collecting training images across rareboots, bootroom, and thebootchamber for the MDFLD authentication model.</p>
+          <span class="proj-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- §5 Contact -->
+  <section id="contact">
+    <div class="section-inner contact-inner">
+      <h2 class="contact-heading">Let's talk.</h2>
+      <nav class="contact-links">
+        <a href="mailto:hello@mdfld.co">EMAIL</a>
+        <a href="https://linkedin.com/in/ayoolamorakinyo" target="_blank" rel="noopener">LINKEDIN</a>
+        <a href="https://github.com/ayoolamorakinyo" target="_blank" rel="noopener">GITHUB</a>
+        <a href="https://twitter.com/mdfld_co" target="_blank" rel="noopener">TWITTER</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Custom cursor (desktop only) -->
+  <div id="cursor" aria-hidden="true"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
