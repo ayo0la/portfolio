@@ -7,18 +7,24 @@ let grainIndex = 0
 let lastGrainSwap = 0
 let particles = []
 let isTouch = false
+let paused = false
 
-const PARTICLE_COUNT  = 90
-const GRAIN_FRAMES    = 6
+// Reduce counts on touch devices
+const PARTICLE_COUNT  = () => isTouch ? 45 : 90
+const GRAIN_FRAMES    = () => isTouch ? 3 : 6
+const GRAIN_SCALE     = () => isTouch ? 0.5 : 1   // render grain at half-res on mobile
 
 function buildGrainFrames() {
   grainFrames = []
-  for (let i = 0; i < GRAIN_FRAMES; i++) {
+  const scale = GRAIN_SCALE()
+  const gW = Math.ceil(W * scale)
+  const gH = Math.ceil(H * scale)
+  for (let i = 0; i < GRAIN_FRAMES(); i++) {
     const off = document.createElement('canvas')
-    off.width  = W
-    off.height = H
+    off.width  = gW
+    off.height = gH
     const c  = off.getContext('2d')
-    const id = c.createImageData(W, H)
+    const id = c.createImageData(gW, gH)
     const d  = id.data
     for (let j = 0; j < d.length; j += 4) {
       const v = Math.random() * 255 | 0
@@ -31,7 +37,7 @@ function buildGrainFrames() {
 }
 
 function buildParticles() {
-  particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+  particles = Array.from({ length: PARTICLE_COUNT() }, () => ({
     x:    Math.random() * W,
     y:    Math.random() * H,
     vx:   (Math.random() - 0.5) * 0.5,
@@ -68,12 +74,19 @@ export function initBackgroundCanvas() {
     mx = W / 2
     my = H / 2
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY })
+  } else {
+    // touch interaction — tap well added in next task
   }
 
   window.addEventListener('resize', onResize)
+  document.addEventListener('visibilitychange', () => {
+    paused = document.hidden
+  })
 }
 
 export function updateBackgroundCanvas(timestamp) {
+  if (paused) return
+
   ctx.fillStyle = '#080808'
   ctx.fillRect(0, 0, W, H)
 
@@ -101,21 +114,24 @@ export function updateBackgroundCanvas(timestamp) {
     ctx.fillStyle = p.gold ? 'rgba(255,215,0,0.75)' : 'rgba(255,255,255,0.55)'
     ctx.fill()
 
-    for (const q of particles) {
-      if (q === p) continue
-      const dx2 = p.x - q.x
-      const dy2 = p.y - q.y
-      const d2  = Math.sqrt(dx2 * dx2 + dy2 * dy2)
-      if (d2 < 110) {
-        ctx.beginPath()
-        ctx.moveTo(p.x, p.y)
-        ctx.lineTo(q.x, q.y)
-        const a = (1 - d2 / 110) * 0.25
-        ctx.strokeStyle = (p.gold || q.gold)
-          ? `rgba(255,215,0,${a})`
-          : `rgba(255,255,255,${a})`
-        ctx.lineWidth = 0.8
-        ctx.stroke()
+    // Skip O(n²) connection lines on touch — too expensive for mobile CPUs
+    if (!isTouch) {
+      for (const q of particles) {
+        if (q === p) continue
+        const dx2 = p.x - q.x
+        const dy2 = p.y - q.y
+        const d2  = Math.sqrt(dx2 * dx2 + dy2 * dy2)
+        if (d2 < 110) {
+          ctx.beginPath()
+          ctx.moveTo(p.x, p.y)
+          ctx.lineTo(q.x, q.y)
+          const a = (1 - d2 / 110) * 0.25
+          ctx.strokeStyle = (p.gold || q.gold)
+            ? `rgba(255,215,0,${a})`
+            : `rgba(255,255,255,${a})`
+          ctx.lineWidth = 0.8
+          ctx.stroke()
+        }
       }
     }
   }
@@ -131,13 +147,13 @@ export function updateBackgroundCanvas(timestamp) {
 
   // ── Grain ──────────────────────────────────────────────────
   if (timestamp - lastGrainSwap > 50) {
-    grainIndex    = (grainIndex + 1) % GRAIN_FRAMES
+    grainIndex    = (grainIndex + 1) % GRAIN_FRAMES()
     lastGrainSwap = timestamp
   }
   if (grainFrames[grainIndex]) {
     ctx.globalAlpha = 0.35
     ctx.globalCompositeOperation = 'screen'
-    ctx.drawImage(grainFrames[grainIndex], 0, 0)
+    ctx.drawImage(grainFrames[grainIndex], 0, 0, W, H)
     ctx.globalAlpha = 1
     ctx.globalCompositeOperation = 'source-over'
   }
