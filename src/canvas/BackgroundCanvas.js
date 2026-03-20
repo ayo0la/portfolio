@@ -8,6 +8,7 @@ let lastGrainSwap = 0
 let particles = []
 let isTouch = false
 let paused = false
+let tapWell = null  // { x, y, age } or null
 
 // Reduce counts on touch devices
 const PARTICLE_COUNT  = () => isTouch ? 45 : 90
@@ -75,7 +76,13 @@ export function initBackgroundCanvas() {
     my = H / 2
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY })
   } else {
-    // touch interaction — tap well added in next task
+    canvas.addEventListener('touchstart', e => {
+      e.preventDefault()
+      const t = e.changedTouches[0]
+      const rect = canvas.getBoundingClientRect()
+      // rect.left/top are 0 while canvas fills full viewport; subtracted for correctness
+      tapWell = { x: t.clientX - rect.left, y: t.clientY - rect.top, age: 0 }
+    }, { passive: false })
   }
 
   window.addEventListener('resize', onResize)
@@ -134,6 +141,33 @@ export function updateBackgroundCanvas(timestamp) {
         }
       }
     }
+  }
+
+  // ── Tap well (touch only) ───────────────────────────────────
+  if (tapWell) {
+    for (const p of particles) {
+      const dx = tapWell.x - p.x
+      const dy = tapWell.y - p.y
+      const d  = Math.sqrt(dx * dx + dy * dy) || 1
+      const f  = Math.min(0.1, 14 / d)
+      p.vx += (dx / d) * f
+      p.vy += (dy / d) * f
+    }
+
+    const alpha = 1 - tapWell.age / 90
+    const ringR = 8 + tapWell.age * 0.5
+    ctx.beginPath()
+    ctx.arc(tapWell.x, tapWell.y, ringR, 0, Math.PI * 2)
+    ctx.strokeStyle = `rgba(255,215,0,${alpha * 0.5})`
+    ctx.lineWidth = 1.5
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.arc(tapWell.x, tapWell.y, 4, 0, Math.PI * 2)
+    ctx.fillStyle = `rgba(255,215,0,${alpha})`
+    ctx.fill()
+
+    tapWell.age++
+    if (tapWell.age >= 90) tapWell = null  // lifetime is exactly 90 frames (ages 0–89)
   }
 
   // Cursor glow (desktop only)
