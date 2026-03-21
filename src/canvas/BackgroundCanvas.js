@@ -10,8 +10,7 @@ let isTouch = false
 let paused = false
 let tapWell = null  // { x, y, age } or null
 
-// Reduce counts on touch devices
-const PARTICLE_COUNT  = () => isTouch ? 45 : 90
+const PARTICLE_COUNT  = () => 90
 const GRAIN_FRAMES    = () => isTouch ? 3 : 6
 const GRAIN_SCALE     = () => isTouch ? 0.5 : 1   // render grain at half-res on mobile
 
@@ -76,13 +75,11 @@ export function initBackgroundCanvas() {
     my = H / 2
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY })
   } else {
-    canvas.addEventListener('touchstart', e => {
-      e.preventDefault()
+    // Listen on window — canvas has pointer-events:none so events won't reach it directly
+    window.addEventListener('touchstart', e => {
       const t = e.changedTouches[0]
-      const rect = canvas.getBoundingClientRect()
-      // rect.left/top are 0 while canvas fills full viewport; subtracted for correctness
-      tapWell = { x: t.clientX - rect.left, y: t.clientY - rect.top, age: 0 }
-    }, { passive: false })
+      tapWell = { x: t.clientX, y: t.clientY, age: 0 }
+    }, { passive: true })
   }
 
   window.addEventListener('resize', onResize)
@@ -121,9 +118,7 @@ export function updateBackgroundCanvas(timestamp) {
     ctx.fillStyle = p.gold ? 'rgba(255,215,0,0.75)' : 'rgba(255,255,255,0.55)'
     ctx.fill()
 
-    // Skip O(n²) connection lines on touch — too expensive for mobile CPUs
-    if (!isTouch) {
-      for (const q of particles) {
+    for (const q of particles) {
         if (q === p) continue
         const dx2 = p.x - q.x
         const dy2 = p.y - q.y
@@ -140,7 +135,6 @@ export function updateBackgroundCanvas(timestamp) {
           ctx.stroke()
         }
       }
-    }
   }
 
   // ── Tap well (touch only) ───────────────────────────────────
