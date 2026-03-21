@@ -8,7 +8,6 @@ let lastGrainSwap = 0
 let particles = []
 let isTouch = false
 let paused = false
-let tapWell = null  // { x, y, age } or null
 
 const PARTICLE_COUNT  = () => 90
 const GRAIN_FRAMES    = () => isTouch ? 3 : 6
@@ -70,15 +69,16 @@ export function initBackgroundCanvas() {
   buildGrainFrames()
   buildParticles()
 
+  mx = W / 2
+  my = H / 2
   if (!isTouch) {
-    mx = W / 2
-    my = H / 2
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY })
   } else {
-    // Listen on window — canvas has pointer-events:none so events won't reach it directly
+    // Tap updates mx/my — same attraction model as desktop cursor
     window.addEventListener('touchstart', e => {
       const t = e.changedTouches[0]
-      tapWell = { x: t.clientX, y: t.clientY, age: 0 }
+      mx = t.clientX
+      my = t.clientY
     }, { passive: true })
   }
 
@@ -96,15 +96,13 @@ export function updateBackgroundCanvas(timestamp) {
 
   // ── Particles ──────────────────────────────────────────────
   for (const p of particles) {
-    if (!isTouch) {
-      const dx = mx - p.x
-      const dy = my - p.y
-      const d  = Math.sqrt(dx * dx + dy * dy)
-      if (d < 200) {
-        const f = (200 - d) / 200
-        p.vx += dx * f * 0.0008
-        p.vy += dy * f * 0.0008
-      }
+    const dx = mx - p.x
+    const dy = my - p.y
+    const d  = Math.sqrt(dx * dx + dy * dy)
+    if (d < 200) {
+      const f = (200 - d) / 200
+      p.vx += dx * f * 0.0008
+      p.vy += dy * f * 0.0008
     }
     p.vx *= 0.98
     p.vy *= 0.98
@@ -137,35 +135,8 @@ export function updateBackgroundCanvas(timestamp) {
       }
   }
 
-  // ── Tap well (touch only) ───────────────────────────────────
-  if (tapWell) {
-    for (const p of particles) {
-      const dx = tapWell.x - p.x
-      const dy = tapWell.y - p.y
-      const d  = Math.sqrt(dx * dx + dy * dy) || 1
-      const f  = Math.min(0.1, 14 / d)
-      p.vx += (dx / d) * f
-      p.vy += (dy / d) * f
-    }
-
-    const alpha = 1 - tapWell.age / 90
-    const ringR = 8 + tapWell.age * 0.5
-    ctx.beginPath()
-    ctx.arc(tapWell.x, tapWell.y, ringR, 0, Math.PI * 2)
-    ctx.strokeStyle = `rgba(255,215,0,${alpha * 0.5})`
-    ctx.lineWidth = 1.5
-    ctx.stroke()
-    ctx.beginPath()
-    ctx.arc(tapWell.x, tapWell.y, 4, 0, Math.PI * 2)
-    ctx.fillStyle = `rgba(255,215,0,${alpha})`
-    ctx.fill()
-
-    tapWell.age++
-    if (tapWell.age >= 90) tapWell = null  // lifetime is exactly 90 frames (ages 0–89)
-  }
-
-  // Cursor glow (desktop only)
-  if (!isTouch) {
+  // Cursor / tap glow
+  {
     const g = ctx.createRadialGradient(mx, my, 0, mx, my, 140)
     g.addColorStop(0, 'rgba(255,215,0,0.07)')
     g.addColorStop(1, 'transparent')
