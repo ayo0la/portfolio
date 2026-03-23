@@ -79,7 +79,7 @@ function getTargetZones() {
   if (nameI) {
     const r = nameI.getBoundingClientRect()
     if (r.top < window.innerHeight && r.bottom > 0) {
-      zones.push({ x: r.left + r.width / 2, y: r.top + r.height / 2, radius: 30 })
+      zones.push({ x: r.left + r.width / 2, y: r.top, radius: 30 })
     }
   }
 
