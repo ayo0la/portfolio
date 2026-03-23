@@ -22,12 +22,13 @@ function _animateHero() {
   const nameEl = document.querySelector('.hero-name')
   if (!nameEl) return
 
-  // Split by <br> to preserve line breaks, then wrap each char
+  // Split by <br> to preserve line breaks, then wrap each char.
+  // Uses a regex to skip over HTML tags so inline spans (e.g. #name-i) are preserved.
   const lines = nameEl.innerHTML.split('<br>')
   nameEl.innerHTML = lines.map(line =>
-    line.split('').map(ch =>
-      `<span class="char">${ch}</span>`
-    ).join('')
+    line.replace(/(<[^>]+>)|(.)/g, (_, tag, ch) =>
+      tag ? tag : `<span class="char">${ch}</span>`
+    )
   ).join('<br>')
 
   gsap.from('.hero-name .char', {
