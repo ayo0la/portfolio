@@ -54,6 +54,15 @@ function buildParticles() {
   }))
 }
 
+function checkBallFormed() {
+  for (const p of particles) {
+    const dx = p.x - mx
+    const dy = p.y - my
+    if (Math.sqrt(dx * dx + dy * dy) > 100) return false
+  }
+  return true
+}
+
 function onResize() {
   W = canvas.width  = window.innerWidth
   H = canvas.height = window.innerHeight
@@ -171,4 +180,14 @@ export function updateBackgroundCanvas(timestamp) {
   vig.addColorStop(1, 'rgba(0,0,0,0.6)')
   ctx.fillStyle = vig
   ctx.fillRect(0, 0, W, H)
+
+  // ── Easter egg state transitions ───────────────────────
+  if (!isTouch) {
+    if (eggState === 'DRIFT' && checkBallFormed()) {
+      eggState = 'BALL_FORMED'
+      ballFormedAt = timestamp
+    } else if (eggState === 'BALL_FORMED' && !checkBallFormed()) {
+      eggState = 'DRIFT'
+    }
+  }
 }
