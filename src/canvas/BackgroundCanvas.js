@@ -72,6 +72,95 @@ function renderBallGlow(timestamp) {
   ctx.fillRect(0, 0, W, H)
 }
 
+function getTargetZones() {
+  const zones = []
+
+  const nameI = document.getElementById('name-i')
+  if (nameI) {
+    const r = nameI.getBoundingClientRect()
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      zones.push({ x: r.left + r.width / 2, y: r.top + r.height / 2, radius: 30 })
+    }
+  }
+
+  const logo = document.getElementById('logo-canvas')
+  if (logo) {
+    const r = logo.getBoundingClientRect()
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      zones.push({ x: r.left + r.width / 2, y: r.top + r.height / 2, radius: 50 })
+    }
+  }
+
+  return zones
+}
+
+function renderTargetZones(timestamp, zones) {
+  const fadeIn = Math.min((timestamp - ballFormedAt) / 300, 1)
+  const pulse  = 1 + Math.sin(timestamp / 400) * 0.5
+
+  for (const z of zones) {
+    const alpha = fadeIn * 0.6
+    ctx.beginPath()
+    ctx.arc(z.x, z.y, z.radius, 0, Math.PI * 2)
+    ctx.strokeStyle = `rgba(255,215,0,${alpha})`
+    ctx.lineWidth = pulse
+    ctx.stroke()
+  }
+}
+
+function renderExplosion(timestamp) {
+  const elapsed = timestamp - explosionStartTime
+  const ox = explosionOrigin.x
+  const oy = explosionOrigin.y
+  const maxR = Math.sqrt(W * W + H * H)
+
+  // White flash (0–80ms)
+  if (elapsed < 80) {
+    const flashAlpha = Math.max(0, 1 - elapsed / 80) * 0.9
+    const flash = ctx.createRadialGradient(ox, oy, 0, ox, oy, maxR)
+    flash.addColorStop(0, `rgba(255,255,255,${flashAlpha})`)
+    flash.addColorStop(0.15, `rgba(255,215,0,${flashAlpha * 0.6})`)
+    flash.addColorStop(1, 'transparent')
+    ctx.fillStyle = flash
+    ctx.fillRect(0, 0, W, H)
+  }
+
+  // 3 shockwave rings staggered 150ms apart
+  for (let i = 0; i < 3; i++) {
+    const ringStart   = i * 150
+    const ringElapsed = elapsed - ringStart
+    if (ringElapsed < 0 || ringElapsed > 600) continue
+    const progress  = ringElapsed / 600
+    const ringR     = progress * maxR * 0.8
+    const ringAlpha = (1 - progress) * 0.8
+    ctx.beginPath()
+    ctx.arc(ox, oy, ringR, 0, Math.PI * 2)
+    ctx.strokeStyle = `rgba(255,215,0,${ringAlpha})`
+    ctx.lineWidth = 2
+    ctx.stroke()
+  }
+
+  // Motion trails (velocity-based opacity)
+  for (const p of particles) {
+    const speed      = Math.sqrt(p.vx * p.vx + p.vy * p.vy)
+    const trailAlpha = Math.min(speed / 25, 1) * 0.6
+    if (trailAlpha < 0.01) continue
+    ctx.beginPath()
+    ctx.moveTo(p.prevX, p.prevY)
+    ctx.lineTo(p.x, p.y)
+    ctx.strokeStyle = p.gold
+      ? `rgba(255,215,0,${trailAlpha})`
+      : `rgba(255,255,255,${trailAlpha})`
+    ctx.lineWidth = 1.5
+    ctx.stroke()
+  }
+
+  // Reset to DRIFT after 1200ms
+  if (elapsed >= 1200) {
+    eggState = 'DRIFT'
+  }
+}
+
 function onResize() {
   W = canvas.width  = window.innerWidth
   H = canvas.height = window.innerHeight
@@ -127,6 +216,8 @@ export function updateBackgroundCanvas(timestamp) {
 
   // ── Particles ──────────────────────────────────────────────
   for (const p of particles) {
+    p.prevX = p.x
+    p.prevY = p.y
     const dx = mx - p.x
     const dy = my - p.y
     const d  = Math.sqrt(dx * dx + dy * dy)
@@ -175,6 +266,16 @@ export function updateBackgroundCanvas(timestamp) {
     ctx.fillRect(0, 0, W, H)
   }
 
+  // ── Target zone rings (BALL_FORMED only, after particles, before grain) ──
+  if (eggState === 'BALL_FORMED') {
+    renderTargetZones(timestamp, getTargetZones())
+  }
+
+  // ── Explosion (after particles, before grain) ──────────
+  if (eggState === 'EXPLODING') {
+    renderExplosion(timestamp)
+  }
+
   // ── Grain ──────────────────────────────────────────────────
   if (timestamp - lastGrainSwap > 50) {
     grainIndex    = (grainIndex + 1) % GRAIN_FRAMES()
@@ -200,8 +301,26 @@ export function updateBackgroundCanvas(timestamp) {
     if (eggState === 'DRIFT' && checkBallFormed()) {
       eggState = 'BALL_FORMED'
       ballFormedAt = timestamp
-    } else if (eggState === 'BALL_FORMED' && !checkBallFormed()) {
-      eggState = 'DRIFT'
+    } else if (eggState === 'BALL_FORMED') {
+      if (!checkBallFormed()) {
+        eggState = 'DRIFT'
+      } else {
+        const zones = getTargetZones()
+        for (const z of zones) {
+          const dx = mx - z.x
+          const dy = my - z.y
+          if (Math.sqrt(dx * dx + dy * dy) < z.radius) {
+            eggState = 'EXPLODING'
+            explosionStartTime = timestamp
+            explosionOrigin = { x: z.x, y: z.y }
+            for (const p of particles) {
+              p.vx = (Math.random() - 0.5) * 50
+              p.vy = (Math.random() - 0.5) * 50
+            }
+            break
+          }
+        }
+      }
     }
   }
 }
