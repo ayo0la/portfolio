@@ -155,10 +155,6 @@ function renderExplosion(timestamp) {
     ctx.stroke()
   }
 
-  // Reset to DRIFT after 1200ms
-  if (elapsed >= 1200) {
-    eggState = 'DRIFT'
-  }
 }
 
 function onResize() {
@@ -210,7 +206,7 @@ export function updateBackgroundCanvas(timestamp) {
   ctx.fillRect(0, 0, W, H)
 
   // ── Ball glow (drawn before particles so particles render on top) ──
-  if (eggState === 'BALL_FORMED' || eggState === 'EXPLODING') {
+  if (eggState === 'BALL_FORMED') {
     renderBallGlow(timestamp)
   }
 
@@ -267,8 +263,9 @@ export function updateBackgroundCanvas(timestamp) {
   }
 
   // ── Target zone rings (BALL_FORMED only, after particles, before grain) ──
+  const zones = eggState === 'BALL_FORMED' ? getTargetZones() : []
   if (eggState === 'BALL_FORMED') {
-    renderTargetZones(timestamp, getTargetZones())
+    renderTargetZones(timestamp, zones)
   }
 
   // ── Explosion (after particles, before grain) ──────────
@@ -305,7 +302,6 @@ export function updateBackgroundCanvas(timestamp) {
       if (!checkBallFormed()) {
         eggState = 'DRIFT'
       } else {
-        const zones = getTargetZones()
         for (const z of zones) {
           const dx = mx - z.x
           const dy = my - z.y
@@ -320,6 +316,10 @@ export function updateBackgroundCanvas(timestamp) {
             break
           }
         }
+      }
+    } else if (eggState === 'EXPLODING') {
+      if (timestamp - explosionStartTime >= 1200) {
+        eggState = 'DRIFT'
       }
     }
   }
