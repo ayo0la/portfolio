@@ -63,6 +63,15 @@ function checkBallFormed() {
   return true
 }
 
+function renderBallGlow(timestamp) {
+  const alpha = (Math.sin(timestamp / 500) * 0.5 + 0.5) * 0.15
+  const g = ctx.createRadialGradient(mx, my, 0, mx, my, 120)
+  g.addColorStop(0, `rgba(255,215,0,${alpha})`)
+  g.addColorStop(1, 'transparent')
+  ctx.fillStyle = g
+  ctx.fillRect(0, 0, W, H)
+}
+
 function onResize() {
   W = canvas.width  = window.innerWidth
   H = canvas.height = window.innerHeight
@@ -110,6 +119,11 @@ export function updateBackgroundCanvas(timestamp) {
 
   ctx.fillStyle = '#080808'
   ctx.fillRect(0, 0, W, H)
+
+  // ── Ball glow (drawn before particles so particles render on top) ──
+  if (eggState === 'BALL_FORMED' || eggState === 'EXPLODING') {
+    renderBallGlow(timestamp)
+  }
 
   // ── Particles ──────────────────────────────────────────────
   for (const p of particles) {
