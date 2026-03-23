@@ -9,6 +9,12 @@ let particles = []
 let isTouch = false
 let paused = false
 
+// ── Easter egg state machine ────────────────────────────
+let eggState = 'DRIFT'          // 'DRIFT' | 'BALL_FORMED' | 'EXPLODING'
+let ballFormedAt = 0            // timestamp when BALL_FORMED was entered
+let explosionStartTime = 0      // timestamp when EXPLODING was entered
+let explosionOrigin = { x: 0, y: 0 } // target zone center that triggered explosion
+
 const PARTICLE_COUNT  = () => 90
 const GRAIN_FRAMES    = () => isTouch ? 3 : 6
 const GRAIN_SCALE     = () => isTouch ? 0.5 : 1   // render grain at half-res on mobile
@@ -37,12 +43,14 @@ function buildGrainFrames() {
 
 function buildParticles() {
   particles = Array.from({ length: PARTICLE_COUNT() }, () => ({
-    x:    Math.random() * W,
-    y:    Math.random() * H,
-    vx:   (Math.random() - 0.5) * 0.5,
-    vy:   (Math.random() - 0.5) * 0.5,
-    r:    Math.random() * 2 + 0.8,
-    gold: Math.random() < 0.25,
+    x:     Math.random() * W,
+    y:     Math.random() * H,
+    vx:    (Math.random() - 0.5) * 0.5,
+    vy:    (Math.random() - 0.5) * 0.5,
+    r:     Math.random() * 2 + 0.8,
+    gold:  Math.random() < 0.25,
+    prevX: 0,
+    prevY: 0,
   }))
 }
 
