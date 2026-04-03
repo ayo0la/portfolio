@@ -387,6 +387,95 @@ section {
 .word { display: inline-block; }
 .line { display: block; }
 
+/* ── §5 Activity ─────────────────────────────────────────── */
+#activity { background: var(--bg); }
+
+.activity-stats {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.activity-stat-item {}
+
+.activity-stat-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.4rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.activity-stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  letter-spacing: 1px;
+  line-height: 1;
+  color: var(--gold);
+}
+
+.activity-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 3px;
+  width: 100%;
+}
+
+.activity-cell {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 1px;
+  background: #141414;
+  transition: background 0.15s ease;
+}
+
+.activity-cell[data-level="0"] { background: #141414; }
+.activity-cell[data-level="1"] { background: #3a2a00; }
+.activity-cell[data-level="2"] { background: #7a5500; }
+.activity-cell[data-level="3"] { background: #c48800; }
+.activity-cell[data-level="4"] { background: var(--gold); }
+
+.activity-months {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.activity-month-label {
+  font-family: var(--font-mono);
+  font-size: 0.38rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+
+.activity-legend {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: flex-end;
+}
+
+.activity-legend .activity-cell {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+}
+
+.activity-legend-label {
+  font-family: var(--font-mono);
+  font-size: 0.38rem;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.25);
+}
+
 /* ── Responsive (mobile < 768px) ────────────────────────── */
 @media (max-width: 767px) {
   .hero-inner {
@@ -404,4 +493,7 @@ section {
   .projects-grid { grid-template-columns: 1fr; }
 
   .contact-inner { flex-direction: column; align-items: flex-start; }
+
+  .activity-stats { flex-wrap: wrap; gap: 1.5rem; }
+  .activity-grid { overflow-x: auto; }
 }
