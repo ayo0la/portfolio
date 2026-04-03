@@ -51,6 +51,26 @@ describe('transformData', () => {
     expect(result.longestStreak).toBe(5) // indices 1-5: [1,1,1,2,2] = streak of 5
   })
 
+  it('counts streak that crosses a week boundary', () => {
+    const raw = {
+      data: {
+        user: {
+          contributionsCollection: {
+            contributionCalendar: {
+              totalContributions: 5,
+              weeks: makeWeeks([
+                [0, 0, 0, 0, 0, 2, 2], // last 2 days of week 0 have contributions
+                [2, 2, 2, 0, 0, 0, 0], // first 3 days of week 1 have contributions
+              ]),
+            },
+          },
+          repositories: { totalCount: 0, nodes: [] },
+        },
+      },
+    }
+    expect(transformData(raw).longestStreak).toBe(5) // 2 days + 3 days across boundary
+  })
+
   it('returns 0 streak when no contributions', () => {
     const raw = {
       data: {
