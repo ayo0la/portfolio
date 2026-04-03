@@ -9,7 +9,9 @@ import { initHero }         from './sections/hero.js'
 import { initAbout }        from './sections/about.js'
 import { initMdfld }        from './sections/mdfld.js'
 import { initProjects }     from './sections/projects.js'
+import { initActivity }     from './sections/activity.js'
 import { initContact }      from './sections/contact.js'
+import bakedData            from './data/github-activity.json'
 
 initBackgroundCanvas()
 initCursor()
@@ -19,7 +21,18 @@ initHero()
 initAbout()
 initMdfld()
 initProjects()
+initActivity(bakedData)
 initContact()
+
+// Silently refresh activity data from live API
+fetch('/api/github')
+  .then(r => r.ok ? r.json() : null)
+  .then(liveData => {
+    if (liveData && liveData.totalContributions !== bakedData.totalContributions) {
+      initActivity(liveData)
+    }
+  })
+  .catch(() => { /* live refresh is best-effort */ })
 
 const heroLogo = initHeroLogo()
 
