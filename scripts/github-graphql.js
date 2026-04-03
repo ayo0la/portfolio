@@ -2,7 +2,7 @@
 
 export const GITHUB_QUERY = `
   query {
-    user(login: "ayoolamorakinyo") {
+    user(login: "ayo0la") {
       contributionsCollection {
         contributionCalendar {
           totalContributions
