@@ -398,12 +398,11 @@ section {
   border-bottom: 1px solid var(--border);
 }
 
-.activity-stat-item {}
 
 .activity-stat-label {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.4rem;
+  font-size: 0.6rem;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -450,7 +449,7 @@ section {
 
 .activity-month-label {
   font-family: var(--font-mono);
-  font-size: 0.38rem;
+  font-size: 0.55rem;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: rgba(255,255,255,0.2);
@@ -471,7 +470,7 @@ section {
 
 .activity-legend-label {
   font-family: var(--font-mono);
-  font-size: 0.38rem;
+  font-size: 0.55rem;
   letter-spacing: 1px;
   color: rgba(255,255,255,0.25);
 }

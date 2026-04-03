@@ -69,12 +69,12 @@ function renderMonths(weeks) {
     if (!firstDay) return
     const month = new Date(firstDay.date).getMonth()
     if (month !== lastMonth) {
-      labels.push({ index: i, label: MONTH_LABELS[month] })
+      labels.push(MONTH_LABELS[month])
       lastMonth = month
     }
   })
 
-  el.innerHTML = labels.map(({ label }) =>
+  el.innerHTML = labels.map(label =>
     `<span class="activity-month-label">${label}</span>`
   ).join('')
 }
