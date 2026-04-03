@@ -14,6 +14,7 @@ export function initAnimations() {
   _animateAbout()
   _animateMdfld()
   _animateProjects()
+  _animateActivity()
   _animateContact()
 }
 
@@ -146,6 +147,29 @@ function _animateProjects() {
     opacity: 0,
     stagger: 0.1,
     duration: 0.6,
+    ease: 'power2.out',
+  })
+}
+
+// ── Activity ──────────────────────────────────────────────────
+function _animateActivity() {
+  gsap.from('.activity-stats .activity-stat-item', {
+    scrollTrigger: { trigger: '#activity', start: 'top 80%' },
+    y: 20,
+    opacity: 0,
+    stagger: 0.08,
+    duration: 0.6,
+    ease: 'power2.out',
+  })
+
+  // Cells render in DOM order = column-major (week by week), so staggering
+  // by DOM order produces a natural left-to-right column sweep visually.
+  gsap.from('.activity-cell', {
+    scrollTrigger: { trigger: '#activity', start: 'top 80%' },
+    opacity: 0,
+    duration: 0.3,
+    stagger: 0.002,
+    delay: 0.2,
     ease: 'power2.out',
   })
 }
