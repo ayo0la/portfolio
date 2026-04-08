@@ -343,6 +343,123 @@ section {
   transform: translateX(4px);
 }
 
+/* ── npm packages card ─────────────────────────────────── */
+
+.npm-card {
+  cursor: pointer;
+}
+
+/* Collapsed: show hint, hide collapse label */
+.npm-card-hint {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-top: 1rem;
+}
+
+.npm-collapse-hint {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-top: 1rem;
+}
+
+/* Expanded: span full width, gold border, swap hints */
+.npm-card[data-expanded="true"] {
+  grid-column: 1 / -1;
+  border-color: var(--gold);
+  box-shadow: 0 0 32px rgba(255,215,0,0.06);
+}
+
+.npm-card[data-expanded="true"] .npm-card-hint {
+  display: none;
+}
+
+.npm-card[data-expanded="true"] .npm-collapse-hint {
+  display: block;
+}
+
+/* Package list — expand/collapse via CSS grid-row trick */
+.npm-packages {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.npm-packages > div {
+  overflow: hidden;
+}
+
+.npm-card[data-expanded="true"] .npm-packages {
+  grid-template-rows: 1fr;
+}
+
+/* Divider above package list */
+.npm-divider {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin: 1rem 0 0.75rem;
+}
+
+/* Package rows */
+.npm-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.npm-row:last-child {
+  margin-bottom: 0;
+}
+
+.npm-row:hover {
+  border-color: rgba(255,215,0,0.3);
+  background: rgba(255,255,255,0.05);
+}
+
+.npm-row-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.npm-row-name {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--gold);
+}
+
+.npm-row-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.npm-row-link {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Dim sibling cards when npm card is expanded */
+.project-card.dimmed {
+  opacity: 0.25;
+  pointer-events: none;
+  transition: opacity 0.3s, border-color 0.2s, box-shadow 0.2s;
+}
+
 /* ── §5 Contact ──────────────────────────────────────────── */
 /* Note: #050505 bg — --text-muted (rgba 255,255,255,0.55) passes WCAG AA here too */
 #contact {
