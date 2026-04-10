@@ -42,4 +42,23 @@ export function initProjects() {
       outsideHandler = null
     }
   }
+
+  fetchNpmDownloads()
+}
+
+async function fetchNpmDownloads() {
+  const rows = document.querySelectorAll('[data-npm-pkg]')
+  await Promise.all([...rows].map(async (row) => {
+    const pkg = row.dataset.npmPkg
+    const el = row.querySelector('.npm-row-downloads')
+    if (!el) return
+    try {
+      const res = await fetch(`https://api.npmjs.org/downloads/point/last-week/${encodeURIComponent(pkg)}`)
+      if (!res.ok) return
+      const data = await res.json()
+      el.textContent = `${data.downloads.toLocaleString()} / wk`
+    } catch {
+      // silently fail — downloads just won't show
+    }
+  }))
 }

@@ -446,6 +446,22 @@ section {
   color: var(--text-muted);
 }
 
+.npm-row-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.npm-row-downloads {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--gold);
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
 .npm-row-link {
   font-family: var(--font-mono);
   font-size: 0.6rem;
@@ -590,6 +606,91 @@ section {
   font-size: 0.55rem;
   letter-spacing: 1px;
   color: rgba(255,255,255,0.25);
+}
+
+/* ── NPM under activity ───────────────────────────────────── */
+.activity-npm {
+  margin-top: 3rem;
+}
+
+.activity-npm-header {
+  margin-bottom: 1.25rem;
+}
+
+.activity-npm-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-npm-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.activity-npm-row:last-child {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.activity-npm-row:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.activity-npm-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.activity-npm-name {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.activity-npm-desc {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.35);
+}
+
+.activity-npm-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.activity-npm-downloads {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.7);
+  white-space: nowrap;
+}
+
+.activity-npm-downloads-label {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.activity-npm-link {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.2);
+}
+
+.activity-npm-row:hover .activity-npm-link {
+  color: var(--gold);
 }
 
 /* ── Responsive (mobile < 768px) ────────────────────────── */
