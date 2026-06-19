@@ -43,12 +43,12 @@
         <h2 class="about-headline">Founder.<br>Builder.<br>Visionary.</h2>
       </div>
       <div class="about-right">
-        <p class="body-copy">Ayoola Morakinyo is a founder and software engineer building tools for the football industry. He is the creator of MDFLD, an AI-powered authentication platform. He works at the intersection of machine learning, product design, and sport.</p>
+        <p class="body-copy">I'm a self-taught machine learning engineer and founder. I build software because I'm good at it, but machine learning is where I actually want to be. MDFLD is where I put both to work: training neural networks to authenticate football gear, one image at a time.</p>
         <div class="skill-chips">
           <span class="chip">Python</span>
-          <span class="chip">Next.js</span>
-          <span class="chip">Three.js</span>
+          <span class="chip">PyTorch</span>
           <span class="chip">ML</span>
+          <span class="chip">Next.js</span>
           <span class="chip">Node.js</span>
         </div>
       </div>
@@ -63,7 +63,7 @@
         <span class="mono-tag">FLAGSHIP PROJECT</span>
       </div>
       <h2 class="mdfld-headline">Football<br>Authentication<br>Platform</h2>
-      <p class="body-copy mdfld-desc">MDFLD is building the trust layer the football industry is missing — AI-powered verification that tells you instantly whether a product is authentic. Currently in beta with 500+ users on the waitlist.</p>
+      <p class="body-copy mdfld-desc">MDFLD is building the trust layer the football industry needs. AI-powered verification that tells you instantly whether a product is authentic. Currently in beta, with 500+ users on the waitlist.</p>
       <a class="mdfld-cta" href="https://mdfld.co" target="_blank" rel="noopener">VIEW PROJECT →</a>
       <div class="mdfld-bg-word" aria-hidden="true">MDFLD</div>
     </div>
@@ -74,18 +74,38 @@
     <div class="section-inner">
       <span class="mono-tag section-tag">// OTHER WORK</span>
       <div class="projects-grid">
-        <a class="project-card" href="https://allstarkids-marketing.vercel.app" target="_blank" rel="noopener">
+        <div class="project-card allstar-card" id="allstar-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false">
           <span class="proj-tag">FULL-STACK · 2026</span>
           <h3 class="proj-name">Allstar Kids Academy</h3>
-          <p class="proj-desc">Marketing site for a licensed early learning center in Decatur, GA. Programs from infant care through after-school, with Georgia Pre-K integration.</p>
-          <span class="proj-arrow">→</span>
-        </a>
-        <a class="project-card" href="https://allstarkids-platform.vercel.app" target="_blank" rel="noopener">
-          <span class="proj-tag">FULL-STACK · 2026</span>
-          <h3 class="proj-name">Allstar Kids Platform</h3>
-          <p class="proj-desc">Digital enrollment portal replacing paper-based intake for a childcare business. Families enroll online, staff manage records, admin tracks operations.</p>
-          <span class="proj-arrow">→</span>
-        </a>
+          <p class="proj-desc">Digital infrastructure for a licensed childcare center in Decatur, GA. Marketing site and enrollment platform.</p>
+          <span class="npm-card-hint">▼ view projects</span>
+
+          <div class="allstar-projects npm-packages">
+            <div>
+              <div class="npm-divider"></div>
+              <a class="npm-row" href="https://allstarkids-marketing.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                <div class="npm-row-meta">
+                  <span class="npm-row-name">Marketing Site</span>
+                  <span class="npm-row-desc">Programs, enrollment info, and Georgia Pre-K details for families.</span>
+                </div>
+                <div class="npm-row-right">
+                  <span class="npm-row-link">→</span>
+                </div>
+              </a>
+              <a class="npm-row" href="https://allstarkids-platform.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                <div class="npm-row-meta">
+                  <span class="npm-row-name">Enrollment Platform</span>
+                  <span class="npm-row-desc">Online portal replacing paper intake. Parents enroll, staff manage records.</span>
+                </div>
+                <div class="npm-row-right">
+                  <span class="npm-row-link">→</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <span class="npm-collapse-hint">▲ collapse</span>
+        </div>
 
         <div class="project-card npm-card" id="npm-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false">
           <span class="proj-tag">OPEN SOURCE · 2026</span>
@@ -144,6 +164,15 @@
           <span class="proj-arrow">→</span>
         </a>
       </div>
+    </div>
+  </section>
+
+  <!-- §4.5 Blog -->
+  <section id="blog">
+    <div class="section-inner">
+      <span class="mono-tag section-tag">// BLOG</span>
+      <div id="blog-cards" class="projects-grid"></div>
+      <a class="blog-viewall" href="/blog/">View all posts →</a>
     </div>
   </section>
 

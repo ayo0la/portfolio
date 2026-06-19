@@ -343,6 +343,20 @@ section {
   transform: translateX(4px);
 }
 
+.blog-viewall {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.blog-viewall:hover {
+  color: var(--gold);
+}
+
 /* ── npm packages card ─────────────────────────────────── */
 
 .npm-card {

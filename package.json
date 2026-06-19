@@ -8,7 +8,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prebuild": "node scripts/prefetch-github.js"
+    "prebuild": "node scripts/prefetch-github.js && node scripts/build-blog.js",
+    "blog": "node scripts/build-blog.js"
   },
   "dependencies": {
     "gsap": "^3.14.2",
@@ -17,7 +18,9 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.1.2",
+    "gray-matter": "^4.0.3",
     "jsdom": "^29.0.1",
+    "marked": "^18.0.5",
     "vite": "^6.0.0",
     "vitest": "^4.1.2"
   }

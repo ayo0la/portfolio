@@ -1,40 +1,46 @@
 // src/sections/projects.js
 export function initProjects() {
-  const npmCard = document.getElementById('npm-card')
-  if (!npmCard) return
+  initExpandableCard('npm-card')
+  initExpandableCard('allstar-card')
+  fetchNpmDownloads()
+}
 
-  npmCard.setAttribute('aria-expanded', npmCard.dataset.expanded)
+function initExpandableCard(id) {
+  const card = document.getElementById(id)
+  if (!card) return
+
+  card.setAttribute('aria-expanded', card.dataset.expanded)
 
   let outsideHandler = null
 
-  npmCard.addEventListener('click', () => {
-    const isExpanded = npmCard.dataset.expanded === 'true'
+  card.addEventListener('click', () => {
+    const isExpanded = card.dataset.expanded === 'true'
     isExpanded ? collapse() : expand()
   })
 
-  npmCard.addEventListener('keydown', (e) => {
+  card.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      const isExpanded = npmCard.dataset.expanded === 'true'
+      const isExpanded = card.dataset.expanded === 'true'
       isExpanded ? collapse() : expand()
     }
   })
 
   function expand() {
-    npmCard.dataset.expanded = 'true'
-    npmCard.setAttribute('aria-expanded', 'true')
-    document.querySelectorAll('.project-card:not(#npm-card)').forEach(c => c.classList.add('dimmed'))
+    card.dataset.expanded = 'true'
+    card.setAttribute('aria-expanded', 'true')
+    document.querySelectorAll(`.project-card:not(#${id})`).forEach(c => c.classList.add('dimmed'))
 
     outsideHandler = (e) => {
-      if (!npmCard.contains(e.target)) collapse()
+      if (!card.contains(e.target)) collapse()
     }
     // setTimeout(0) prevents the click that triggered expand from immediately firing collapse
     setTimeout(() => { if (outsideHandler) document.addEventListener('click', outsideHandler) }, 0)
   }
 
   function collapse() {
-    npmCard.dataset.expanded = 'false'
-    npmCard.setAttribute('aria-expanded', 'false')
+    card.dataset.expanded = 'false'
+    card.setAttribute('aria-expanded', 'false')
     document.querySelectorAll('.project-card.dimmed').forEach(c => c.classList.remove('dimmed'))
 
     if (outsideHandler) {
@@ -42,8 +48,6 @@ export function initProjects() {
       outsideHandler = null
     }
   }
-
-  fetchNpmDownloads()
 }
 
 async function fetchNpmDownloads() {

@@ -9,9 +9,11 @@ import { initHero }         from './sections/hero.js'
 import { initAbout }        from './sections/about.js'
 import { initMdfld }        from './sections/mdfld.js'
 import { initProjects }     from './sections/projects.js'
+import { initBlog }         from './sections/blog.js'
 import { initActivity }     from './sections/activity.js'
 import { initContact }      from './sections/contact.js'
 import bakedData            from './data/github-activity.json'
+import blogPosts            from './data/blog-index.json'
 
 initBackgroundCanvas()
 initCursor()
@@ -21,6 +23,7 @@ initHero()
 initAbout()
 initMdfld()
 initProjects()
+initBlog(blogPosts)
 initActivity(bakedData)
 initContact()
 initNpmSection()

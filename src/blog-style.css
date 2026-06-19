@@ -1,0 +1,68 @@
+/* src/blog-style.css — standalone styling for /blog/ pages (not bundled into the main site) */
+:root {
+  --bg:          #080808;
+  --text:        #ffffff;
+  --text-muted:  rgba(255,255,255,0.55);
+  --gold:        #ffd700;
+  --border:      rgba(255,255,255,0.07);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono:   'Courier New', monospace;
+  --font-body:   system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.7;
+}
+
+.blog-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 5rem) 1.5rem;
+}
+
+.blog-back {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 3rem;
+}
+.blog-back:hover { color: var(--gold); }
+
+.blog-page h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.blog-date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.blog-body h2 { font-size: 1.4rem; margin: 2rem 0 1rem; }
+.blog-body p { margin-bottom: 1.25rem; color: var(--text-muted); }
+.blog-body a { color: var(--gold); }
+.blog-body ul, .blog-body ol { margin: 0 0 1.25rem 1.5rem; color: var(--text-muted); }
+.blog-body img { max-width: 100%; border-radius: 6px; margin: 1.5rem 0; }
+
+.blog-index-list { list-style: none; margin-top: 2rem; }
+.blog-index-item { border-top: 1px solid var(--border); padding: 1.75rem 0; }
+.blog-index-item:last-child { border-bottom: 1px solid var(--border); }
+.blog-index-item a { display: block; text-decoration: none; color: var(--text); }
+.blog-index-item h2 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.4rem; }
+.blog-index-item:hover h2 { color: var(--gold); }
+.blog-index-item .blog-date { margin-bottom: 0.6rem; }
+.blog-index-item .blog-tldr { color: var(--text-muted); }
