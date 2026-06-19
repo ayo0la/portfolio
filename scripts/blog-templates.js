@@ -9,6 +9,9 @@ export function renderPostHtml(post) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${escapeHtml(post.title)} — Ayoola Morakinyo</title>
 <link rel="stylesheet" href="/blog/blog.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body>
 <div class="blog-page">
@@ -41,6 +44,9 @@ export function renderIndexHtml(posts) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blog — Ayoola Morakinyo</title>
 <link rel="stylesheet" href="/blog/blog.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body>
 <div class="blog-page">
