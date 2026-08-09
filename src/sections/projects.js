@@ -1,7 +1,8 @@
 // src/sections/projects.js
+const EXPANDABLE_CARDS = ['npm-card', 'allstar-card', 'oss-card', 'client-card']
+
 export function initProjects() {
-  initExpandableCard('npm-card')
-  initExpandableCard('allstar-card')
+  EXPANDABLE_CARDS.forEach(initExpandableCard)
   fetchNpmDownloads()
 }
 
