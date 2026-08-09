@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I ship as a company of one — Ayoola Morakinyo</title>
+<link rel="stylesheet" href="/blog/blog.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+<div class="blog-page">
+  <a class="blog-back" href="/">← back to portfolio</a>
+  <article class="blog-post">
+    <h1>How I ship as a company of one</h1>
+    <p class="blog-date">August 9, 2026</p>
+    <div class="blog-body"><p>Last week I shipped a feature that teaches AI agents to write like each of our clients. It watches how staff edit the drafts our agents produce, distills what those edits say about the client&#39;s voice, and feeds that back into every future draft. Multi-tenant, row-level security, about seven hundred tests passing. The same week I pushed work on MDFLD, my soccer marketplace. Every line of both came from one seat.</p>
+<p>That is not a flex about working hard. It is the opposite. I want to explain the system that makes this possible, because &quot;one-person engineering team&quot; usually gets read as &quot;person who grinds,&quot; and that is not what is happening here.</p>
+<h2>What &quot;company of one&quot; actually means</h2>
+<p>First, the honest org chart, because the title is not literally true. I founded two companies and I have a cofounder at each. Square A, an agency building AI agents for childcare businesses, I run with Toye, who is also a developer and the person who pressure-tests my work before it touches production. MDFLD, a marketplace building a trust layer for soccer gear, I run with Kayla, who is non-technical and owns everything I am worst at.</p>
+<p>What neither company has is employees. Nobody is on payroll, and the day-to-day engineering, including everything in the opening paragraph, comes from one seat: mine. That is partly necessity, since neither company is funded yet, and partly a decision. I decided early that I would not hire until the businesses could deserve it, which means until then, engineering leverage has to come from somewhere other than headcount.</p>
+<p>For me that leverage is AI agents. But the interesting part is not that I use them. Everyone uses them now. The interesting part is the system around them, because without a system, agents are a very fast way to produce work you cannot trust.</p>
+<h2>The system</h2>
+<p><strong>Specs before code.</strong> Nothing gets built from a vibe. Every feature starts as a conversation where the agent asks me questions one at a time until the design is pinned down, and the output is a written spec: what we are building, what is out of scope, how we will know it works. The spec gets reviewed before any code exists. This sounds slow. It is the single biggest time saver in the whole system, because the expensive failure mode with agents is not bad code, it is good code for the wrong thing.</p>
+<p><strong>Tests first, no exceptions.</strong> Every feature and every bugfix starts with a failing test. I watch it fail before any implementation is written. This is old advice, but it matters more with agents than it ever did with humans, because agents are confident. They will tell you something works because it looks like it should. A failing test that turns green is not an opinion. The voice learning feature landed with the full suite green because every task inside it was built this way.</p>
+<p><strong>Implementers and reviewers are different agents.</strong> Bigger features get split into tasks, and each task goes to an implementer agent with a tightly scoped brief. When it finishes, a stronger model reviews the diff before the task is marked done. Then the whole branch gets a final review before merge. It is code review, except the reviewer never gets tired and never rubber-stamps because it is Friday. At Square A there is one more layer on top: Toye gates what actually reaches production, and he has caught real problems the agents signed off on.</p>
+<p><strong>Memory across sessions.</strong> Agents wake up with amnesia. Every session, mine starts by reading a set of memory files: what each project is, what decisions were made and why, what I have corrected it on before. When I tell it something once, like never commit planning documents, or always check the rendered page in a real browser before calling UI work done, that becomes a permanent rule it reads every time. The system gets more like me the longer I use it.</p>
+<p><strong>Verification is not optional.</strong> Tests passing is not the same as the thing working. UI does not count as done until I have seen it in a real browser. Deploys get smoke tested in production with real flows. The enrollment feature we shipped for Square A was verified by actually submitting an application end to end on the live site before anyone called it finished.</p>
+<h2>The caveat that makes all of this work</h2>
+<p>None of the above means anything if you cannot read what the agents write. If you are accepting diffs you do not understand, you are not running a system, you are vibe coding. And to be clear, vibe coding is fine. It is a legitimate way to prototype, to learn, to get something on screen. But it is not efficient at this scale, because the first time something breaks in code you never understood, you pay back every hour the agents saved you, with interest.</p>
+<p>Every piece of my system assumes the person at the keyboard can evaluate the output. The spec review only catches wrong designs if I can tell a wrong design from a right one. The reviewer agent&#39;s findings only matter because I can judge whether they are real. When a test goes green, I know what it proved and what it did not. The agents multiply my engineering, they do not replace it. That is the honest deal: they type faster than I ever will, and I stay responsible for knowing what every line is doing there.</p>
+<h2>What agents are bad at</h2>
+<p>Honesty section, because every post about AI workflows needs one.</p>
+<p>Agents do not know when the requirement is wrong. They will build exactly what you asked for, quickly and well, and never once say &quot;are you sure this is the thing to build?&quot; That judgment is the job now. Most of my real work is deciding what to build and catching things that look right but are not.</p>
+<p>They drift. Give an agent a vague brief and a long leash and it will wander into refactors nobody asked for. Every part of my system, the specs, the scoped task briefs, the reviews, exists to shorten that leash without slowing anything down.</p>
+<p>And they perform confidence. An agent will claim success with the same tone whether the tests passed or it merely believes they should have. This is why the system runs on evidence: failing tests, green suites, screenshots, live smoke tests. Trust the artifact, never the summary.</p>
+<h2>What changes when the money comes</h2>
+<p>People ask if the plan is to stay this small forever. No. The plan is to hire when there is revenue or funding that justifies it, and I am looking forward to it. But the system does not get thrown away when people show up. Specs before code, tests before implementation, review before merge, evidence before claims: none of that is an AI workaround. It is just how good engineering teams work, encoded early, while the whole engineering team fits in one chair.</p>
+<p>The real point is what the system makes possible in the meantime. A few years ago, a founder in my position would be choosing which company&#39;s product to neglect this week. I get to ship for both, keep quality high enough that a future team will not curse my name, and spend my scarcest resource, judgment, where it actually matters.</p>
+<p>One seat is a real engineering team size now. You just have to build the company around that fact.</p>
+</div>
+  </article>
+</div>
+</body>
+</html>

@@ -1,5 +1,12 @@
 [
   {
+    "slug": "company-of-one",
+    "title": "How I ship as a company of one",
+    "date": "2026-08-09",
+    "dateDisplay": "August 9, 2026",
+    "tldr": "The system that lets one engineer ship for two companies: specs before code, tests before implementation, and AI agents that do the typing but not the thinking."
+  },
+  {
     "slug": "hello-blog",
     "title": "Starting this blog",
     "date": "2026-06-18",
