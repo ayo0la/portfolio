@@ -2,7 +2,18 @@ node_modules/
 dist/
 .env
 .env.local
+.env.example
 .DS_Store
 .superpowers/
 .vercel
 .worktrees/
+
+# Local agent tooling and config — may contain credentials, keep out of the repo
+.agents/
+.claude/
+.mcp.json
+skills/
+skills-lock.json
+
+# Specs and implementation plans stay local
+docs/
