@@ -357,9 +357,11 @@ section {
   color: var(--gold);
 }
 
-/* ── npm packages card ─────────────────────────────────── */
+/* ── Expandable cards (npm packages, Allstar, open source) ──
+   Keyed on [data-expanded] rather than a single card class so every
+   expandable card picks these up. */
 
-.npm-card {
+.project-card[data-expanded] {
   cursor: pointer;
 }
 
@@ -383,17 +385,17 @@ section {
 }
 
 /* Expanded: span full width, gold border, swap hints */
-.npm-card[data-expanded="true"] {
+.project-card[data-expanded="true"] {
   grid-column: 1 / -1;
   border-color: var(--gold);
   box-shadow: 0 0 32px rgba(255,215,0,0.06);
 }
 
-.npm-card[data-expanded="true"] .npm-card-hint {
+.project-card[data-expanded="true"] .npm-card-hint {
   display: none;
 }
 
-.npm-card[data-expanded="true"] .npm-collapse-hint {
+.project-card[data-expanded="true"] .npm-collapse-hint {
   display: block;
 }
 
@@ -408,7 +410,7 @@ section {
   overflow: hidden;
 }
 
-.npm-card[data-expanded="true"] .npm-packages {
+.project-card[data-expanded="true"] .npm-packages {
   grid-template-rows: 1fr;
 }
 
