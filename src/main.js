@@ -10,10 +10,12 @@ import { initAbout }        from './sections/about.js'
 import { initMdfld }        from './sections/mdfld.js'
 import { initProjects }     from './sections/projects.js'
 import { initBlog }         from './sections/blog.js'
+import { initPodcast }      from './sections/podcast.js'
 import { initActivity }     from './sections/activity.js'
 import { initContact }      from './sections/contact.js'
 import bakedData            from './data/github-activity.json'
 import blogPosts            from './data/blog-index.json'
+import podcastEpisodes      from './data/podcast-index.json'
 
 initBackgroundCanvas()
 initCursor()
@@ -24,6 +26,7 @@ initAbout()
 initMdfld()
 initProjects()
 initBlog(blogPosts)
+initPodcast(podcastEpisodes)
 initActivity(bakedData)
 initContact()
 initNpmSection()
