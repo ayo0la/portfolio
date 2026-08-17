@@ -1,16 +1,23 @@
 [
   {
+    "slug": "mine-to-solve",
+    "title": "The Problem I Still Think Is Mine to Solve",
+    "date": "2026-08-16",
+    "dateDisplay": "August 16, 2026",
+    "tldr": "Between two startups, the one whose problem I love most is the one getting the least of me right now. Some honesty about why, and about the crossroads I'm actually at."
+  },
+  {
+    "slug": "teaching-agents-your-voice",
+    "title": "Teaching an AI to write like you",
+    "date": "2026-08-10",
+    "dateDisplay": "August 10, 2026",
+    "tldr": "Our agents drafted messages that sounded like an AI. The fix was not a better prompt or a fine-tune, it was noticing that every edit staff already made was a free training signal we were throwing away. Shipped this week."
+  },
+  {
     "slug": "company-of-one",
     "title": "How I ship as a company of one",
     "date": "2026-08-09",
     "dateDisplay": "August 9, 2026",
     "tldr": "The system that lets one engineer ship for two companies: specs before code, tests before implementation, and AI agents that do the typing but not the thinking."
-  },
-  {
-    "slug": "hello-blog",
-    "title": "Starting this blog",
-    "date": "2026-06-18",
-    "dateDisplay": "June 18, 2026",
-    "tldr": "Why I'm writing this and what to expect."
   }
 ]

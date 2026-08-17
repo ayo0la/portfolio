@@ -48,7 +48,7 @@ export function renderIndexHtml(episodes) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Podcast — Ayoola Morakinyo</title>
+<title>The Audio Blog — Ayoola Morakinyo</title>
 <link rel="stylesheet" href="/blog/blog.css">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" href="/favicon.png">
@@ -57,7 +57,7 @@ export function renderIndexHtml(episodes) {
 <body>
 <div class="blog-page">
   <a class="blog-back" href="/">← back to portfolio</a>
-  <h1>Podcast</h1>
+  <h1>The Audio Blog</h1>
   <ul class="blog-index-list">${items}</ul>
 </div>
 </body>

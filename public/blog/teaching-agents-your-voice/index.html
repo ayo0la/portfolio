@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teaching an AI to write like you — Ayoola Morakinyo</title>
+<link rel="stylesheet" href="/blog/blog.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+<div class="blog-page">
+  <a class="blog-back" href="/">← back to portfolio</a>
+  <article class="blog-post">
+    <h1>Teaching an AI to write like you</h1>
+    <p class="blog-date">August 10, 2026</p>
+    <div class="blog-body"><p>At Square A we build AI agents for childcare centers. When a family inquires about a spot, an agent drafts the reply. When a family finishes a tour, an agent drafts the follow-up. A staff member reads every draft in a queue and approves it, edits it, or rejects it before anything reaches a parent. Nothing goes out unread by a human. That gate is the product.</p>
+<p>The drafts were good. They were also, unmistakably, drafts written by a machine. Every center got the same competent, slightly stiff voice. One director writes in short warm bursts and signs off with her first name. Another writes long and formal and always names the specific classroom. A generic prompt cannot be both, and asking each center to write their own prompt is asking a childcare director to become a prompt engineer, which is not the deal.</p>
+<h2>The signal was already there</h2>
+<p>Here is the thing I was slow to see. Staff were already editing the drafts. Every time a director rewrote &quot;We look forward to welcoming your family&quot; into &quot;Can&#39;t wait to meet you and Micah!&quot;, she was telling us exactly how she writes. Then we saved her final text, sent it, and threw the lesson away.</p>
+<p>That edit is a training signal. It is better than a training signal, actually, because it is free and it is unambiguous. The staff member is not annotating data for us. She is doing her job, and the difference between what the machine wrote and what she sent is the entire lesson.</p>
+<p>So the feature became: watch the gate, learn from what happens there, and write it back into the next draft.</p>
+<h2>Three small pieces</h2>
+<p>I did not fine-tune anything. Fine-tuning per client, for a product where each center is a tenant and centers come and go, is the wrong shape entirely: slow, expensive, hard to inspect, and nearly impossible to undo when a client asks you to forget something. Instead there are three plain pieces.</p>
+<p><strong>Classify.</strong> Every reviewed draft becomes one of three things: an unedited approval, an edited approval, or a rejection. An unedited approval only says &quot;that was fine.&quot; An edit says &quot;here is what I actually wanted.&quot; A rejection with a reason says &quot;here is what you got wrong.&quot; The last two are the rich signal.</p>
+<p><strong>Distill.</strong> The interesting action goes to a small model whose only job is maintaining a short written description of how this center writes, in plain English, capped at roughly a thousand characters. Not the messages themselves, the rules behind them. Things like &quot;opens with the child&#39;s first name&quot; or &quot;never uses exclamation points&quot; or &quot;always states the exact seat-hold deadline.&quot; Crucially, the distiller amends the existing profile rather than appending to it, so it stays a tight rulebook instead of growing into a diary.</p>
+<p><strong>Inject.</strong> At draft time, that profile gets appended to the agent&#39;s system prompt, along with at most two recent approved messages as tone references. A center with no history drafts exactly as it did before, byte for byte. A center with fifty reviewed actions drafts like itself.</p>
+<h2>The decisions that actually mattered</h2>
+<p>The architecture above is the easy part. These are the choices I would want to read about in someone else&#39;s post.</p>
+<p><strong>Positive signal is cheap, so batch it.</strong> An unedited approval barely teaches you anything, but you still want to count it, because &quot;the last twenty drafts went out untouched&quot; is meaningful. So unedited approvals increment a counter and only trigger the distiller every fifth one. Edits and rejections always run. This alone cut the ongoing cost of the feature by most of what it would have been.</p>
+<p><strong>Fail open, always.</strong> If the profile cannot be loaded for any reason, the draft is generated without it. A learning feature is a nice-to-have sitting in front of a workflow that a business depends on. It is never allowed to be the reason a draft does not exist.</p>
+<p><strong>Make the ordering failure survivable.</strong> The distill job runs off a queue, which means it can be delivered twice. Each run gets stamped once it is distilled, so redelivery is a no-op. But the stamp is written after the profile is saved, deliberately. If the process dies between those two writes, the retry re-distills an action already reflected in the profile, and the distiller&#39;s amend-don&#39;t-append behavior absorbs that harmlessly. The other ordering would silently drop the action forever. When you have to pick a failure mode, pick the one that is redundant instead of the one that is lossy.</p>
+<p><strong>Recent examples are a leak risk.</strong> Those two example messages went to real families. They contain real names and real dates. The injection wraps them in an explicit instruction: match the voice and structure, never reuse any detail from them. Profiles are also scoped per center per agent type and enforced at the database level, so one center&#39;s voice can never bleed into another&#39;s draft.</p>
+<p><strong>No black boxes.</strong> Staff can open settings, read the profile the system has written about them, and edit or clear it. If a machine is keeping a description of how you write, you get to see it and change it. That felt non-negotiable, and it took about thirty lines.</p>
+<h2>The bug that taught me the most</h2>
+<p>Early on, the classifier decided that nearly every approval was an edit.</p>
+<p>The approve form is a textarea prefilled with the draft. Browsers normalize line breaks in textarea submissions to carriage-return-newline, while our stored draft used bare newlines. So a director who read a three-paragraph draft, changed nothing, and hit approve produced a &quot;final&quot; text that differed from the draft by invisible bytes on every line break. Byte comparison said edit. The distiller then dutifully learned style lessons from a diff containing no style changes.</p>
+<p>The fix is one function that normalizes both sides before comparing. Two lines. But it is a good reminder of what these systems do when the input is subtly wrong: they do not crash, they confidently learn garbage. That is why the whole thing was built test-first, and why the tests cover the boring cases like &quot;approval with Windows line endings&quot; rather than only the happy path.</p>
+<h2>Where it stands</h2>
+<p>This went to production today. About fourteen hundred lines, built test-first across a dozen scoped tasks, with the full suite green before it merged.</p>
+<p>Which means the interesting part starts now. Nothing in the paragraphs above is proven yet. A profile that reads well after five gate actions may say something strange after two hundred, and the only way to find out is to watch real directors approve real messages for a few weeks and read what the system decided they sound like. That is the actual test, and I do not get to grade it myself.</p>
+<p>The general lesson is the part that travels. If your product puts a human in front of AI output, you are already collecting the most valuable data in the building, and you are probably discarding it on every single approval. The gap between what the model wrote and what the human sent is your product&#39;s opinion about itself. Store it, distill it, feed it back.</p>
+</div>
+  </article>
+</div>
+</body>
+</html>
