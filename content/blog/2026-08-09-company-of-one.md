@@ -10,7 +10,7 @@ That is not a flex about working hard. It is the opposite. I want to explain the
 
 ## What "company of one" actually means
 
-First, the honest org chart, because the title is not literally true. I founded two companies and I have a cofounder at each. Square A, an agency building AI agents for childcare businesses, I run with Toye, who is also an engineer and the person who pressure-tests my work before it touches production. MDFLD, a marketplace building a trust layer for football gear, I run with Kayla, who is non-technical and owns everything I am worst at lol.
+First, the honest org chart, because the title is not literally true. I founded two companies and I have a cofounder at each. Square A, an agency building AI agents for childcare businesses, I run with Toye, who is also an engineer and the person who pressure-tests my work before it touches production. MDFLD, a marketplace building a trust layer for football boots and kit, I run with Kayla, who is non-technical and owns everything I am worst at lol.
 
 What neither company has is employees. Nobody is on payroll, and the day-to-day engineering, including everything in the opening paragraph, comes from one seat: mine. That is partly necessity, since neither company is funded yet, and partly a decision. I decided early that I would not hire until the businesses could deserve it, which means until then, engineering leverage has to come from somewhere other than headcount.
 

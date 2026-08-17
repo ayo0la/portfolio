@@ -6,7 +6,7 @@ tldr: "Between two startups, the one whose problem I love most is the one gettin
 
 I run two startups right now, and MDFLD is the one getting neglected. Not because I care about it less. If anything it's the opposite, and that's the part that's hard to admit.
 
-I love the problem MDFLD is trying to solve. Trust in what you're actually buying, gear that is what it claims to be, a layer of honesty in a market that runs on people not knowing what they're getting. It's the kind of problem I think I would still be chasing even if I ended up somewhere else entirely, a different job, a different startup that isn't mine. It feels less like a business idea I'm testing and more like something that's actually mine to solve, whether or not MDFLD the company is the vehicle for it.
+I love the problem MDFLD is trying to solve. Trust in what you're actually buying, your boots and kit being what they claim to be, a layer of honesty in a market that runs on people not knowing what they're getting. It's the kind of problem I think I would still be chasing even if I ended up somewhere else entirely, a different job, a different startup that isn't mine. It feels less like a business idea I'm testing and more like something that's actually mine to solve, whether or not MDFLD the company is the vehicle for it.
 
 And it's the one I've been giving the least time to.
 
