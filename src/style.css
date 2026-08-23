@@ -277,8 +277,14 @@ section {
   z-index: 0;
 }
 
-/* ── §4 Projects ─────────────────────────────────────────── */
-#projects { background: var(--bg); }
+/* ── §4 Projects — lit gallery wall ───────────────────────── */
+#projects {
+  background:
+    radial-gradient(120% 70% at 50% 18%, rgba(255,255,255,0.75), transparent 60%),
+    linear-gradient(180deg, #dad8d4 0%, #d2d0cc 45%, #c6c4c0 100%);
+}
+
+#projects .section-tag { color: #7a756b; }
 
 .section-tag { margin-bottom: 3rem; }
 
@@ -357,24 +363,332 @@ section {
   color: var(--gold);
 }
 
-/* ── Expandable cards (npm packages, Allstar, open source) ──
-   Keyed on [data-expanded] rather than a single card class so every
-   expandable card picks these up. */
-
-.project-card[data-expanded] {
-  cursor: pointer;
+/* ── §4 Shelf — Other Work as cover art on shelves ────────── */
+.shelf-wall {
+  display: flex;
+  flex-direction: column;
+  gap: 4.5rem;
+  padding-top: 1rem;
 }
 
-/* Collapsed: show hint, hide collapse label */
-.npm-card-hint {
+.shelf-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: end;
+}
+
+/* Backlight aura above each shelf */
+.shelf-row::before {
+  content: '';
+  position: absolute;
+  inset: -22% -6% -4%;
+  pointer-events: none;
+  background: radial-gradient(58% 85% at 50% 40%, rgba(255,255,255,0.65), transparent 72%);
+}
+
+/* The shelf ledge — a real plank with thickness and cast shadow */
+.shelf-row::after {
+  content: '';
+  position: absolute;
+  left: -3%;
+  right: -3%;
+  top: 100%;
+  height: 13px;
+  border-radius: 2px 2px 3px 3px;
+  background: linear-gradient(180deg, #ffffff 0%, #f0eeea 45%, #d8d6d2 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 10px 16px rgba(70,63,50,0.22),
+    0 30px 55px rgba(70,63,50,0.16);
+}
+
+.shelf-card {
   display: block;
+  text-decoration: none;
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+  align-self: end;
+}
+
+.cover {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--surface);
+  margin-inline: auto;
+  box-shadow:
+    0 0 40px 8px rgba(255,255,255,0.55),
+    0 16px 22px -8px rgba(60,54,42,0.5),
+    0 2px 5px rgba(60,54,42,0.35);
+  transform-origin: bottom center;
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.25, 1), box-shadow 0.45s ease, filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Placed, not gridded: slight size and tilt variance per position */
+.shelf-row .shelf-card:nth-child(4n+1) .cover { width: 88%; }
+.shelf-row .shelf-card:nth-child(4n+2) .cover { width: 96%; transform: rotate(-1.1deg); }
+.shelf-row .shelf-card:nth-child(4n+3) .cover { width: 100%; }
+.shelf-row .shelf-card:nth-child(4n+4) .cover { width: 91%; transform: rotate(0.9deg); }
+
+/* Focus-pull: hovered cover blows up, the rest of the wall racks out of focus */
+@media (hover: hover) and (pointer: fine) {
+  .shelf-card:hover,
+  .shelf-card:focus-visible {
+    z-index: 20;
+  }
+
+  .shelf-row .shelf-card:hover .cover,
+  .shelf-row .shelf-card:focus-visible .cover,
+  .shelf-row .shelf-card[data-expanded="true"] .cover {
+    transform: scale(1.5);
+    box-shadow:
+      0 0 70px 16px rgba(255,255,255,0.7),
+      0 46px 60px -18px rgba(55,48,38,0.55),
+      0 6px 14px rgba(55,48,38,0.3);
+  }
+
+  #projects:has(.shelf-card:hover) .shelf-card:not(:hover) .cover,
+  #projects:has(.shelf-card:focus-visible) .shelf-card:not(:focus-visible) .cover {
+    filter: blur(5px) saturate(0.85);
+    opacity: 0.55;
+  }
+}
+
+/* Readability shade behind the hover description */
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(8,8,8,0);
+  transition: background 0.3s ease;
+}
+
+.shelf-card:hover .cover::before,
+.shelf-card:focus-visible .cover::before {
+  background: rgba(8,8,8,0.5);
+}
+
+.cover-shot > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.cover-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.3) 30%, rgba(8,8,8,0.35) 55%, rgba(8,8,8,0.92) 100%);
+}
+
+.cover-gen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(8,8,8,0.85) 100%);
+}
+
+.cover-tag {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  z-index: 2;
   font-family: var(--font-mono);
   font-size: 0.5rem;
   letter-spacing: 2px;
-  color: var(--gold);
-  margin-top: 1rem;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
 }
 
+.cover-name {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.8rem;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  letter-spacing: 1px;
+  line-height: 0.95;
+}
+
+.cover-desc {
+  position: absolute;
+  left: 0.9rem;
+  right: 0.9rem;
+  bottom: 3.2rem;
+  z-index: 2;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.78);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease 0.05s, transform 0.25s ease 0.05s;
+}
+
+.shelf-card:hover .cover-desc,
+.shelf-card:focus-visible .cover-desc {
+  opacity: 1;
+  transform: none;
+}
+
+/* Iridescent sticker badge, Editions "NOW PLAYING" style */
+.cover-sticker {
+  position: absolute;
+  top: 2.1rem;
+  left: 0.7rem;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 3.7rem;
+  height: 3.7rem;
+  padding: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  color: #141414;
+  border-radius: 47% 53% 50% 50% / 52% 48% 52% 48%;
+  background: conic-gradient(from 210deg, #ffe9f3, #dff3ff, #eaffe9, #fff6d8, #f3e2ff, #ffe9f3);
+  box-shadow: 0 4px 10px rgba(60,54,42,0.35);
+  transform: rotate(-14deg) scale(0);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s, opacity 0.2s ease 0.08s;
+}
+
+.shelf-card:hover .cover-sticker,
+.shelf-card:focus-visible .cover-sticker {
+  transform: rotate(-14deg) scale(1);
+  opacity: 1;
+}
+
+.cover-pill {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 1.5px;
+  color: #080808;
+  background: var(--gold);
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease 0.12s, transform 0.25s ease 0.12s;
+}
+
+.shelf-card:hover .cover-pill,
+.shelf-card:focus-visible .cover-pill {
+  opacity: 1;
+  transform: none;
+}
+
+/* Generative cover motifs */
+.cover-motif {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.14);
+}
+
+.cover-squarea {
+  background: linear-gradient(145deg, #101014, #0a0a0c);
+}
+
+.motif-block {
+  width: 26%;
+  aspect-ratio: 1;
+  border: 2px solid rgba(126,231,135,0.6);
+  border-radius: 10px;
+}
+
+.motif-block:last-child {
+  transform: translate(-34%, 34%);
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(126,231,135,0.12);
+}
+
+.cover-oss {
+  background:
+    repeating-linear-gradient(180deg,
+      rgba(63,185,80,0.11) 0 8px, transparent 8px 24px,
+      rgba(248,81,73,0.11) 24px 32px, transparent 32px 48px),
+    #0d1117;
+}
+
+.cover-oss .cover-motif {
+  font-size: 2.6rem;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.35);
+}
+
+.motif-star { color: rgba(255,215,0,0.85); }
+
+.cover-npm { background: #141210; }
+
+.cover-npm .cover-motif {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(233,86,85,0.9);
+  text-shadow: 0 0 18px rgba(203,56,55,0.45);
+}
+
+.cover-mathtrail {
+  background: radial-gradient(80% 80% at 30% 20%, #10131a, #0a0a0c);
+}
+
+.cover-mathtrail .cover-motif {
+  font-size: 2rem;
+  letter-spacing: 0.8rem;
+  color: rgba(255,215,0,0.5);
+  text-shadow: 0 0 22px rgba(255,215,0,0.35);
+}
+
+.cover-chess {
+  background:
+    repeating-conic-gradient(rgba(255,255,255,0.07) 0% 25%, transparent 0% 50%),
+    #0b0b0d;
+  background-size: 25% 25%, auto;
+}
+
+.cover-chess .cover-motif {
+  font-size: 7rem;
+  color: rgba(255,255,255,0.28);
+  text-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* Client sites — fanned stack of site shots */
+.cover-fan { background: linear-gradient(160deg, #101010, #0a0a0a); }
+
+.cover-fan .fan img {
+  position: absolute;
+  width: 58%;
+  height: 58%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.5);
+}
+
+.fan img:nth-child(1) { top: 6%;  left: 4%;   transform: rotate(-6deg); }
+.fan img:nth-child(2) { top: 4%;  right: 5%;  transform: rotate(5deg); }
+.fan img:nth-child(3) { top: 30%; left: 12%;  transform: rotate(-2deg); }
+.fan img:nth-child(4) { top: 26%; right: 10%; transform: rotate(7deg); }
+
+/* Detail sheet — drops below the shelf row, Editions-style */
 .npm-collapse-hint {
   display: none;
   font-family: var(--font-mono);
@@ -384,22 +698,10 @@ section {
   margin-top: 1rem;
 }
 
-/* Expanded: span full width, gold border, swap hints */
-.project-card[data-expanded="true"] {
-  grid-column: 1 / -1;
-  border-color: var(--gold);
-  box-shadow: 0 0 32px rgba(255,215,0,0.06);
-}
-
-.project-card[data-expanded="true"] .npm-card-hint {
-  display: none;
-}
-
-.project-card[data-expanded="true"] .npm-collapse-hint {
+.shelf-card[data-expanded="true"] .npm-collapse-hint {
   display: block;
 }
 
-/* Package list — expand/collapse via CSS grid-row trick */
 .npm-packages {
   display: grid;
   grid-template-rows: 0fr;
@@ -410,8 +712,126 @@ section {
   overflow: hidden;
 }
 
-.project-card[data-expanded="true"] .npm-packages {
+.shelf-card[data-expanded="true"] .npm-packages {
   grid-template-rows: 1fr;
+}
+
+.shelf-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 26px);
+  z-index: 25;
+  background: #f9f8f5;
+  border: 1px solid rgba(140,115,30,0.35);
+  border-radius: 6px;
+  box-shadow: 0 34px 60px rgba(70,63,50,0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: grid-template-rows 0.35s ease, opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.35s;
+}
+
+.shelf-card[data-expanded="true"] .shelf-sheet {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: grid-template-rows 0.35s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.shelf-sheet > div {
+  padding: 1.25rem;
+}
+
+.sheet-desc {
+  font-size: 0.8rem;
+  color: #56524a;
+  margin-bottom: 1rem;
+}
+
+/* Light-wall recolor of the shared row styles, scoped to this section */
+#projects .npm-row {
+  background: rgba(0,0,0,0.03);
+  border-color: rgba(0,0,0,0.08);
+  color: #191919;
+}
+
+#projects .npm-row:hover {
+  border-color: rgba(160,124,0,0.5);
+  background: rgba(0,0,0,0.05);
+}
+
+#projects .npm-row-name { color: #8a6d00; }
+#projects .npm-row-desc { color: #56524a; }
+#projects .npm-row-downloads { color: #8a6d00; }
+#projects .npm-row-link { color: #7a756b; }
+#projects .npm-collapse-hint { color: #8a6d00; }
+
+/* Index strip — timeline under the shelves */
+.shelf-index {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1rem;
+  margin-top: 4.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(0,0,0,0.18);
+}
+
+.shelf-index-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0.25rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: #191919;
+  font-family: var(--font-mono);
+}
+
+.sie-year,
+.sie-cat {
+  font-size: 0.55rem;
+  letter-spacing: 1px;
+  color: #7a756b;
+}
+
+.sie-name {
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+}
+
+.shelf-index-entry:hover .sie-name,
+.shelf-index-entry:focus-visible .sie-name {
+  color: #8a6d00;
+}
+
+/* Touch devices get the pill affordance without hover */
+@media (hover: none) {
+  .cover-pill {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover,
+  .cover::before,
+  .cover-desc,
+  .cover-pill,
+  .cover-sticker,
+  .npm-packages,
+  .shelf-sheet {
+    transition: none !important;
+  }
+
+  .shelf-row .shelf-card:hover .cover,
+  .shelf-row .shelf-card:focus-visible .cover {
+    transform: none;
+  }
 }
 
 /* Divider above package list */
@@ -485,11 +905,14 @@ section {
   white-space: nowrap;
 }
 
-/* Dim sibling cards when npm card is expanded */
-.project-card.dimmed {
-  opacity: 0.25;
+/* Rack siblings out of focus while a detail sheet is open */
+.shelf-card.dimmed {
   pointer-events: none;
-  transition: opacity 0.3s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.shelf-card.dimmed .cover {
+  filter: blur(5px) saturate(0.85);
+  opacity: 0.55;
 }
 
 /* ── §5 Contact ──────────────────────────────────────────── */
@@ -724,6 +1147,16 @@ section {
   .about-right { padding-top: 0; }
 
   .projects-grid { grid-template-columns: 1fr; }
+
+  /* Shelf collapses to a 2×2 grid per row; planes and spotlights hidden */
+  .shelf-row { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .shelf-row::before, .shelf-row::after { display: none; }
+  .shelf-wall { gap: 2.5rem; }
+  .cover-name { font-size: 1.3rem; }
+  .cover-desc { display: none; }
+  .cover-pill { display: none; }
+  .shelf-sheet { top: calc(100% + 12px); }
+  .shelf-index { grid-template-columns: repeat(2, 1fr); margin-top: 2.5rem; }
 
   .contact-inner { flex-direction: column; align-items: flex-start; }
 

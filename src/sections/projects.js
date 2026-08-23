@@ -3,7 +3,19 @@ const EXPANDABLE_CARDS = ['npm-card', 'allstar-card', 'oss-card', 'client-card']
 
 export function initProjects() {
   EXPANDABLE_CARDS.forEach(initExpandableCard)
+  initShelfIndex()
   fetchNpmDownloads()
+}
+
+function initShelfIndex() {
+  document.querySelectorAll('.shelf-index [data-target]').forEach((entry) => {
+    entry.addEventListener('click', () => {
+      const card = document.getElementById(entry.dataset.target)
+      if (!card) return
+      card.scrollIntoView?.({ behavior: 'smooth', block: 'center' })
+      card.focus({ preventScroll: true })
+    })
+  })
 }
 
 function initExpandableCard(id) {
@@ -30,7 +42,7 @@ function initExpandableCard(id) {
   function expand() {
     card.dataset.expanded = 'true'
     card.setAttribute('aria-expanded', 'true')
-    document.querySelectorAll(`.project-card:not(#${id})`).forEach(c => c.classList.add('dimmed'))
+    document.querySelectorAll(`.shelf-card:not(#${id})`).forEach(c => c.classList.add('dimmed'))
 
     outsideHandler = (e) => {
       if (!card.contains(e.target)) collapse()
@@ -42,7 +54,7 @@ function initExpandableCard(id) {
   function collapse() {
     card.dataset.expanded = 'false'
     card.setAttribute('aria-expanded', 'false')
-    document.querySelectorAll('.project-card.dimmed').forEach(c => c.classList.remove('dimmed'))
+    document.querySelectorAll('.shelf-card.dimmed').forEach(c => c.classList.remove('dimmed'))
 
     if (outsideHandler) {
       document.removeEventListener('click', outsideHandler)

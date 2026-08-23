@@ -5,19 +5,24 @@ const EXPANDABLE_CARDS = ['npm-card', 'allstar-card', 'oss-card', 'client-card']
 
 function expandableMarkup(id) {
   return `
-    <div class="project-card ${id}" id="${id}" data-expanded="false">
-      <span class="npm-card-hint">▼ view</span>
+    <div class="shelf-card ${id}" id="${id}" data-expanded="false">
+      <div class="cover"></div>
       <div class="npm-packages"></div>
-      <span class="npm-collapse-hint">▲ collapse</span>
     </div>
   `
 }
 
 beforeEach(() => {
   document.body.innerHTML = `
-    <div class="projects-grid">
-      <a class="project-card" id="other-card">Other</a>
-      ${EXPANDABLE_CARDS.map(expandableMarkup).join('')}
+    <div class="shelf-wall">
+      <div class="shelf-row">
+        <a class="shelf-card" id="other-card">Other</a>
+        ${EXPANDABLE_CARDS.map(expandableMarkup).join('')}
+      </div>
+    </div>
+    <div class="shelf-index">
+      <button data-target="other-card"></button>
+      ${EXPANDABLE_CARDS.map(id => `<button data-target="${id}"></button>`).join('')}
     </div>
   `
   initProjects()
@@ -39,7 +44,7 @@ describe.each(EXPANDABLE_CARDS)('initProjects — %s expand', (id) => {
     expect(document.getElementById(id).getAttribute('aria-expanded')).toBe('true')
   })
 
-  it('dims sibling project cards on expand', () => {
+  it('dims sibling shelf cards on expand', () => {
     document.getElementById(id).click()
     expect(document.getElementById('other-card').classList.contains('dimmed')).toBe(true)
   })
@@ -85,9 +90,23 @@ describe.each(EXPANDABLE_CARDS)('initProjects — %s collapse', (id) => {
   })
 })
 
+describe('initProjects — shelf index', () => {
+  it('focuses the targeted card when an index entry is clicked', () => {
+    const card = document.getElementById('npm-card')
+    card.tabIndex = 0
+    document.querySelector('[data-target="npm-card"]').click()
+    expect(document.activeElement).toBe(card)
+  })
+
+  it('does not throw when an index entry targets a missing card', () => {
+    document.querySelector('[data-target="npm-card"]').dataset.target = 'nope'
+    expect(() => document.querySelector('[data-target="nope"]').click()).not.toThrow()
+  })
+})
+
 describe('initProjects — missing cards', () => {
   it('does not throw when an expandable card is absent from the DOM', () => {
-    document.body.innerHTML = '<div class="projects-grid"></div>'
+    document.body.innerHTML = '<div class="shelf-wall"></div>'
     expect(() => initProjects()).not.toThrow()
   })
 })

@@ -141,12 +141,25 @@ function _animateMdfld() {
 
 // ── Projects ──────────────────────────────────────────────────
 function _animateProjects() {
-  gsap.from('.project-card', {
+  gsap.from('#projects .shelf-card', {
     scrollTrigger: { trigger: '#projects', start: 'top 80%' },
     y: 40,
     opacity: 0,
     stagger: 0.1,
     duration: 0.6,
+    ease: 'power2.out',
+    // A lingering inline transform would make each card the containing
+    // block for its absolutely-positioned detail sheet (and trap the
+    // sheet in the card's stacking context, under the next shelf row).
+    clearProps: 'transform,opacity',
+  })
+
+  gsap.from('#projects .shelf-index-entry', {
+    scrollTrigger: { trigger: '#projects .shelf-index', start: 'top 92%' },
+    y: 16,
+    opacity: 0,
+    stagger: 0.05,
+    duration: 0.5,
     ease: 'power2.out',
   })
 }

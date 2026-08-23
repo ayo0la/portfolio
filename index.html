@@ -76,218 +76,305 @@
   <section id="projects">
     <div class="section-inner">
       <span class="mono-tag section-tag">// OTHER WORK</span>
-      <div class="projects-grid">
-        <a class="project-card" href="https://app.squarea.agency" target="_blank" rel="noopener">
-          <span class="proj-tag">AI PLATFORM · LIVE · 2026</span>
-          <h3 class="proj-name">Square A</h3>
-          <p class="proj-desc">Multi-tenant operations platform for childcare providers, co-founded and built as first engineer. An approval-gated agent pipeline drafts family communications, and every message waits on a human accept or reject before it sends. Those decisions train a per-client voice profile that feeds back into the next draft.</p>
-          <span class="proj-arrow">→</span>
-        </a>
 
-        <div class="project-card oss-card" id="oss-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false">
-          <span class="proj-tag">OPEN SOURCE · 2026</span>
-          <h3 class="proj-name">Upstream contributions</h3>
-          <p class="proj-desc">Pull requests to repositories I don't own, across 65,000+ combined stars. Two merged into Roboflow's computer vision stack.</p>
-          <span class="npm-card-hint">▼ view contributions</span>
+      <div class="shelf-wall">
+        <div class="shelf-row">
+          <a class="shelf-card" id="squarea-card" href="https://app.squarea.agency" target="_blank" rel="noopener" aria-label="Square A, AI platform, opens live site">
+            <div class="cover cover-gen cover-squarea">
+              <div class="cover-motif" aria-hidden="true"><span class="motif-block"></span><span class="motif-block"></span></div>
+              <span class="cover-tag">AI PLATFORM · 2026</span>
+              <span class="cover-sticker" aria-hidden="true">LIVE</span>
+              <span class="cover-name">Square A</span>
+              <span class="cover-desc">Multi-tenant operations platform for childcare providers. An approval-gated agent pipeline drafts family communications, and every accept or reject trains a per-client voice profile.</span>
+              <span class="cover-pill">OPEN →</span>
+            </div>
+          </a>
 
-          <div class="oss-contributions npm-packages">
-            <div>
-              <div class="npm-divider"></div>
-              <a class="npm-row" href="https://github.com/roboflow/supervision/pull/2479" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">roboflow/supervision · PR #2479</span>
-                  <span class="npm-row-desc">Merged. Made the vision-language-model docs executable as doctests. Running them exposed four latent bugs, including bounding boxes documented in transposed coordinate order.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-downloads">49k ★</span>
-                  <span class="npm-row-link">github →</span>
-                </div>
-              </a>
-              <a class="npm-row" href="https://github.com/roboflow/rf-detr/pull/1325" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">roboflow/rf-detr · PR #1325</span>
-                  <span class="npm-row-desc">Merged. Resuming training from a checkpoint silently overwrote the run's metrics.csv. Traced it to a fresh CSVLogger per resume colliding with Lightning deleting the file on first access, and fixed it test-first.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-downloads">9k ★</span>
-                  <span class="npm-row-link">github →</span>
-                </div>
-              </a>
-              <a class="npm-row" href="https://github.com/interviewstreet/hiring-agent/pull/379" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">interviewstreet/hiring-agent · PR #379</span>
-                  <span class="npm-row-desc">HackerRank's resume-evaluation pipeline. Every pinned Gemini model had been retired upstream, so the whole thing returned 404 for new contributors.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-downloads">6.8k ★</span>
-                  <span class="npm-row-link">github →</span>
-                </div>
-              </a>
-              <a class="npm-row" href="https://github.com/interviewstreet/hiring-agent/pull/377" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">interviewstreet/hiring-agent · PR #377</span>
-                  <span class="npm-row-desc">Removed deprecated sampling parameters and an unsupported response_format field that made the Anthropic adapter reject every request.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-downloads">6.8k ★</span>
-                  <span class="npm-row-link">github →</span>
-                </div>
-              </a>
+          <div class="shelf-card" id="oss-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false" aria-label="Upstream open source contributions, view details">
+            <div class="cover cover-gen cover-oss">
+              <div class="cover-motif" aria-hidden="true">55K<span class="motif-star">★</span></div>
+              <span class="cover-tag">OPEN SOURCE · 2026</span>
+              <span class="cover-sticker" aria-hidden="true">2× MERGED</span>
+              <span class="cover-name">Upstream</span>
+              <span class="cover-desc">Pull requests to repositories I don't own, across 65,000+ combined stars. Two merged into Roboflow's computer vision stack.</span>
+              <span class="cover-pill">DETAILS ▾</span>
+            </div>
+
+            <div class="npm-packages shelf-sheet">
+              <div>
+                <p class="sheet-desc">Pull requests to repositories I don't own, across 65,000+ combined stars. Two merged into Roboflow's computer vision stack.</p>
+                <a class="npm-row" href="https://github.com/roboflow/supervision/pull/2479" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">roboflow/supervision · PR #2479</span>
+                    <span class="npm-row-desc">Merged. Made the vision-language-model docs executable as doctests. Running them exposed four latent bugs, including bounding boxes documented in transposed coordinate order.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-downloads">49k ★</span>
+                    <span class="npm-row-link">github →</span>
+                  </div>
+                </a>
+                <a class="npm-row" href="https://github.com/roboflow/rf-detr/pull/1325" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">roboflow/rf-detr · PR #1325</span>
+                    <span class="npm-row-desc">Merged. Resuming training from a checkpoint silently overwrote the run's metrics.csv. Traced it to a fresh CSVLogger per resume colliding with Lightning deleting the file on first access, and fixed it test-first.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-downloads">9k ★</span>
+                    <span class="npm-row-link">github →</span>
+                  </div>
+                </a>
+                <a class="npm-row" href="https://github.com/interviewstreet/hiring-agent/pull/379" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">interviewstreet/hiring-agent · PR #379</span>
+                    <span class="npm-row-desc">HackerRank's resume-evaluation pipeline. Every pinned Gemini model had been retired upstream, so the whole thing returned 404 for new contributors.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-downloads">6.8k ★</span>
+                    <span class="npm-row-link">github →</span>
+                  </div>
+                </a>
+                <a class="npm-row" href="https://github.com/interviewstreet/hiring-agent/pull/377" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">interviewstreet/hiring-agent · PR #377</span>
+                    <span class="npm-row-desc">Removed deprecated sampling parameters and an unsupported response_format field that made the Anthropic adapter reject every request.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-downloads">6.8k ★</span>
+                    <span class="npm-row-link">github →</span>
+                  </div>
+                </a>
+                <span class="npm-collapse-hint">▲ collapse</span>
+              </div>
             </div>
           </div>
 
-          <span class="npm-collapse-hint">▲ collapse</span>
-        </div>
+          <div class="shelf-card" id="allstar-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false" aria-label="Allstar Kids Academy, view details">
+            <div class="cover cover-shot">
+              <img src="/covers/allstar.jpg" alt="Allstar Kids Academy marketing site" loading="lazy">
+              <div class="cover-scrim"></div>
+              <span class="cover-tag">FULL-STACK · 2026</span>
+              <span class="cover-sticker" aria-hidden="true">LIVE</span>
+              <span class="cover-name">Allstar Kids</span>
+              <span class="cover-desc">Digital infrastructure for a licensed childcare center in Decatur, GA. Marketing site and enrollment platform.</span>
+              <span class="cover-pill">DETAILS ▾</span>
+            </div>
 
-        <div class="project-card allstar-card" id="allstar-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false">
-          <span class="proj-tag">FULL-STACK · 2026</span>
-          <h3 class="proj-name">Allstar Kids Academy</h3>
-          <p class="proj-desc">Digital infrastructure for a licensed childcare center in Decatur, GA. Marketing site and enrollment platform.</p>
-          <span class="npm-card-hint">▼ view projects</span>
-
-          <div class="allstar-projects npm-packages">
-            <div>
-              <div class="npm-divider"></div>
-              <a class="npm-row" href="https://allstarkids-marketing.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">Marketing Site</span>
-                  <span class="npm-row-desc">Programs, enrollment info, and Georgia Pre-K details for families.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-link">→</span>
-                </div>
-              </a>
-              <a class="npm-row" href="https://allstarkids-platform.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">Enrollment Platform</span>
-                  <span class="npm-row-desc">Online portal replacing paper intake. Parents enroll, staff manage records.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-link">→</span>
-                </div>
-              </a>
+            <div class="npm-packages shelf-sheet">
+              <div>
+                <p class="sheet-desc">Digital infrastructure for a licensed childcare center in Decatur, GA.</p>
+                <a class="npm-row" href="https://allstarkids-marketing.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">Marketing Site</span>
+                    <span class="npm-row-desc">Programs, enrollment info, and Georgia Pre-K details for families.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-link">→</span>
+                  </div>
+                </a>
+                <a class="npm-row" href="https://allstarkids-platform.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">Enrollment Platform</span>
+                    <span class="npm-row-desc">Online portal replacing paper intake. Parents enroll, staff manage records.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-link">→</span>
+                  </div>
+                </a>
+                <span class="npm-collapse-hint">▲ collapse</span>
+              </div>
             </div>
           </div>
 
-          <span class="npm-collapse-hint">▲ collapse</span>
-        </div>
+          <div class="shelf-card" id="npm-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false" aria-label="npm packages, view details">
+            <div class="cover cover-gen cover-npm">
+              <div class="cover-motif" aria-hidden="true">$ npm i<br>@ayo0la/*</div>
+              <span class="cover-tag">OPEN SOURCE · 2026</span>
+              <span class="cover-sticker" aria-hidden="true">ON NPM</span>
+              <span class="cover-name">npm ×3</span>
+              <span class="cover-desc">3 packages published to the npm registry.</span>
+              <span class="cover-pill">DETAILS ▾</span>
+            </div>
 
-        <div class="project-card npm-card" id="npm-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false">
-          <span class="proj-tag">OPEN SOURCE · 2026</span>
-          <h3 class="proj-name">npm packages</h3>
-          <p class="proj-desc">3 packages published to the npm registry.</p>
-          <span class="npm-card-hint">▼ view packages</span>
-
-          <div class="npm-packages">
-            <div>
-              <div class="npm-divider"></div>
-              <a class="npm-row" href="https://www.npmjs.com/package/@ayo0la/grain-canvas" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-npm-pkg="@ayo0la/grain-canvas">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">@ayo0la/grain-canvas</span>
-                  <span class="npm-row-desc">Animated film grain + particle system. Zero dependencies.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-downloads" aria-label="Weekly downloads"></span>
-                  <span class="npm-row-link">npm →</span>
-                </div>
-              </a>
-              <a class="npm-row" href="https://www.npmjs.com/package/@ayo0la/cursor" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-npm-pkg="@ayo0la/cursor">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">@ayo0la/cursor</span>
-                  <span class="npm-row-desc">Self-injecting custom cursor with lerp tracking and click states.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-downloads" aria-label="Weekly downloads"></span>
-                  <span class="npm-row-link">npm →</span>
-                </div>
-              </a>
-              <a class="npm-row" href="https://www.npmjs.com/package/@ayo0la/scroll-animations" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-npm-pkg="@ayo0la/scroll-animations">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">@ayo0la/scroll-animations</span>
-                  <span class="npm-row-desc">charStagger, wordStagger, scrollFade, staggerCards. GSAP-powered.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-downloads" aria-label="Weekly downloads"></span>
-                  <span class="npm-row-link">npm →</span>
-                </div>
-              </a>
+            <div class="npm-packages shelf-sheet">
+              <div>
+                <p class="sheet-desc">3 packages published to the npm registry.</p>
+                <a class="npm-row" href="https://www.npmjs.com/package/@ayo0la/grain-canvas" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-npm-pkg="@ayo0la/grain-canvas">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">@ayo0la/grain-canvas</span>
+                    <span class="npm-row-desc">Animated film grain + particle system. Zero dependencies.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-downloads" aria-label="Weekly downloads"></span>
+                    <span class="npm-row-link">npm →</span>
+                  </div>
+                </a>
+                <a class="npm-row" href="https://www.npmjs.com/package/@ayo0la/cursor" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-npm-pkg="@ayo0la/cursor">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">@ayo0la/cursor</span>
+                    <span class="npm-row-desc">Self-injecting custom cursor with lerp tracking and click states.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-downloads" aria-label="Weekly downloads"></span>
+                    <span class="npm-row-link">npm →</span>
+                  </div>
+                </a>
+                <a class="npm-row" href="https://www.npmjs.com/package/@ayo0la/scroll-animations" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-npm-pkg="@ayo0la/scroll-animations">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">@ayo0la/scroll-animations</span>
+                    <span class="npm-row-desc">charStagger, wordStagger, scrollFade, staggerCards. GSAP-powered.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-downloads" aria-label="Weekly downloads"></span>
+                    <span class="npm-row-link">npm →</span>
+                  </div>
+                </a>
+                <span class="npm-collapse-hint">▲ collapse</span>
+              </div>
             </div>
           </div>
-
-          <span class="npm-collapse-hint">▲ collapse</span>
         </div>
-        <a class="project-card" href="https://matchday-sooty.vercel.app" target="_blank" rel="noopener">
-          <span class="proj-tag">DATA · LIVE · 2026</span>
-          <h3 class="proj-name">Matchday</h3>
-          <p class="proj-desc">Real-time football scoreboard covering the Premier League, La Liga, Bundesliga, Serie A, Ligue 1, and Champions League. Live scores, standings, and fixtures — auto-refreshing every 60 seconds.</p>
-          <span class="proj-arrow">→</span>
-        </a>
-        <a class="project-card" href="https://math-trail-sigma.vercel.app" target="_blank" rel="noopener">
-          <span class="proj-tag">EDTECH · LIVE · 2026</span>
-          <h3 class="proj-name">Math Trail</h3>
-          <p class="proj-desc">Adaptive math platform with 296 free-response lessons and real students on it. Free-response only, deliberately — multiple choice lets you pattern-match your way to a right answer without doing the work. Ships as an offline-capable PWA with cross-device sync.</p>
-          <span class="proj-arrow">→</span>
-        </a>
-        <a class="project-card" href="https://chessdotcom-idea.vercel.app" target="_blank" rel="noopener">
-          <span class="proj-tag">FULL-STACK · LIVE · 2026</span>
-          <h3 class="proj-name">Chess Rivals</h3>
-          <p class="proj-desc">Real-time multiplayer chess with accounts, authenticated sessions, and persistent match state. Turn progression runs off a database-scheduled job loop, with the API and web client deployed separately against hosted Postgres.</p>
-          <span class="proj-arrow">→</span>
-        </a>
-        <div class="project-card client-card" id="client-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false">
-          <span class="proj-tag">CLIENT WORK · LIVE · 2026</span>
-          <h3 class="proj-name">Client sites</h3>
-          <p class="proj-desc">Sites designed and shipped for an athlete, an economist, a creative, and a roofing contractor.</p>
-          <span class="npm-card-hint">▼ view sites</span>
 
-          <div class="client-sites npm-packages">
-            <div>
-              <div class="npm-divider"></div>
-              <a class="npm-row" href="https://dryco-roofing.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">DryCo Roofing</span>
-                  <span class="npm-row-desc">Took a generic AI-generated template and rebuilt it around a trade-sign visual system, real job-site photography, scroll motion, and a full copy rewrite.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-link">→</span>
-                </div>
-              </a>
-              <a class="npm-row" href="https://dolapo-portfolio-tau.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">Dolapo Morakinyo</span>
-                  <span class="npm-row-desc">Athlete portfolio for a professional footballer. Career timeline, match statistics, media gallery, and agent contact.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-link">→</span>
-                </div>
-              </a>
-              <a class="npm-row" href="https://akinmorakinyo.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">Akin Morakinyo</span>
-                  <span class="npm-row-desc">Academic site for an economist. Research, publications, teaching, and CV, on a local content layer instead of a CMS so nothing external can break the build.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-link">→</span>
-                </div>
-              </a>
-              <a class="npm-row" href="https://kayla-bloom-portfolio.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                <div class="npm-row-meta">
-                  <span class="npm-row-name">Kayla Bloom</span>
-                  <span class="npm-row-desc">Portfolio for a creative, design through deploy. Motion-forward layout with a responsive gallery, carried by 87 tests.</span>
-                </div>
-                <div class="npm-row-right">
-                  <span class="npm-row-link">→</span>
-                </div>
-              </a>
+        <div class="shelf-row">
+          <a class="shelf-card" id="matchday-card" href="https://matchday-sooty.vercel.app" target="_blank" rel="noopener" aria-label="Matchday, live football scoreboard, opens live site">
+            <div class="cover cover-shot">
+              <img src="/covers/matchday.jpg" alt="Matchday live scoreboard" loading="lazy">
+              <div class="cover-scrim"></div>
+              <span class="cover-tag">DATA · LIVE · 2026</span>
+              <span class="cover-sticker" aria-hidden="true">LIVE</span>
+              <span class="cover-name">Matchday</span>
+              <span class="cover-desc">Real-time football scoreboard covering six competitions. Live scores, standings, and fixtures, auto-refreshing every 60 seconds.</span>
+              <span class="cover-pill">OPEN →</span>
+            </div>
+          </a>
+
+          <a class="shelf-card" id="mathtrail-card" href="https://math-trail-sigma.vercel.app" target="_blank" rel="noopener" aria-label="Math Trail, adaptive math platform, opens live site">
+            <div class="cover cover-gen cover-mathtrail">
+              <div class="cover-motif" aria-hidden="true">∑ ∫ π √</div>
+              <span class="cover-tag">EDTECH · LIVE · 2026</span>
+              <span class="cover-sticker" aria-hidden="true">LIVE</span>
+              <span class="cover-name">Math Trail</span>
+              <span class="cover-desc">Adaptive math platform with 296 free-response lessons and real students on it. Ships as an offline-capable PWA with cross-device sync.</span>
+              <span class="cover-pill">OPEN →</span>
+            </div>
+          </a>
+
+          <a class="shelf-card" id="chess-card" href="https://chessdotcom-idea.vercel.app" target="_blank" rel="noopener" aria-label="Chess Rivals, multiplayer chess, opens live site">
+            <div class="cover cover-gen cover-chess">
+              <div class="cover-motif" aria-hidden="true">♞</div>
+              <span class="cover-tag">FULL-STACK · LIVE · 2026</span>
+              <span class="cover-sticker" aria-hidden="true">LIVE</span>
+              <span class="cover-name">Chess Rivals</span>
+              <span class="cover-desc">Real-time multiplayer chess with accounts, authenticated sessions, and persistent match state on hosted Postgres.</span>
+              <span class="cover-pill">OPEN →</span>
+            </div>
+          </a>
+
+          <div class="shelf-card" id="client-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false" aria-label="Client sites, view details">
+            <div class="cover cover-fan">
+              <div class="fan" aria-hidden="true">
+                <img src="/covers/dryco.jpg" alt="DryCo Roofing site" loading="lazy">
+                <img src="/covers/akin.jpg" alt="Akin Morakinyo academic site" loading="lazy">
+                <img src="/covers/dolapo.jpg" alt="Oludolapo Morakinyo athlete portfolio" loading="lazy">
+                <img src="/covers/kayla.jpg" alt="Kayla Bloom designer portfolio" loading="lazy">
+              </div>
+              <div class="cover-scrim"></div>
+              <span class="cover-tag">CLIENT WORK · LIVE · 2026</span>
+              <span class="cover-sticker" aria-hidden="true">4 SITES</span>
+              <span class="cover-name">Client Sites</span>
+              <span class="cover-desc">Sites designed and shipped for an athlete, an economist, a creative, and a roofing contractor.</span>
+              <span class="cover-pill">DETAILS ▾</span>
+            </div>
+
+            <div class="npm-packages shelf-sheet">
+              <div>
+                <p class="sheet-desc">Sites designed and shipped for an athlete, an economist, a creative, and a roofing contractor.</p>
+                <a class="npm-row" href="https://dryco-roofing.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">DryCo Roofing</span>
+                    <span class="npm-row-desc">Took a generic AI-generated template and rebuilt it around a trade-sign visual system, real job-site photography, scroll motion, and a full copy rewrite.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-link">→</span>
+                  </div>
+                </a>
+                <a class="npm-row" href="https://dolapo-portfolio-tau.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">Dolapo Morakinyo</span>
+                    <span class="npm-row-desc">Athlete portfolio for a professional footballer. Career timeline, match statistics, media gallery, and agent contact.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-link">→</span>
+                  </div>
+                </a>
+                <a class="npm-row" href="https://akinmorakinyo.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">Akin Morakinyo</span>
+                    <span class="npm-row-desc">Academic site for an economist. Research, publications, teaching, and CV, on a local content layer instead of a CMS so nothing external can break the build.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-link">→</span>
+                  </div>
+                </a>
+                <a class="npm-row" href="https://kayla-bloom-portfolio.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <div class="npm-row-meta">
+                    <span class="npm-row-name">Kayla Bloom</span>
+                    <span class="npm-row-desc">Portfolio for a creative, design through deploy. Motion-forward layout with a responsive gallery, carried by 87 tests.</span>
+                  </div>
+                  <div class="npm-row-right">
+                    <span class="npm-row-link">→</span>
+                  </div>
+                </a>
+                <span class="npm-collapse-hint">▲ collapse</span>
+              </div>
             </div>
           </div>
-
-          <span class="npm-collapse-hint">▲ collapse</span>
         </div>
+      </div>
+
+      <div class="shelf-index">
+        <button class="shelf-index-entry" type="button" data-target="squarea-card">
+          <span class="sie-year">2026</span>
+          <span class="sie-cat">AI Platform</span>
+          <span class="sie-name">Square A</span>
+        </button>
+        <button class="shelf-index-entry" type="button" data-target="oss-card">
+          <span class="sie-year">2026</span>
+          <span class="sie-cat">Open Source</span>
+          <span class="sie-name">Upstream</span>
+        </button>
+        <button class="shelf-index-entry" type="button" data-target="allstar-card">
+          <span class="sie-year">2026</span>
+          <span class="sie-cat">Full-Stack</span>
+          <span class="sie-name">Allstar Kids</span>
+        </button>
+        <button class="shelf-index-entry" type="button" data-target="npm-card">
+          <span class="sie-year">2026</span>
+          <span class="sie-cat">Open Source</span>
+          <span class="sie-name">npm packages</span>
+        </button>
+        <button class="shelf-index-entry" type="button" data-target="matchday-card">
+          <span class="sie-year">2026</span>
+          <span class="sie-cat">Data</span>
+          <span class="sie-name">Matchday</span>
+        </button>
+        <button class="shelf-index-entry" type="button" data-target="mathtrail-card">
+          <span class="sie-year">2026</span>
+          <span class="sie-cat">EdTech</span>
+          <span class="sie-name">Math Trail</span>
+        </button>
+        <button class="shelf-index-entry" type="button" data-target="chess-card">
+          <span class="sie-year">2026</span>
+          <span class="sie-cat">Full-Stack</span>
+          <span class="sie-name">Chess Rivals</span>
+        </button>
+        <button class="shelf-index-entry" type="button" data-target="client-card">
+          <span class="sie-year">2026</span>
+          <span class="sie-cat">Client Work</span>
+          <span class="sie-name">Client Sites</span>
+        </button>
       </div>
     </div>
   </section>
-
   <!-- §4.5 Blog -->
   <section id="blog">
     <div class="section-inner">
