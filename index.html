@@ -87,7 +87,7 @@
         <div class="project-card oss-card" id="oss-card" data-expanded="false" role="button" tabindex="0" aria-expanded="false">
           <span class="proj-tag">OPEN SOURCE · 2026</span>
           <h3 class="proj-name">Upstream contributions</h3>
-          <p class="proj-desc">Pull requests to repositories I don't own, across 55,000+ combined stars.</p>
+          <p class="proj-desc">Pull requests to repositories I don't own, across 65,000+ combined stars. Two merged into Roboflow's computer vision stack.</p>
           <span class="npm-card-hint">▼ view contributions</span>
 
           <div class="oss-contributions npm-packages">
@@ -96,10 +96,20 @@
               <a class="npm-row" href="https://github.com/roboflow/supervision/pull/2479" target="_blank" rel="noopener" onclick="event.stopPropagation()">
                 <div class="npm-row-meta">
                   <span class="npm-row-name">roboflow/supervision · PR #2479</span>
-                  <span class="npm-row-desc">Made the vision-language-model docs executable as doctests. Running them exposed four latent bugs, including bounding boxes documented in transposed coordinate order.</span>
+                  <span class="npm-row-desc">Merged. Made the vision-language-model docs executable as doctests. Running them exposed four latent bugs, including bounding boxes documented in transposed coordinate order.</span>
                 </div>
                 <div class="npm-row-right">
                   <span class="npm-row-downloads">49k ★</span>
+                  <span class="npm-row-link">github →</span>
+                </div>
+              </a>
+              <a class="npm-row" href="https://github.com/roboflow/rf-detr/pull/1325" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                <div class="npm-row-meta">
+                  <span class="npm-row-name">roboflow/rf-detr · PR #1325</span>
+                  <span class="npm-row-desc">Merged. Resuming training from a checkpoint silently overwrote the run's metrics.csv. Traced it to a fresh CSVLogger per resume colliding with Lightning deleting the file on first access, and fixed it test-first.</span>
+                </div>
+                <div class="npm-row-right">
+                  <span class="npm-row-downloads">9k ★</span>
                   <span class="npm-row-link">github →</span>
                 </div>
               </a>
