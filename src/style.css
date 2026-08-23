@@ -1,5 +1,38 @@
 /* src/style.css */
 
+/* ── Gordita (self-hosted) ───────────────────────────────── */
+@font-face {
+  font-family: 'Gordita';
+  src: url('/fonts/Gordita-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gordita';
+  src: url('/fonts/Gordita-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gordita';
+  src: url('/fonts/Gordita-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gordita';
+  src: url('/fonts/Gordita-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ── Reset + Variables ───────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -10,9 +43,9 @@
   --text-muted:  rgba(255,255,255,0.55);
   --gold:        #ffd700;
   --border:      rgba(255,255,255,0.07);
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-mono:   'Courier New', monospace;
-  --font-body:   system-ui, -apple-system, sans-serif;
+  --font-display: 'Gordita', sans-serif;
+  --font-mono:   'Gordita', sans-serif;
+  --font-body:   'Gordita', system-ui, -apple-system, sans-serif;
 }
 
 html { scroll-behavior: auto; /* Lenis handles smooth scroll */ }
@@ -112,9 +145,10 @@ section {
 
 .hero-name {
   font-family: var(--font-display);
-  font-size: clamp(4rem, 10vw, 9rem);
-  letter-spacing: 2px;
-  line-height: 0.92;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5.5vw, 4.9rem);
+  letter-spacing: 0;
+  line-height: 1.04;
   color: var(--text);
 }
 
@@ -167,9 +201,10 @@ section {
 
 .about-headline {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 4.5rem);
-  letter-spacing: 1px;
-  line-height: 1.1;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 3.5rem);
+  letter-spacing: 0;
+  line-height: 1.12;
   color: var(--text);
 }
 
@@ -229,9 +264,10 @@ section {
 
 .mdfld-headline {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 6vw, 5.5rem);
-  letter-spacing: 1px;
-  line-height: 1.0;
+  font-weight: 700;
+  font-size: clamp(2rem, 4.5vw, 4rem);
+  letter-spacing: 0;
+  line-height: 1.06;
   color: var(--text);
   max-width: 600px;
   margin-bottom: 2rem;
@@ -267,6 +303,7 @@ section {
 .mdfld-bg-word {
   position: absolute;
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(8rem, 20vw, 18rem);
   color: rgba(255,215,0,0.04);
   bottom: -1rem;
@@ -323,6 +360,7 @@ section {
 
 .proj-name {
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   letter-spacing: 1px;
   margin-bottom: 0.75rem;
@@ -513,6 +551,7 @@ section {
   bottom: 0.8rem;
   z-index: 2;
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(1.4rem, 2.2vw, 2rem);
   letter-spacing: 1px;
   line-height: 0.95;
@@ -932,6 +971,7 @@ section {
 
 .contact-heading {
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(2.5rem, 5vw, 5rem);
   letter-spacing: 1px;
   color: var(--text);
@@ -984,6 +1024,7 @@ section {
 .activity-stat-value {
   display: block;
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(1.4rem, 3vw, 2.2rem);
   letter-spacing: 1px;
   line-height: 1;
