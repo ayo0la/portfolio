@@ -1,10 +1,70 @@
 // src/sections/projects.js
-const EXPANDABLE_CARDS = ['npm-card', 'allstar-card', 'oss-card', 'client-card']
 
 export function initProjects() {
-  EXPANDABLE_CARDS.forEach(initExpandableCard)
+  initFlipCards()
   initShelfIndex()
   fetchNpmDownloads()
+}
+
+function initFlipCards() {
+  const cards = document.querySelectorAll('.shelf-card[data-flipped]')
+  if (!cards.length) return
+
+  let outsideHandler = null
+
+  function set(card, flipped) {
+    card.dataset.flipped = String(flipped)
+    card.setAttribute('aria-pressed', String(flipped))
+  }
+
+  function unflipOthers(except) {
+    document.querySelectorAll('.shelf-card[data-flipped="true"]').forEach((c) => {
+      if (c !== except) set(c, false)
+    })
+  }
+
+  function detachOutside() {
+    if (outsideHandler) {
+      document.removeEventListener('click', outsideHandler)
+      outsideHandler = null
+    }
+  }
+
+  function attachOutside() {
+    detachOutside()
+    // setTimeout(0) prevents the click that flipped the card from immediately unflipping it
+    setTimeout(() => {
+      outsideHandler = (e) => {
+        if (!e.target.closest('.shelf-card[data-flipped="true"]')) {
+          unflipOthers(null)
+          detachOutside()
+        }
+      }
+      document.addEventListener('click', outsideHandler)
+    }, 0)
+  }
+
+  cards.forEach((card) => {
+    set(card, card.dataset.flipped === 'true')
+
+    const toggle = (e) => {
+      // Links on the back face navigate; they never toggle the flip
+      if (e.target.closest('a')) return
+      const flipped = card.dataset.flipped === 'true'
+      unflipOthers(card)
+      set(card, !flipped)
+      if (!flipped) attachOutside()
+      else detachOutside()
+    }
+
+    card.addEventListener('click', toggle)
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        toggle(e)
+      }
+    })
+  })
 }
 
 function initShelfIndex() {
@@ -16,51 +76,6 @@ function initShelfIndex() {
       card.focus({ preventScroll: true })
     })
   })
-}
-
-function initExpandableCard(id) {
-  const card = document.getElementById(id)
-  if (!card) return
-
-  card.setAttribute('aria-expanded', card.dataset.expanded)
-
-  let outsideHandler = null
-
-  card.addEventListener('click', () => {
-    const isExpanded = card.dataset.expanded === 'true'
-    isExpanded ? collapse() : expand()
-  })
-
-  card.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      const isExpanded = card.dataset.expanded === 'true'
-      isExpanded ? collapse() : expand()
-    }
-  })
-
-  function expand() {
-    card.dataset.expanded = 'true'
-    card.setAttribute('aria-expanded', 'true')
-    document.querySelectorAll(`.shelf-card:not(#${id})`).forEach(c => c.classList.add('dimmed'))
-
-    outsideHandler = (e) => {
-      if (!card.contains(e.target)) collapse()
-    }
-    // setTimeout(0) prevents the click that triggered expand from immediately firing collapse
-    setTimeout(() => { if (outsideHandler) document.addEventListener('click', outsideHandler) }, 0)
-  }
-
-  function collapse() {
-    card.dataset.expanded = 'false'
-    card.setAttribute('aria-expanded', 'false')
-    document.querySelectorAll('.shelf-card.dimmed').forEach(c => c.classList.remove('dimmed'))
-
-    if (outsideHandler) {
-      document.removeEventListener('click', outsideHandler)
-      outsideHandler = null
-    }
-  }
 }
 
 async function fetchNpmDownloads() {

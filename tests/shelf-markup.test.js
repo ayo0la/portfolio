@@ -9,9 +9,11 @@ const TILE_IDS = [
   'squarea-card', 'oss-card', 'allstar-card', 'npm-card',
   'matchday-card', 'mathtrail-card', 'chess-card', 'client-card',
 ]
-const EXPANDABLE_IDS = ['oss-card', 'allstar-card', 'npm-card', 'client-card']
-const LINK_TILES = {
+
+// Cards whose live site opens from the OPEN pill on the back face
+const OPEN_URLS = {
   'squarea-card': 'https://app.squarea.agency',
+  'allstar-card': 'https://allstarkids-marketing.vercel.app',
   'matchday-card': 'https://matchday-sooty.vercel.app',
   'mathtrail-card': 'https://math-trail-sigma.vercel.app',
   'chess-card': 'https://chessdotcom-idea.vercel.app',
@@ -29,23 +31,27 @@ describe('Other Work shelf markup', () => {
     expect(doc.querySelectorAll('#projects .shelf-card')).toHaveLength(8)
   })
 
-  it.each(TILE_IDS)('has a shelf card with id %s', (id) => {
+  it.each(TILE_IDS)('%s is a flippable button card', (id) => {
     const el = doc.getElementById(id)
     expect(el).not.toBeNull()
     expect(el.classList.contains('shelf-card')).toBe(true)
-  })
-
-  it.each(EXPANDABLE_IDS)('%s is an expandable button with a details panel', (id) => {
-    const el = doc.getElementById(id)
     expect(el.getAttribute('role')).toBe('button')
-    expect(el.getAttribute('data-expanded')).toBe('false')
-    expect(el.querySelector('.npm-packages')).not.toBeNull()
+    expect(el.getAttribute('data-flipped')).toBe('false')
   })
 
-  it.each(Object.entries(LINK_TILES))('%s links to %s', (id, url) => {
+  it.each(TILE_IDS)('%s has a front and a back face inside a flipper', (id) => {
     const el = doc.getElementById(id)
-    expect(el.tagName).toBe('A')
-    expect(el.getAttribute('href')).toBe(url)
+    expect(el.querySelector('.flipper .face-front')).not.toBeNull()
+    expect(el.querySelector('.flipper .face-back')).not.toBeNull()
+  })
+
+  it.each(TILE_IDS)('%s lists at least three tracks on the back', (id) => {
+    expect(doc.getElementById(id).querySelectorAll('.face-back .track').length).toBeGreaterThanOrEqual(3)
+  })
+
+  it.each(Object.entries(OPEN_URLS))('%s opens %s from the back face', (id, url) => {
+    const open = doc.getElementById(id).querySelector(`.face-back a[href="${url}"]`)
+    expect(open).not.toBeNull()
   })
 
   it('keeps every shelf card inside a shelf row', () => {
@@ -60,17 +66,8 @@ describe('Other Work shelf markup', () => {
     expect(targets.sort()).toEqual([...TILE_IDS].sort())
   })
 
-  it('keeps npm download rows with data-npm-pkg attributes', () => {
+  it('keeps npm download tracks with data-npm-pkg attributes', () => {
     expect(doc.querySelectorAll('#projects [data-npm-pkg]').length).toBeGreaterThanOrEqual(3)
-  })
-
-  it('ships every screenshot cover referenced from the page', () => {
-    const covers = [...doc.querySelectorAll('#projects .cover img')]
-      .map(img => img.getAttribute('src'))
-    expect(covers.length).toBeGreaterThanOrEqual(6)
-    for (const src of covers) {
-      expect(existsSync(join(root, 'public', src.replace(/^\//, '')))).toBe(true)
-    }
   })
 
   it('gives every cover a sticker badge', () => {
@@ -79,10 +76,23 @@ describe('Other Work shelf markup', () => {
     }
   })
 
+  it('ships every screenshot cover referenced from the page', () => {
+    const covers = [...doc.querySelectorAll('#projects .face-front img')]
+      .map(img => img.getAttribute('src'))
+    expect(covers.length).toBeGreaterThanOrEqual(6)
+    for (const src of covers) {
+      expect(existsSync(join(root, 'public', src.replace(/^\//, '')))).toBe(true)
+    }
+  })
+
   it('marks every cover image lazy and alt-texted', () => {
-    for (const img of doc.querySelectorAll('#projects .cover img')) {
+    for (const img of doc.querySelectorAll('#projects .face-front img')) {
       expect(img.getAttribute('loading')).toBe('lazy')
       expect(img.getAttribute('alt')).toBeTruthy()
     }
+  })
+
+  it('has no MDFLD watermark in the flagship section', () => {
+    expect(doc.querySelector('.mdfld-bg-word')).toBeNull()
   })
 })

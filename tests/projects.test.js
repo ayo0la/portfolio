@@ -1,13 +1,19 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { initProjects } from '../src/sections/projects.js'
 
-const EXPANDABLE_CARDS = ['npm-card', 'allstar-card', 'oss-card', 'client-card']
+const CARD_IDS = ['squarea-card', 'oss-card', 'npm-card', 'client-card']
 
-function expandableMarkup(id) {
+function cardMarkup(id) {
   return `
-    <div class="shelf-card ${id}" id="${id}" data-expanded="false">
-      <div class="cover"></div>
-      <div class="npm-packages"></div>
+    <div class="shelf-card" id="${id}" data-flipped="false" role="button" tabindex="0">
+      <div class="cover">
+        <div class="flipper">
+          <div class="face face-front"></div>
+          <div class="face face-back">
+            <a class="track" href="https://example.com" id="${id}-link">link</a>
+          </div>
+        </div>
+      </div>
     </div>
   `
 }
@@ -16,13 +22,11 @@ beforeEach(() => {
   document.body.innerHTML = `
     <div class="shelf-wall">
       <div class="shelf-row">
-        <a class="shelf-card" id="other-card">Other</a>
-        ${EXPANDABLE_CARDS.map(expandableMarkup).join('')}
+        ${CARD_IDS.map(cardMarkup).join('')}
       </div>
     </div>
     <div class="shelf-index">
-      <button data-target="other-card"></button>
-      ${EXPANDABLE_CARDS.map(id => `<button data-target="${id}"></button>`).join('')}
+      ${CARD_IDS.map(id => `<button data-target="${id}"></button>`).join('')}
     </div>
   `
   initProjects()
@@ -33,59 +37,61 @@ afterEach(() => {
   document.body.innerHTML = ''
 })
 
-describe.each(EXPANDABLE_CARDS)('initProjects — %s expand', (id) => {
-  it('sets data-expanded to true on click', () => {
+describe.each(CARD_IDS)('initProjects — %s flip', (id) => {
+  it('flips on click', () => {
     document.getElementById(id).click()
-    expect(document.getElementById(id).dataset.expanded).toBe('true')
+    expect(document.getElementById(id).dataset.flipped).toBe('true')
   })
 
-  it('mirrors state onto aria-expanded', () => {
+  it('mirrors state onto aria-pressed', () => {
     document.getElementById(id).click()
-    expect(document.getElementById(id).getAttribute('aria-expanded')).toBe('true')
+    expect(document.getElementById(id).getAttribute('aria-pressed')).toBe('true')
   })
 
-  it('dims sibling shelf cards on expand', () => {
-    document.getElementById(id).click()
-    expect(document.getElementById('other-card').classList.contains('dimmed')).toBe(true)
+  it('flips back on second click', () => {
+    const card = document.getElementById(id)
+    card.click()
+    card.click()
+    expect(card.dataset.flipped).toBe('false')
   })
 
-  it('does not dim itself', () => {
-    document.getElementById(id).click()
-    expect(document.getElementById(id).classList.contains('dimmed')).toBe(false)
-  })
-
-  it('expands on Enter key', () => {
+  it('flips on Enter key', () => {
     document.getElementById(id).dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
-    expect(document.getElementById(id).dataset.expanded).toBe('true')
+    expect(document.getElementById(id).dataset.flipped).toBe('true')
   })
 
-  it('expands on Space key', () => {
+  it('flips on Space key', () => {
     document.getElementById(id).dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }))
-    expect(document.getElementById(id).dataset.expanded).toBe('true')
+    expect(document.getElementById(id).dataset.flipped).toBe('true')
   })
-})
 
-describe.each(EXPANDABLE_CARDS)('initProjects — %s collapse', (id) => {
-  it('sets data-expanded to false on second click', () => {
+  it('does not flip back when a link on the back face is clicked', () => {
     const card = document.getElementById(id)
     card.click()
-    card.click()
-    expect(card.dataset.expanded).toBe('false')
+    const link = document.getElementById(`${id}-link`)
+    link.addEventListener('click', e => e.preventDefault())
+    link.click()
+    expect(card.dataset.flipped).toBe('true')
   })
 
-  it('removes dimmed from siblings on collapse', () => {
-    const card = document.getElementById(id)
-    card.click()
-    card.click()
-    expect(document.getElementById('other-card').classList.contains('dimmed')).toBe(false)
-  })
-
-  it('collapses when clicking outside the card', () => {
+  it('unflips when clicking outside the card', () => {
     vi.useFakeTimers()
     document.getElementById(id).click()
     vi.runAllTimers()
     document.body.click()
-    expect(document.getElementById(id).dataset.expanded).toBe('false')
+    expect(document.getElementById(id).dataset.flipped).toBe('false')
+    vi.useRealTimers()
+  })
+
+  it('only one card stays flipped at a time', () => {
+    vi.useFakeTimers()
+    document.getElementById(id).click()
+    vi.runAllTimers()
+    const other = CARD_IDS.find(x => x !== id)
+    document.getElementById(other).click()
+    vi.runAllTimers()
+    expect(document.getElementById(id).dataset.flipped).toBe('false')
+    expect(document.getElementById(other).dataset.flipped).toBe('true')
     vi.useRealTimers()
   })
 })
@@ -105,7 +111,7 @@ describe('initProjects — shelf index', () => {
 })
 
 describe('initProjects — missing cards', () => {
-  it('does not throw when an expandable card is absent from the DOM', () => {
+  it('does not throw when the shelf is absent from the DOM', () => {
     document.body.innerHTML = '<div class="shelf-wall"></div>'
     expect(() => initProjects()).not.toThrow()
   })

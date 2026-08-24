@@ -300,19 +300,6 @@ section {
 }
 .mdfld-cta:hover { opacity: 0.7; }
 
-.mdfld-bg-word {
-  position: absolute;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(8rem, 20vw, 18rem);
-  color: rgba(255,215,0,0.04);
-  bottom: -1rem;
-  right: -1rem;
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-}
 
 /* ── §4 Projects — lit gallery wall ───────────────────────── */
 #projects {
@@ -401,7 +388,7 @@ section {
   color: var(--gold);
 }
 
-/* ── §4 Shelf — Other Work as cover art on shelves ────────── */
+/* ── §4 Shelf — Other Work as flippable cover art ─────────── */
 .shelf-wall {
   display: flex;
   flex-direction: column;
@@ -444,26 +431,21 @@ section {
 
 .shelf-card {
   display: block;
-  text-decoration: none;
   color: var(--text);
   outline: none;
   cursor: pointer;
   align-self: end;
+  position: relative;
 }
 
+/* The cover is the 3D stage; faces live on the flipper inside it */
 .cover {
   position: relative;
   aspect-ratio: 1;
-  overflow: hidden;
-  border-radius: 3px;
-  background: var(--surface);
   margin-inline: auto;
-  box-shadow:
-    0 0 40px 8px rgba(255,255,255,0.55),
-    0 16px 22px -8px rgba(60,54,42,0.5),
-    0 2px 5px rgba(60,54,42,0.35);
+  perspective: 1600px;
   transform-origin: bottom center;
-  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.25, 1), box-shadow 0.45s ease, filter 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.25, 1), filter 0.3s ease, opacity 0.3s ease;
 }
 
 /* Placed, not gridded: slight size and tilt variance per position */
@@ -472,7 +454,151 @@ section {
 .shelf-row .shelf-card:nth-child(4n+3) .cover { width: 100%; }
 .shelf-row .shelf-card:nth-child(4n+4) .cover { width: 91%; transform: rotate(0.9deg); }
 
-/* Focus-pull: hovered cover blows up, the rest of the wall racks out of focus */
+/* Ground shadow under the cover — reacts while the cover turns */
+.cover::after {
+  content: '';
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -17px;
+  height: 18px;
+  z-index: -1;
+  background: radial-gradient(50% 100% at 50% 50%, rgba(60,54,42,0.55), transparent 72%);
+  filter: blur(5px);
+}
+
+.shelf-card[data-flipped="true"] .cover::after {
+  animation: shadow-react 0.75s cubic-bezier(0.4, 0.15, 0.15, 1);
+}
+
+/* Mid-flip the card is edge-on, so the shadow narrows and lightens */
+@keyframes shadow-react {
+  50% { transform: scaleX(0.28); opacity: 0.4; }
+}
+
+.flipper {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.4, 0.15, 0.15, 1);
+}
+
+.shelf-card[data-flipped="true"] .flipper {
+  transform: rotateY(180deg);
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow:
+    0 0 40px 8px rgba(255,255,255,0.55),
+    0 16px 22px -8px rgba(60,54,42,0.5),
+    0 2px 5px rgba(60,54,42,0.35);
+}
+
+/* Back face — the album's track list */
+.face-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  padding: 0.9rem;
+  background:
+    radial-gradient(120% 90% at 80% 0%, rgba(255,215,0,0.07), transparent 55%),
+    linear-gradient(165deg, #16140f, #0b0a09 70%);
+}
+
+.back-blurb {
+  font-size: 0.57rem;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 0.4rem;
+}
+
+.track-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.34rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.09);
+  text-decoration: none;
+  color: var(--text);
+}
+
+.track-name {
+  font-size: 0.54rem;
+  line-height: 1.35;
+  color: rgba(255,255,255,0.92);
+  transition: color 0.15s;
+}
+
+a.track:hover .track-name,
+a.track:focus-visible .track-name {
+  color: var(--gold);
+}
+
+.track-meta {
+  font-family: var(--font-mono);
+  font-size: 0.48rem;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.45);
+  white-space: nowrap;
+}
+
+.back-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+}
+
+.back-credit {
+  font-family: var(--font-mono);
+  font-size: 0.45rem;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.35);
+}
+
+.back-open {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  color: #080808;
+  background: var(--gold);
+  padding: 0.32rem 0.65rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: filter 0.15s;
+}
+
+.back-open:hover { filter: brightness(1.12); }
+
+/* Focus-pull: hovered or flipped cover blows up, the wall racks out of focus */
+.shelf-card[data-flipped="true"] { z-index: 30; }
+
+.shelf-row .shelf-card[data-flipped="true"] .cover {
+  transform: scale(1.5);
+}
+
+#projects:has(.shelf-card[data-flipped="true"]) .shelf-card:not([data-flipped="true"]) .cover {
+  filter: blur(5px) saturate(0.85);
+  opacity: 0.55;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .shelf-card:hover,
   .shelf-card:focus-visible {
@@ -480,13 +606,8 @@ section {
   }
 
   .shelf-row .shelf-card:hover .cover,
-  .shelf-row .shelf-card:focus-visible .cover,
-  .shelf-row .shelf-card[data-expanded="true"] .cover {
+  .shelf-row .shelf-card:focus-visible .cover {
     transform: scale(1.5);
-    box-shadow:
-      0 0 70px 16px rgba(255,255,255,0.7),
-      0 46px 60px -18px rgba(55,48,38,0.55),
-      0 6px 14px rgba(55,48,38,0.3);
   }
 
   #projects:has(.shelf-card:hover) .shelf-card:not(:hover) .cover,
@@ -494,21 +615,6 @@ section {
     filter: blur(5px) saturate(0.85);
     opacity: 0.55;
   }
-}
-
-/* Readability shade behind the hover description */
-.cover::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: rgba(8,8,8,0);
-  transition: background 0.3s ease;
-}
-
-.shelf-card:hover .cover::before,
-.shelf-card:focus-visible .cover::before {
-  background: rgba(8,8,8,0.5);
 }
 
 .cover-shot > img {
@@ -557,26 +663,6 @@ section {
   line-height: 0.95;
 }
 
-.cover-desc {
-  position: absolute;
-  left: 0.9rem;
-  right: 0.9rem;
-  bottom: 3.2rem;
-  z-index: 2;
-  font-size: 0.72rem;
-  line-height: 1.5;
-  color: rgba(255,255,255,0.78);
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.25s ease 0.05s, transform 0.25s ease 0.05s;
-}
-
-.shelf-card:hover .cover-desc,
-.shelf-card:focus-visible .cover-desc {
-  opacity: 1;
-  transform: none;
-}
-
 /* Iridescent sticker badge, Editions "NOW PLAYING" style */
 .cover-sticker {
   position: absolute;
@@ -603,7 +689,8 @@ section {
 }
 
 .shelf-card:hover .cover-sticker,
-.shelf-card:focus-visible .cover-sticker {
+.shelf-card:focus-visible .cover-sticker,
+.shelf-card[data-flipped="true"] .cover-sticker {
   transform: rotate(-14deg) scale(1);
   opacity: 1;
 }
@@ -639,73 +726,120 @@ section {
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
+  font-weight: 700;
   color: rgba(255,255,255,0.14);
 }
 
+/* Square A — overlapping app tiles on a faint blueprint grid */
 .cover-squarea {
-  background: linear-gradient(145deg, #101014, #0a0a0c);
+  background:
+    repeating-linear-gradient(0deg, rgba(126,231,135,0.05) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(126,231,135,0.05) 0 1px, transparent 1px 24px),
+    linear-gradient(145deg, #101014, #0a0a0c);
 }
 
 .motif-block {
-  width: 26%;
+  width: 27%;
   aspect-ratio: 1;
-  border: 2px solid rgba(126,231,135,0.6);
-  border-radius: 10px;
+  border: 2px solid rgba(126,231,135,0.75);
+  border-radius: 12px;
+  box-shadow: 0 0 26px rgba(126,231,135,0.3), inset 0 0 16px rgba(126,231,135,0.12);
 }
 
 .motif-block:last-child {
   transform: translate(-34%, 34%);
-  border-color: rgba(255,255,255,0.35);
-  background: rgba(126,231,135,0.12);
+  border-color: rgba(255,255,255,0.5);
+  background: rgba(126,231,135,0.14);
+  box-shadow: 0 0 20px rgba(255,255,255,0.15);
 }
 
+/* Upstream — GitHub-diff stripes behind the combined star count */
 .cover-oss {
   background:
     repeating-linear-gradient(180deg,
-      rgba(63,185,80,0.11) 0 8px, transparent 8px 24px,
-      rgba(248,81,73,0.11) 24px 32px, transparent 32px 48px),
+      rgba(63,185,80,0.13) 0 8px, transparent 8px 24px,
+      rgba(248,81,73,0.13) 24px 32px, transparent 32px 48px),
     #0d1117;
 }
 
 .cover-oss .cover-motif {
-  font-size: 2.6rem;
+  font-size: 3.1rem;
   letter-spacing: 2px;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.45);
+  text-shadow: 0 0 30px rgba(255,255,255,0.25);
 }
 
-.motif-star { color: rgba(255,215,0,0.85); }
+.motif-star { color: rgba(255,215,0,0.9); text-shadow: 0 0 24px rgba(255,215,0,0.55); }
 
-.cover-npm { background: #141210; }
+/* npm — a little terminal window running the install */
+.cover-npm { background: linear-gradient(160deg, #17120f, #0d0b0a); }
 
 .cover-npm .cover-motif {
-  font-size: 1.05rem;
+  inset: 17% 11% 32%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 2rem 0.9rem 0;
+  font-size: 0.95rem;
   line-height: 1.7;
-  color: rgba(233,86,85,0.9);
-  text-shadow: 0 0 18px rgba(203,56,55,0.45);
+  color: rgba(240,96,95,0.95);
+  text-shadow: 0 0 16px rgba(203,56,55,0.4);
+  background: #221d1a;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 10px;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.55);
 }
 
+.cover-npm .cover-motif::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: #2e2724;
+  border-radius: 10px 10px 0 0;
+}
+
+.cover-npm .cover-motif::after {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 11px 0 0 #febc2e, 22px 0 0 #28c840;
+}
+
+/* Math Trail — glyphs over graph paper */
 .cover-mathtrail {
-  background: radial-gradient(80% 80% at 30% 20%, #10131a, #0a0a0c);
+  background:
+    repeating-linear-gradient(0deg, rgba(255,215,0,0.06) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(90deg, rgba(255,215,0,0.06) 0 1px, transparent 1px 26px),
+    radial-gradient(80% 80% at 30% 20%, #12151c, #0a0a0c);
 }
 
 .cover-mathtrail .cover-motif {
-  font-size: 2rem;
+  font-size: 2.2rem;
   letter-spacing: 0.8rem;
-  color: rgba(255,215,0,0.5);
-  text-shadow: 0 0 22px rgba(255,215,0,0.35);
+  color: rgba(255,215,0,0.65);
+  text-shadow: 0 0 26px rgba(255,215,0,0.4);
 }
 
+/* Chess Rivals — vignetted board under the knight */
 .cover-chess {
   background:
-    repeating-conic-gradient(rgba(255,255,255,0.07) 0% 25%, transparent 0% 50%),
+    radial-gradient(90% 90% at 50% 40%, transparent 40%, rgba(0,0,0,0.55) 100%),
+    repeating-conic-gradient(rgba(255,255,255,0.09) 0% 25%, transparent 0% 50%),
     #0b0b0d;
-  background-size: 25% 25%, auto;
+  background-size: auto, 25% 25%, auto;
 }
 
 .cover-chess .cover-motif {
-  font-size: 7rem;
-  color: rgba(255,255,255,0.28);
-  text-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  font-size: 7.5rem;
+  color: rgba(255,255,255,0.4);
+  text-shadow: 0 0 34px rgba(255,215,0,0.2), 0 12px 30px rgba(0,0,0,0.7);
 }
 
 /* Client sites — fanned stack of site shots */
@@ -726,85 +860,6 @@ section {
 .fan img:nth-child(2) { top: 4%;  right: 5%;  transform: rotate(5deg); }
 .fan img:nth-child(3) { top: 30%; left: 12%;  transform: rotate(-2deg); }
 .fan img:nth-child(4) { top: 26%; right: 10%; transform: rotate(7deg); }
-
-/* Detail sheet — drops below the shelf row, Editions-style */
-.npm-collapse-hint {
-  display: none;
-  font-family: var(--font-mono);
-  font-size: 0.5rem;
-  letter-spacing: 2px;
-  color: var(--gold);
-  margin-top: 1rem;
-}
-
-.shelf-card[data-expanded="true"] .npm-collapse-hint {
-  display: block;
-}
-
-.npm-packages {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.35s ease;
-}
-
-.npm-packages > div {
-  overflow: hidden;
-}
-
-.shelf-card[data-expanded="true"] .npm-packages {
-  grid-template-rows: 1fr;
-}
-
-.shelf-sheet {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(100% + 26px);
-  z-index: 25;
-  background: #f9f8f5;
-  border: 1px solid rgba(140,115,30,0.35);
-  border-radius: 6px;
-  box-shadow: 0 34px 60px rgba(70,63,50,0.4);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-6px);
-  transition: grid-template-rows 0.35s ease, opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.35s;
-}
-
-.shelf-card[data-expanded="true"] .shelf-sheet {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  transition: grid-template-rows 0.35s ease, opacity 0.3s ease, transform 0.3s ease;
-}
-
-.shelf-sheet > div {
-  padding: 1.25rem;
-}
-
-.sheet-desc {
-  font-size: 0.8rem;
-  color: #56524a;
-  margin-bottom: 1rem;
-}
-
-/* Light-wall recolor of the shared row styles, scoped to this section */
-#projects .npm-row {
-  background: rgba(0,0,0,0.03);
-  border-color: rgba(0,0,0,0.08);
-  color: #191919;
-}
-
-#projects .npm-row:hover {
-  border-color: rgba(160,124,0,0.5);
-  background: rgba(0,0,0,0.05);
-}
-
-#projects .npm-row-name { color: #8a6d00; }
-#projects .npm-row-desc { color: #56524a; }
-#projects .npm-row-downloads { color: #8a6d00; }
-#projects .npm-row-link { color: #7a756b; }
-#projects .npm-collapse-hint { color: #8a6d00; }
 
 /* Index strip — timeline under the shelves */
 .shelf-index {
@@ -848,7 +903,7 @@ section {
   color: #8a6d00;
 }
 
-/* Touch devices get the pill affordance without hover */
+/* Touch devices get the flip hint without hover */
 @media (hover: none) {
   .cover-pill {
     opacity: 1;
@@ -858,100 +913,21 @@ section {
 
 @media (prefers-reduced-motion: reduce) {
   .cover,
-  .cover::before,
-  .cover-desc,
+  .flipper,
   .cover-pill,
-  .cover-sticker,
-  .npm-packages,
-  .shelf-sheet {
+  .cover-sticker {
     transition: none !important;
   }
 
+  .shelf-card[data-flipped="true"] .cover::after {
+    animation: none;
+  }
+
   .shelf-row .shelf-card:hover .cover,
-  .shelf-row .shelf-card:focus-visible .cover {
+  .shelf-row .shelf-card:focus-visible .cover,
+  .shelf-row .shelf-card[data-flipped="true"] .cover {
     transform: none;
   }
-}
-
-/* Divider above package list */
-.npm-divider {
-  border-top: 1px solid rgba(255,255,255,0.06);
-  margin: 1rem 0 0.75rem;
-}
-
-/* Package rows */
-.npm-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.6rem 0.75rem;
-  margin-bottom: 0.5rem;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 4px;
-  text-decoration: none;
-  color: var(--text);
-  transition: border-color 0.2s, background 0.2s;
-}
-
-.npm-row:last-child {
-  margin-bottom: 0;
-}
-
-.npm-row:hover {
-  border-color: rgba(255,215,0,0.3);
-  background: rgba(255,255,255,0.05);
-}
-
-.npm-row-meta {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.npm-row-name {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--gold);
-}
-
-.npm-row-desc {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.npm-row-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.2rem;
-  flex-shrink: 0;
-}
-
-.npm-row-downloads {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  color: var(--gold);
-  white-space: nowrap;
-  opacity: 0.8;
-}
-
-.npm-row-link {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-/* Rack siblings out of focus while a detail sheet is open */
-.shelf-card.dimmed {
-  pointer-events: none;
-}
-
-.shelf-card.dimmed .cover {
-  filter: blur(5px) saturate(0.85);
-  opacity: 0.55;
 }
 
 /* ── §5 Contact ──────────────────────────────────────────── */
@@ -1194,9 +1170,13 @@ section {
   .shelf-row::before, .shelf-row::after { display: none; }
   .shelf-wall { gap: 2.5rem; }
   .cover-name { font-size: 1.3rem; }
-  .cover-desc { display: none; }
   .cover-pill { display: none; }
-  .shelf-sheet { top: calc(100% + 12px); }
+  /* Flipped card grows only slightly on small screens so it stays in view */
+  .shelf-row .shelf-card[data-flipped="true"] .cover { transform: scale(1.08); }
+  .face-back { padding: 0.7rem; }
+  .back-blurb { font-size: 0.55rem; margin-bottom: 0.35rem; }
+  .track { padding: 0.3rem 0; }
+  .track-name { font-size: 0.52rem; }
   .shelf-index { grid-template-columns: repeat(2, 1fr); margin-top: 2.5rem; }
 
   .contact-inner { flex-direction: column; align-items: flex-start; }
