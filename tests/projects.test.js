@@ -135,6 +135,113 @@ describe('initProjects — pointer tilt', () => {
   })
 })
 
+describe('initProjects — cover scenes', () => {
+  function sceneDom() {
+    document.body.innerHTML = `
+      <div class="shelf-wall"><div class="shelf-row">
+        <div class="shelf-card" id="chess-card" data-flipped="false" role="button" tabindex="0">
+          <div class="cover"><div class="flipper">
+            <div class="face face-front cover-gen cover-chess"><div class="cover-motif"><span class="knight">♞</span></div></div>
+            <div class="face face-back"></div>
+          </div></div>
+        </div>
+        <div class="shelf-card" id="mathtrail-card" data-flipped="false" role="button" tabindex="0">
+          <div class="cover"><div class="flipper">
+            <div class="face face-front cover-gen cover-mathtrail"><div class="cover-motif">
+              <span class="glyph">∑</span><span class="glyph">∫</span>
+            </div></div>
+            <div class="face face-back"></div>
+          </div></div>
+        </div>
+        <div class="shelf-card" id="matchday-card" data-flipped="false" role="button" tabindex="0">
+          <div class="cover"><div class="flipper">
+            <div class="face face-front cover-gen cover-matchday"><div class="cover-motif">
+              <span class="md-clock">90'+4</span>
+            </div></div>
+            <div class="face face-back"></div>
+          </div></div>
+        </div>
+      </div></div>
+      <div class="shelf-index"></div>
+    `
+  }
+
+  function mockHover() {
+    window.matchMedia = vi.fn((q) => ({ matches: q.includes('hover'), addEventListener: vi.fn() }))
+  }
+
+  function move(card, x = 10, y = 10) {
+    card.getBoundingClientRect = () => ({ left: 0, top: 0, width: 200, height: 200 })
+    card.dispatchEvent(new MouseEvent('mousemove', { clientX: x, clientY: y, bubbles: true }))
+  }
+
+  afterEach(() => { delete window.matchMedia })
+
+  it('sets --mx and --my on the front face on mousemove', () => {
+    mockHover(); sceneDom(); initProjects()
+    const card = document.getElementById('chess-card')
+    move(card, 150, 50)
+    const front = card.querySelector('.face-front')
+    expect(front.style.getPropertyValue('--mx')).not.toBe('')
+    expect(front.style.getPropertyValue('--my')).not.toBe('')
+  })
+
+  it('steers the chess knight to the square under the cursor', () => {
+    mockHover(); sceneDom(); initProjects()
+    const card = document.getElementById('chess-card')
+    move(card, 190, 10)
+    const knight = card.querySelector('.knight')
+    expect(knight.classList.contains('steered')).toBe(true)
+    expect(knight.style.transform).toMatch(/translate/)
+  })
+
+  it('releases the knight on mouseleave', () => {
+    mockHover(); sceneDom(); initProjects()
+    const card = document.getElementById('chess-card')
+    move(card, 190, 10)
+    card.dispatchEvent(new MouseEvent('mouseleave'))
+    const knight = card.querySelector('.knight')
+    expect(knight.classList.contains('steered')).toBe(false)
+    expect(knight.style.transform).toBe('')
+  })
+
+  it('scatters math glyphs away from the cursor', () => {
+    mockHover(); sceneDom(); initProjects()
+    const card = document.getElementById('mathtrail-card')
+    card.querySelectorAll('.glyph').forEach((g, i) => {
+      g.getBoundingClientRect = () => ({ left: 40 + i * 60, top: 90, width: 20, height: 20 })
+    })
+    move(card, 50, 100)
+    const glyphs = [...card.querySelectorAll('.glyph')]
+    expect(glyphs.every(g => g.classList.contains('steered'))).toBe(true)
+    expect(glyphs.every(g => g.style.transform.includes('translate'))).toBe(true)
+  })
+
+  it('runs the matchday clock while hovered and resets on leave', () => {
+    vi.useFakeTimers()
+    mockHover(); sceneDom(); initProjects()
+    const card = document.getElementById('matchday-card')
+    const clock = card.querySelector('.md-clock')
+    move(card, 100, 100)
+    vi.advanceTimersByTime(2000)
+    expect(clock.textContent).not.toBe("90'+4")
+    card.dispatchEvent(new MouseEvent('mouseleave'))
+    expect(clock.textContent).toBe("90'+4")
+    vi.useRealTimers()
+  })
+
+  it('does not throw for cards without a scene', () => {
+    mockHover()
+    document.body.innerHTML = `
+      <div class="shelf-wall"><div class="shelf-row">${cardMarkup('squarea-card')}</div></div>
+      <div class="shelf-index"></div>
+    `
+    initProjects()
+    const card = document.getElementById('squarea-card')
+    expect(() => move(card)).not.toThrow()
+  })
+})
+
 describe('initProjects — shelf index', () => {
   it('focuses the targeted card when an index entry is clicked', () => {
     const card = document.getElementById('npm-card')

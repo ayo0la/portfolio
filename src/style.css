@@ -720,7 +720,9 @@ a.track:focus-visible .track-name {
   transform: none;
 }
 
-/* Generative cover motifs — each cover is a little animated scene */
+/* Generative cover motifs — each cover is a little animated scene.
+   --mx/--my (0..1) are the cursor's position inside the cover; the art
+   drifts with the cursor while the labels drift against it for depth. */
 .cover-motif {
   position: absolute;
   inset: 0;
@@ -730,6 +732,14 @@ a.track:focus-visible .track-name {
   font-family: var(--font-mono);
   font-weight: 700;
   color: rgba(255,255,255,0.14);
+  translate: calc((var(--mx, 0.5) - 0.5) * 12px) calc((var(--my, 0.5) - 0.5) * 12px);
+  transition: translate 0.25s ease-out;
+}
+
+.cover-tag,
+.cover-name {
+  translate: calc((0.5 - var(--mx, 0.5)) * 6px) calc((0.5 - var(--my, 0.5)) * 6px);
+  transition: translate 0.25s ease-out;
 }
 
 /* Square A — breathing app tiles on a drifting blueprint grid */
@@ -743,6 +753,11 @@ a.track:focus-visible .track-name {
 
 @keyframes grid-drift {
   to { background-position: 24px 24px, 24px 24px, 0 0; }
+}
+
+.shelf-card:hover .cover-squarea .motif-block {
+  border-color: rgba(126,231,135,0.95);
+  box-shadow: 0 0 40px rgba(126,231,135,0.55), inset 0 0 22px rgba(126,231,135,0.22);
 }
 
 .motif-block {
@@ -796,7 +811,12 @@ a.track:focus-visible .track-name {
   text-shadow: 0 0 24px rgba(255,215,0,0.55);
   display: inline-block;
   animation: star-twinkle 2.6s ease-in-out infinite;
+  transition: transform 0.25s ease-out;
 }
+
+.motif-star.steered { animation: none; text-shadow: 0 0 40px rgba(255,215,0,0.9); }
+
+.shelf-card:hover .cover-oss { filter: brightness(1.12); }
 
 @keyframes star-twinkle {
   50% { transform: scale(1.18) rotate(12deg); text-shadow: 0 0 40px rgba(255,215,0,0.9); }
@@ -816,7 +836,10 @@ a.track:focus-visible .track-name {
   font-size: 1.2rem;
   color: #0d1530;
   animation: block-bounce 2.4s ease-in-out infinite;
+  transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.4, 1);
 }
+
+.block.steered { animation: none; }
 
 .block-a { background: #ffce31; }
 .block-b { background: #ff8a3d; animation-delay: 0.25s; }
@@ -836,7 +859,10 @@ a.track:focus-visible .track-name {
   color: #ffce31;
   text-shadow: 0 0 20px rgba(255,206,49,0.6);
   animation: star-spin 8s linear infinite;
+  transition: transform 0.3s ease-out;
 }
+
+.allstar-star.steered { animation: none; }
 
 @keyframes star-spin {
   to { transform: rotate(360deg); }
@@ -903,6 +929,23 @@ a.track:focus-visible .track-name {
   50% { border-color: transparent; }
 }
 
+.npm-done {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.7rem;
+  font-size: 0.62rem;
+  color: #6ee07a;
+  text-shadow: 0 0 14px rgba(110,224,122,0.5);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease 0.15s, transform 0.3s ease 0.15s;
+}
+
+.shelf-card:hover .npm-done {
+  opacity: 1;
+  transform: none;
+}
+
 /* Math Trail — glyphs floating over gold graph paper */
 .cover-mathtrail {
   background:
@@ -922,7 +965,10 @@ a.track:focus-visible .track-name {
 .glyph {
   display: inline-block;
   animation: glyph-float 3.4s ease-in-out infinite;
+  transition: transform 0.3s ease-out;
 }
+
+.glyph.steered { animation: none; }
 
 .glyph:nth-child(2) { animation-delay: 0.5s; }
 .glyph:nth-child(3) { animation-delay: 1s; }
@@ -950,7 +996,11 @@ a.track:focus-visible .track-name {
 .knight {
   display: inline-block;
   animation: knight-hop 7s ease-in-out infinite;
+  transition: transform 0.45s cubic-bezier(0.3, 1.5, 0.4, 1);
 }
+
+/* Cursor takes the reins: the tour pauses and the knight jumps to your square */
+.knight.steered { animation: none; }
 
 /* An L-shaped tour: two squares over, one square up, and back */
 @keyframes knight-hop {
@@ -982,6 +1032,12 @@ a.track:focus-visible .track-name {
 @keyframes light-sweep {
   0% { background-position: 120% 0; }
   60%, 100% { background-position: -60% 0; }
+}
+
+.shelf-card:hover .cover-matchday::before {
+  animation: none;
+  background-position: calc(120% - var(--mx, 0.5) * 180%) 0;
+  transition: background-position 0.2s ease-out;
 }
 
 .cover-matchday .cover-motif { flex-direction: column; gap: 0.5rem; }
@@ -1056,6 +1112,11 @@ a.track:focus-visible .track-name {
 .shelf-card:hover .fan img:nth-child(2) { transform: rotate(9deg) translate(6%, -5%); }
 .shelf-card:hover .fan img:nth-child(3) { transform: rotate(-5deg) translate(-5%, 5%); }
 .shelf-card:hover .fan img:nth-child(4) { transform: rotate(11deg) translate(5%, 4%); }
+
+.shelf-card:hover .fan img.fan-near:nth-child(1) { transform: rotate(-13deg) translate(-8%, -9%) scale(1.08); z-index: 2; }
+.shelf-card:hover .fan img.fan-near:nth-child(2) { transform: rotate(12deg) translate(8%, -10%) scale(1.08); z-index: 2; }
+.shelf-card:hover .fan img.fan-near:nth-child(3) { transform: rotate(-8deg) translate(-7%, 9%) scale(1.08); z-index: 2; }
+.shelf-card:hover .fan img.fan-near:nth-child(4) { transform: rotate(14deg) translate(7%, 8%) scale(1.08); z-index: 2; }
 
 /* Index strip — timeline under the shelves */
 .shelf-index {
