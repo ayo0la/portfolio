@@ -1,5 +1,12 @@
 [
   {
+    "slug": "large-visual-models",
+    "title": "Large Visual Models Don't Exist Yet. I Want to Build Them.",
+    "date": "2026-08-23",
+    "dateDisplay": "August 23, 2026",
+    "tldr": "What you couldn't do six months ago, you can do now. Everyone is using AI as search while it quietly became a build tool. And the thing I want to build with it is the LLM equivalent for the visual world."
+  },
+  {
     "slug": "mine-to-solve",
     "title": "The Problem I Still Think Is Mine to Solve",
     "date": "2026-08-16",
@@ -12,12 +19,5 @@
     "date": "2026-08-10",
     "dateDisplay": "August 10, 2026",
     "tldr": "Our agents drafted messages that sounded like an AI. The fix was not a better prompt or a fine-tune, it was noticing that every edit staff already made was a free training signal we were throwing away. Shipped this week."
-  },
-  {
-    "slug": "company-of-one",
-    "title": "How I ship as a company of one",
-    "date": "2026-08-09",
-    "dateDisplay": "August 9, 2026",
-    "tldr": "The system that lets one engineer ship for two companies: specs before code, tests before implementation, and AI agents that do the typing but not the thinking."
   }
 ]
