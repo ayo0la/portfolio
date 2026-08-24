@@ -300,6 +300,17 @@ section {
 }
 .mdfld-cta:hover { opacity: 0.7; }
 
+.mdfld-bg-logo {
+  position: absolute;
+  bottom: -2rem;
+  right: -3rem;
+  width: clamp(20rem, 45vw, 42rem);
+  opacity: 0.09;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
 
 /* ── §4 Projects — lit gallery wall ───────────────────────── */
 #projects {
@@ -987,30 +998,92 @@ a.track:focus-visible .track-name {
   background-size: auto, 25% 25%, auto;
 }
 
-.cover-chess .cover-motif {
-  font-size: 6.5rem;
-  color: rgba(255,255,255,0.4);
-  text-shadow: 0 0 34px rgba(255,215,0,0.2), 0 12px 30px rgba(0,0,0,0.7);
+/* The playable board: parallax off so the squares hold still under the cursor */
+.cover-chess .cover-motif.chess-play {
+  translate: none;
+  inset: 1.9rem 0.55rem 2.5rem;
+  display: block;
 }
 
-.knight {
-  display: inline-block;
-  animation: knight-hop 7s ease-in-out infinite;
-  transition: transform 0.45s cubic-bezier(0.3, 1.5, 0.4, 1);
+.chess-board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
 }
 
-/* Cursor takes the reins: the tour pauses and the knight jumps to your square */
-.knight.steered { animation: none; }
+.sq {
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
 
-/* An L-shaped tour: two squares over, one square up, and back */
-@keyframes knight-hop {
-  0%, 18%  { transform: translate(0, 0); }
-  24%      { transform: translate(-8%, -22%) scale(1.05); }
-  30%, 48% { transform: translate(-16%, 6%); }
-  54%      { transform: translate(6%, -18%) scale(1.05); }
-  60%, 78% { transform: translate(14%, 4%); }
-  84%      { transform: translate(8%, -20%) scale(1.05); }
-  90%, 100% { transform: translate(0, 0); }
+.sq-light { background: #23232a; }
+.sq-dark  { background: #121216; }
+
+.sq.pc-w { color: var(--gold); text-shadow: 0 0 8px rgba(255,215,0,0.4); }
+.sq.pc-b { color: #d9d9de; text-shadow: 0 0 8px rgba(0,0,0,0.8); }
+
+.sq.sel { box-shadow: inset 0 0 0 2px var(--gold); }
+
+.sq.hint::after {
+  content: '';
+  position: absolute;
+  width: 26%;
+  height: 26%;
+  border-radius: 50%;
+  background: rgba(255,215,0,0.5);
+  box-shadow: 0 0 8px rgba(255,215,0,0.5);
+}
+
+.sq.hint.pc-b::after {
+  width: 82%;
+  height: 82%;
+  background: transparent;
+  border: 2px solid rgba(255,215,0,0.65);
+  box-shadow: none;
+}
+
+.chess-status {
+  position: absolute;
+  top: -1.35rem;
+  right: 0;
+  font-size: 0.42rem;
+  letter-spacing: 1.5px;
+  color: rgba(255,215,0,0.85);
+  text-transform: uppercase;
+}
+
+.chess-reset {
+  position: absolute;
+  bottom: -2.1rem;
+  right: 0;
+  z-index: 3;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, transform 0.3s;
+}
+
+.chess-reset:hover {
+  color: var(--gold);
+  border-color: rgba(255,215,0,0.5);
+  transform: rotate(-180deg);
 }
 
 /* Matchday — scoreboard with a pulsing live dot and stadium light sweep */

@@ -97,7 +97,23 @@ describe('Other Work shelf markup', () => {
     }
   })
 
-  it('has no MDFLD watermark in the flagship section', () => {
+  it('has no MDFLD text watermark in the flagship section', () => {
     expect(doc.querySelector('.mdfld-bg-word')).toBeNull()
+  })
+
+  it('uses the MDFLD logo as the flagship watermark', () => {
+    const logo = doc.querySelector('#mdfld .mdfld-bg-logo')
+    expect(logo).not.toBeNull()
+    expect(logo.getAttribute('src')).toBe('/mdfld-logo.png')
+    expect(existsSync(join(root, 'public', 'mdfld-logo.png'))).toBe(true)
+    expect(logo.getAttribute('aria-hidden')).toBe('true')
+  })
+
+  it('ships a playable chess board shell on the chess cover', () => {
+    const play = doc.querySelector('#chess-card .face-front .chess-play')
+    expect(play).not.toBeNull()
+    expect(play.querySelector('.chess-board')).not.toBeNull()
+    expect(play.querySelector('.chess-status')).not.toBeNull()
+    expect(play.querySelector('.chess-reset')).not.toBeNull()
   })
 })

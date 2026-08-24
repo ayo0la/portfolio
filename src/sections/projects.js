@@ -1,35 +1,16 @@
 // src/sections/projects.js
+import { Chess } from 'chess.js'
 
 export function initProjects() {
   initFlipCards()
   initPointerTilt()
   initCoverScenes()
+  initChessGame()
   initShelfIndex()
   fetchNpmDownloads()
 }
 
 /* ── Cover scenes — the art inside each cover reacts to the cursor ── */
-
-const chessScene = {
-  move(front, nx, ny) {
-    const knight = front.querySelector('.knight')
-    if (!knight) return
-    // snap to the 4×4 board square under the cursor
-    const col = Math.min(3, Math.floor(nx * 4))
-    const row = Math.min(3, Math.floor(ny * 4))
-    const w = front.clientWidth || 200
-    const tx = ((col + 0.5) / 4 - 0.5) * w * 0.6
-    const ty = ((row + 0.5) / 4 - 0.5) * w * 0.5
-    knight.classList.add('steered')
-    knight.style.transform = `translate(${tx.toFixed(0)}px, ${ty.toFixed(0)}px)`
-  },
-  leave(front) {
-    const knight = front.querySelector('.knight')
-    if (!knight) return
-    knight.classList.remove('steered')
-    knight.style.transform = ''
-  },
-}
 
 const mathScene = {
   move(front, nx, ny, e) {
@@ -151,7 +132,6 @@ function initCoverScenes() {
   if (!hoverFine?.matches || reduced?.matches) return
 
   const scenes = {
-    'chess-card': chessScene,
     'mathtrail-card': mathScene,
     'matchday-card': makeMatchdayScene(),
     'allstar-card': allstarScene,
@@ -256,8 +236,9 @@ function initFlipCards() {
     set(card, card.dataset.flipped === 'true')
 
     const toggle = (e) => {
-      // Links on the back face navigate; they never toggle the flip
-      if (e.target.closest('a')) return
+      // Links on the back face navigate and moves on a live chess board
+      // are gameplay — neither toggles the flip
+      if (e.target.closest('a, .chess-play[data-live="true"]')) return
       const flipped = card.dataset.flipped === 'true'
       unflipOthers(card)
       set(card, !flipped)
@@ -273,6 +254,118 @@ function initFlipCards() {
       }
     })
   })
+}
+
+
+/* ── Chess Rivals cover — a real playable game (you are white) ── */
+
+const CHESS_GLYPHS = { p: '♟', n: '♞', b: '♝', r: '♜', q: '♛', k: '♚' }
+
+function initChessGame() {
+  const play = document.querySelector('#chess-card .chess-play')
+  const boardEl = play?.querySelector('.chess-board')
+  const statusEl = play?.querySelector('.chess-status')
+  const resetEl = play?.querySelector('.chess-reset')
+  if (!play || !boardEl) return
+
+  const game = new Chess()
+  const files = 'abcdefgh'
+  const squares = {}
+  let selected = null
+  let replyTimer = null
+
+  for (let rank = 8; rank >= 1; rank--) {
+    for (let f = 0; f < 8; f++) {
+      const sq = files[f] + rank
+      const el = document.createElement('span')
+      el.className = 'sq ' + ((f + rank) % 2 === 1 ? 'sq-dark' : 'sq-light')
+      el.dataset.sq = sq
+      boardEl.appendChild(el)
+      squares[sq] = el
+    }
+  }
+
+  function render() {
+    game.board().forEach((row, ri) => {
+      row.forEach((cell, fi) => {
+        const el = squares[files[fi] + (8 - ri)]
+        el.textContent = cell ? CHESS_GLYPHS[cell.type] : ''
+        el.classList.toggle('pc-w', !!cell && cell.color === 'w')
+        el.classList.toggle('pc-b', !!cell && cell.color === 'b')
+      })
+    })
+  }
+
+  function clearHints() {
+    boardEl.querySelectorAll('.sel, .hint').forEach((el) => el.classList.remove('sel', 'hint'))
+  }
+
+  function setStatus(text) {
+    if (statusEl) statusEl.textContent = text
+  }
+
+  function endStatus() {
+    if (game.isCheckmate()) return game.turn() === 'b' ? 'MATE — YOU WIN' : 'MATE — GG'
+    if (game.isDraw() || game.isStalemate()) return 'DRAW'
+    return null
+  }
+
+  function blackReply() {
+    const moves = game.moves({ verbose: true })
+    if (!moves.length) return
+    const captures = moves.filter((m) => m.captured)
+    const pick = (captures.length ? captures : moves)[Math.floor(Math.random() * (captures.length ? captures.length : moves.length))]
+    game.move(pick)
+    render()
+    setStatus(endStatus() ?? (game.isCheck() ? 'CHECK — YOUR MOVE' : 'YOUR MOVE'))
+  }
+
+  function reset() {
+    game.reset()
+    if (replyTimer) clearTimeout(replyTimer)
+    replyTimer = null
+    selected = null
+    clearHints()
+    render()
+    setStatus('YOU PLAY WHITE')
+  }
+
+  render()
+  setStatus('YOU PLAY WHITE')
+
+  // Gameplay only makes sense with a fine pointer; on touch the board is art
+  const hoverFine = window.matchMedia?.('(hover: hover) and (pointer: fine)')
+  if (!hoverFine?.matches) return
+  play.dataset.live = 'true'
+
+  boardEl.addEventListener('click', (e) => {
+    const el = e.target.closest('.sq')
+    if (!el || game.isGameOver() || game.turn() !== 'w') return
+    const sq = el.dataset.sq
+
+    if (selected && el.classList.contains('hint')) {
+      game.move({ from: selected, to: sq, promotion: 'q' })
+      selected = null
+      clearHints()
+      render()
+      const over = endStatus()
+      if (over) return setStatus(over)
+      setStatus('BLACK THINKING…')
+      replyTimer = setTimeout(blackReply, 550)
+      return
+    }
+
+    clearHints()
+    selected = null
+    const piece = game.get(sq)
+    if (piece && piece.color === 'w') {
+      selected = sq
+      el.classList.add('sel')
+      game.moves({ square: sq, verbose: true }).forEach((m) => squares[m.to].classList.add('hint'))
+    }
+  })
+
+  resetEl?.addEventListener('click', reset)
 }
 
 function initShelfIndex() {

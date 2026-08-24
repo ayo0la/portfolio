@@ -141,7 +141,13 @@ describe('initProjects — cover scenes', () => {
       <div class="shelf-wall"><div class="shelf-row">
         <div class="shelf-card" id="chess-card" data-flipped="false" role="button" tabindex="0">
           <div class="cover"><div class="flipper">
-            <div class="face face-front cover-gen cover-chess"><div class="cover-motif"><span class="knight">♞</span></div></div>
+            <div class="face face-front cover-gen cover-chess">
+              <div class="cover-motif chess-play">
+                <div class="chess-board"></div>
+                <span class="chess-status"></span>
+                <button class="chess-reset" type="button">↺</button>
+              </div>
+            </div>
             <div class="face face-back"></div>
           </div></div>
         </div>
@@ -186,23 +192,59 @@ describe('initProjects — cover scenes', () => {
     expect(front.style.getPropertyValue('--my')).not.toBe('')
   })
 
-  it('steers the chess knight to the square under the cursor', () => {
-    mockHover(); sceneDom(); initProjects()
-    const card = document.getElementById('chess-card')
-    move(card, 190, 10)
-    const knight = card.querySelector('.knight')
-    expect(knight.classList.contains('steered')).toBe(true)
-    expect(knight.style.transform).toMatch(/translate/)
+  it('builds a 64-square chess board with the starting position', () => {
+    sceneDom(); initProjects()
+    const board = document.querySelector('#chess-card .chess-board')
+    expect(board.querySelectorAll('.sq')).toHaveLength(64)
+    expect(board.querySelector('[data-sq="e2"]').textContent).toBe('♟')
+    expect(board.querySelector('[data-sq="e8"]').textContent).toBe('♚')
+    expect(board.querySelector('[data-sq="e4"]').textContent).toBe('')
   })
 
-  it('releases the knight on mouseleave', () => {
+  it('marks the board live for fine pointers', () => {
+    mockHover(); sceneDom(); initProjects()
+    expect(document.querySelector('#chess-card .chess-play').dataset.live).toBe('true')
+  })
+
+  it('shows legal-move hints when a white piece is selected', () => {
+    mockHover(); sceneDom(); initProjects()
+    const board = document.querySelector('#chess-card .chess-board')
+    board.querySelector('[data-sq="e2"]').click()
+    expect(board.querySelector('[data-sq="e3"]').classList.contains('hint')).toBe(true)
+    expect(board.querySelector('[data-sq="e4"]').classList.contains('hint')).toBe(true)
+  })
+
+  it('plays the move and black replies', () => {
+    vi.useFakeTimers()
+    mockHover(); sceneDom(); initProjects()
+    const board = document.querySelector('#chess-card .chess-board')
+    board.querySelector('[data-sq="e2"]').click()
+    board.querySelector('[data-sq="e4"]').click()
+    expect(board.querySelector('[data-sq="e4"]').textContent).toBe('♟')
+    expect(board.querySelector('[data-sq="e2"]').textContent).toBe('')
+    vi.advanceTimersByTime(1000)
+    const status = document.querySelector('#chess-card .chess-status')
+    expect(status.textContent).toMatch(/YOUR MOVE|CHECK/)
+    vi.useRealTimers()
+  })
+
+  it('does not flip the card when the live board is clicked', () => {
     mockHover(); sceneDom(); initProjects()
     const card = document.getElementById('chess-card')
-    move(card, 190, 10)
-    card.dispatchEvent(new MouseEvent('mouseleave'))
-    const knight = card.querySelector('.knight')
-    expect(knight.classList.contains('steered')).toBe(false)
-    expect(knight.style.transform).toBe('')
+    card.querySelector('[data-sq="e2"]').click()
+    expect(card.dataset.flipped).toBe('false')
+  })
+
+  it('reset restores the starting position', () => {
+    vi.useFakeTimers()
+    mockHover(); sceneDom(); initProjects()
+    const board = document.querySelector('#chess-card .chess-board')
+    board.querySelector('[data-sq="e2"]').click()
+    board.querySelector('[data-sq="e4"]').click()
+    document.querySelector('#chess-card .chess-reset').click()
+    expect(board.querySelector('[data-sq="e2"]').textContent).toBe('♟')
+    expect(board.querySelector('[data-sq="e4"]').textContent).toBe('')
+    vi.useRealTimers()
   })
 
   it('scatters math glyphs away from the cursor', () => {
