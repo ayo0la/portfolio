@@ -2,8 +2,35 @@
 
 export function initProjects() {
   initFlipCards()
+  initPointerTilt()
   initShelfIndex()
   fetchNpmDownloads()
+}
+
+// Editions-style parallax: the cover leans toward the cursor while unflipped
+function initPointerTilt() {
+  const hoverFine = window.matchMedia?.('(hover: hover) and (pointer: fine)')
+  const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')
+  if (!hoverFine?.matches || reduced?.matches) return
+
+  document.querySelectorAll('.shelf-card[data-flipped]').forEach((card) => {
+    const flipper = card.querySelector('.flipper')
+    if (!flipper) return
+
+    card.addEventListener('mousemove', (e) => {
+      if (card.dataset.flipped === 'true') return
+      const r = card.getBoundingClientRect()
+      const x = (e.clientX - r.left) / r.width - 0.5
+      const y = (e.clientY - r.top) / r.height - 0.5
+      flipper.style.transition = 'transform 0.12s ease-out'
+      flipper.style.transform = `rotateX(${(-y * 14).toFixed(2)}deg) rotateY(${(x * 14).toFixed(2)}deg)`
+    })
+
+    card.addEventListener('mouseleave', () => {
+      if (card.dataset.flipped === 'true') return
+      flipper.style.transform = 'rotateX(0deg) rotateY(0deg)'
+    })
+  })
 }
 
 function initFlipCards() {
@@ -15,6 +42,12 @@ function initFlipCards() {
   function set(card, flipped) {
     card.dataset.flipped = String(flipped)
     card.setAttribute('aria-pressed', String(flipped))
+    // clear inline tilt so the CSS flip transition owns the transform
+    const flipper = card.querySelector('.flipper')
+    if (flipper) {
+      flipper.style.transform = ''
+      flipper.style.transition = ''
+    }
   }
 
   function unflipOthers(except) {

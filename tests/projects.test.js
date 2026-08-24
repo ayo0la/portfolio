@@ -96,6 +96,45 @@ describe.each(CARD_IDS)('initProjects — %s flip', (id) => {
   })
 })
 
+describe('initProjects — pointer tilt', () => {
+  it('sets tilt angle vars on the flipper on mousemove when hover media matches', () => {
+    window.matchMedia = vi.fn((q) => ({ matches: q.includes('hover'), addEventListener: vi.fn() }))
+    document.body.innerHTML = `
+      <div class="shelf-wall"><div class="shelf-row">${cardMarkup('squarea-card')}</div></div>
+      <div class="shelf-index"></div>
+    `
+    initProjects()
+    const card = document.getElementById('squarea-card')
+    card.getBoundingClientRect = () => ({ left: 0, top: 0, width: 200, height: 200 })
+    card.dispatchEvent(new MouseEvent('mousemove', { clientX: 200, clientY: 0, bubbles: true }))
+    const flipper = card.querySelector('.flipper')
+    expect(flipper.style.transform).toMatch(/rotateX/)
+    delete window.matchMedia
+  })
+
+  it('resets tilt vars on mouseleave', () => {
+    window.matchMedia = vi.fn((q) => ({ matches: q.includes('hover'), addEventListener: vi.fn() }))
+    document.body.innerHTML = `
+      <div class="shelf-wall"><div class="shelf-row">${cardMarkup('squarea-card')}</div></div>
+      <div class="shelf-index"></div>
+    `
+    initProjects()
+    const card = document.getElementById('squarea-card')
+    card.getBoundingClientRect = () => ({ left: 0, top: 0, width: 200, height: 200 })
+    card.dispatchEvent(new MouseEvent('mousemove', { clientX: 200, clientY: 0, bubbles: true }))
+    card.dispatchEvent(new MouseEvent('mouseleave', { bubbles: false }))
+    const flipper = card.querySelector('.flipper')
+    expect(flipper.style.transform).toBe('rotateX(0deg) rotateY(0deg)')
+    delete window.matchMedia
+  })
+
+  it('does not throw when matchMedia is unavailable (jsdom default)', () => {
+    expect(() => {
+      document.getElementById('squarea-card').dispatchEvent(new MouseEvent('mousemove', { bubbles: true }))
+    }).not.toThrow()
+  })
+})
+
 describe('initProjects — shelf index', () => {
   it('focuses the targeted card when an index entry is clicked', () => {
     const card = document.getElementById('npm-card')

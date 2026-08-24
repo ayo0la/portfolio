@@ -76,12 +76,17 @@ describe('Other Work shelf markup', () => {
     }
   })
 
-  it('ships every screenshot cover referenced from the page', () => {
-    const covers = [...doc.querySelectorAll('#projects .face-front img')]
-      .map(img => img.getAttribute('src'))
-    expect(covers.length).toBeGreaterThanOrEqual(6)
-    for (const src of covers) {
-      expect(existsSync(join(root, 'public', src.replace(/^\//, '')))).toBe(true)
+  it('only the client-sites fan uses screenshots; the rest are generative art', () => {
+    const fanImgs = doc.querySelectorAll('#client-card .face-front img')
+    expect(fanImgs.length).toBe(4)
+    for (const img of fanImgs) {
+      expect(existsSync(join(root, 'public', img.getAttribute('src').replace(/^\//, '')))).toBe(true)
+    }
+    for (const id of TILE_IDS.filter(t => t !== 'client-card')) {
+      const front = doc.getElementById(id).querySelector('.face-front')
+      expect(front.querySelector('img'), `${id} has no screenshot`).toBeNull()
+      expect(front.classList.contains('cover-gen'), `${id} is generative`).toBe(true)
+      expect(front.querySelector('.cover-motif'), `${id} has motif art`).not.toBeNull()
     }
   })
 
