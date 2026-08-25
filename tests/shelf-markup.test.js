@@ -101,12 +101,16 @@ describe('Other Work shelf markup', () => {
     expect(doc.querySelector('.mdfld-bg-word')).toBeNull()
   })
 
-  it('uses the MDFLD logo as the flagship watermark', () => {
+  it('uses the MDFLD logo as the flagship watermark, gold via CSS mask', () => {
     const logo = doc.querySelector('#mdfld .mdfld-bg-logo')
     expect(logo).not.toBeNull()
-    expect(logo.getAttribute('src')).toBe('/mdfld-logo.png')
-    expect(existsSync(join(root, 'public', 'mdfld-logo.png'))).toBe(true)
+    expect(logo.tagName).toBe('DIV')
     expect(logo.getAttribute('aria-hidden')).toBe('true')
+    expect(existsSync(join(root, 'public', 'mdfld-logo.png'))).toBe(true)
+    const css = readFileSync(join(root, 'src', 'style.css'), 'utf8')
+    const rule = css.slice(css.indexOf('.mdfld-bg-logo'))
+    expect(rule.slice(0, rule.indexOf('}'))).toContain('mask-image')
+    expect(rule.slice(0, rule.indexOf('}'))).toContain('--gold')
   })
 
   it('ships a playable chess board shell on the chess cover', () => {
