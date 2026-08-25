@@ -235,6 +235,24 @@ describe('initProjects — cover scenes', () => {
     expect(card.dataset.flipped).toBe('false')
   })
 
+  it('coaches when a black piece is clicked', () => {
+    mockHover(); sceneDom(); initProjects()
+    const board = document.querySelector('#chess-card .chess-board')
+    board.querySelector('[data-sq="e7"]').click()
+    expect(document.querySelector('#chess-card .chess-status').textContent).toMatch(/gold/i)
+  })
+
+  it("highlights black's reply squares so the move is visible", () => {
+    vi.useFakeTimers()
+    mockHover(); sceneDom(); initProjects()
+    const board = document.querySelector('#chess-card .chess-board')
+    board.querySelector('[data-sq="e2"]').click()
+    board.querySelector('[data-sq="e4"]').click()
+    vi.advanceTimersByTime(1000)
+    expect(board.querySelectorAll('.sq.last')).toHaveLength(2)
+    vi.useRealTimers()
+  })
+
   it('reset restores the starting position', () => {
     vi.useFakeTimers()
     mockHover(); sceneDom(); initProjects()

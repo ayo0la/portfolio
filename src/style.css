@@ -688,8 +688,12 @@ a.track:focus-visible .track-name {
   line-height: 0.95;
 }
 
-/* Iridescent sticker badge, Editions "NOW PLAYING" style */
+/* Iridescent sticker badge, Editions "NOW PLAYING" style.
+   Decorative only — it must never eat a click (on the chess cover a
+   swallowed click reads as a broken board), and it would cover the
+   top ranks of the chess board, so it stays hidden there. */
 .cover-sticker {
+  pointer-events: none;
   position: absolute;
   top: 2.1rem;
   left: 0.7rem;
@@ -725,6 +729,7 @@ a.track:focus-visible .track-name {
   right: 0.8rem;
   bottom: 0.8rem;
   z-index: 2;
+  pointer-events: none;
   font-family: var(--font-mono);
   font-size: 0.55rem;
   letter-spacing: 1.5px;
@@ -1010,6 +1015,11 @@ a.track:focus-visible .track-name {
   background-size: auto, 25% 25%, auto;
 }
 
+.cover-chess .cover-sticker { display: none; }
+
+/* The status chip lives where the tag would sit — one voice up top */
+.cover-chess .cover-tag { display: none; }
+
 /* The playable board: parallax off so the squares hold still under the cursor */
 .cover-chess .cover-motif.chess-play {
   translate: none;
@@ -1044,16 +1054,31 @@ a.track:focus-visible .track-name {
 .sq.pc-w { color: var(--gold); text-shadow: 0 0 8px rgba(255,215,0,0.4); }
 .sq.pc-b { color: #d9d9de; text-shadow: 0 0 8px rgba(0,0,0,0.8); }
 
-.sq.sel { box-shadow: inset 0 0 0 2px var(--gold); }
+.sq.pc-w:hover {
+  background: rgba(255,215,0,0.18);
+  text-shadow: 0 0 14px rgba(255,215,0,0.8);
+}
+
+.sq.sel { box-shadow: inset 0 0 0 2px var(--gold); background: rgba(255,215,0,0.14); }
+
+/* Black's latest move stays lit so the reply is easy to spot */
+.sq.last { background: rgba(120,160,255,0.16); }
+
+.sq.hint { cursor: pointer; }
 
 .sq.hint::after {
   content: '';
   position: absolute;
-  width: 26%;
-  height: 26%;
+  width: 34%;
+  height: 34%;
   border-radius: 50%;
-  background: rgba(255,215,0,0.5);
-  box-shadow: 0 0 8px rgba(255,215,0,0.5);
+  background: rgba(255,215,0,0.65);
+  box-shadow: 0 0 10px rgba(255,215,0,0.7);
+  animation: hint-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  50% { transform: scale(1.25); }
 }
 
 .sq.hint.pc-b::after {
@@ -1066,12 +1091,15 @@ a.track:focus-visible .track-name {
 
 .chess-status {
   position: absolute;
-  top: -1.35rem;
+  top: -1.4rem;
   right: 0;
-  font-size: 0.42rem;
+  font-size: 0.48rem;
+  font-weight: 700;
   letter-spacing: 1.5px;
-  color: rgba(255,215,0,0.85);
+  color: var(--gold);
+  text-shadow: 0 0 12px rgba(255,215,0,0.4);
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .chess-reset {
@@ -1275,7 +1303,8 @@ a.track:focus-visible .track-name {
   .knight,
   .cover-matchday::before,
   .md-dot,
-  .md-num-away {
+  .md-num-away,
+  .sq.hint::after {
     animation: none !important;
   }
 

@@ -300,6 +300,15 @@ function initChessGame() {
     boardEl.querySelectorAll('.sel, .hint').forEach((el) => el.classList.remove('sel', 'hint'))
   }
 
+  function markLastMove() {
+    boardEl.querySelectorAll('.last').forEach((el) => el.classList.remove('last'))
+    const last = game.history({ verbose: true }).at(-1)
+    if (last) {
+      squares[last.from]?.classList.add('last')
+      squares[last.to]?.classList.add('last')
+    }
+  }
+
   function setStatus(text) {
     if (statusEl) statusEl.textContent = text
   }
@@ -317,6 +326,7 @@ function initChessGame() {
     const pick = (captures.length ? captures : moves)[Math.floor(Math.random() * (captures.length ? captures.length : moves.length))]
     game.move(pick)
     render()
+    markLastMove()
     setStatus(endStatus() ?? (game.isCheck() ? 'CHECK — YOUR MOVE' : 'YOUR MOVE'))
   }
 
@@ -326,12 +336,13 @@ function initChessGame() {
     replyTimer = null
     selected = null
     clearHints()
+    boardEl.querySelectorAll('.last').forEach((el) => el.classList.remove('last'))
     render()
-    setStatus('YOU PLAY WHITE')
+    setStatus('YOU PLAY WHITE — CLICK A GOLD PIECE')
   }
 
   render()
-  setStatus('YOU PLAY WHITE')
+  setStatus('YOU PLAY WHITE — CLICK A GOLD PIECE')
 
   // Gameplay only makes sense with a fine pointer; on touch the board is art
   const hoverFine = window.matchMedia?.('(hover: hover) and (pointer: fine)')
@@ -362,6 +373,8 @@ function initChessGame() {
       selected = sq
       el.classList.add('sel')
       game.moves({ square: sq, verbose: true }).forEach((m) => squares[m.to].classList.add('hint'))
+    } else if (piece && piece.color === 'b') {
+      setStatus('THE GOLD PIECES ARE YOURS')
     }
   })
 
