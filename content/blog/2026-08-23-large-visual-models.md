@@ -30,6 +30,20 @@ One more thing happened this week. I spent a 90 minute drive with a friend, and 
 
 I wrote in [my last post](/blog/mine-to-solve/) about hitting the ceiling of what teaching myself under pressure can get me to, and about the two boards I'm working, jobs and grad school, at the same time. His version of the argument hit different because it wasn't theory. It was a cost he actually paid and a return he actually got. There's more to say about that decision than fits here, and I'll say it in its own post soon.
 
+## What the scars say
+
+One more thing from this week, and it's the one that ties the rest together. The message at church was about scars and healing, and it hasn't left me.
+
+The thread went like this. After Adam and Eve fell, their first instinct was to sew fig leaves and cover themselves (Genesis 3:7). God's response was not to ignore what happened. He made them a better covering Himself (Genesis 3:21). Psalm 147:3 says He heals the brokenhearted and binds up their wounds. And when Jesus appeared after the resurrection, fully victorious, He still had the marks in His hands and the wound in His side (John 20:19-29). The scars didn't disappear. They stopped being evidence of suffering and became evidence of what He had overcome.
+
+A wound says "I was hurt." A scar says "I was hurt, and I healed."
+
+I have the fig leaf instinct. My default is to present things polished: ship the feature, post the win, save the messy part for later, after it has turned into a success story. The honest stuff, the company I love most getting the least of me, building from my parents' house, teaching myself everything under pressure because there was no other path, my instinct is to cover all of that until it looks like victory. [Writing about the crossroads](/blog/mine-to-solve/) was the first time I took the fig leaves off in public, and it was uncomfortable.
+
+But look at my friend in the car. His grad school debt was a wound once. It felt like a bad decision, he said so himself. Now it's a scar, and the scar is exactly what made his advice worth 90 minutes of my attention. Nobody learns anything from a person with no marks on them.
+
+So I'm learning to hold my own story that way. The obscure years, the neglected company, the dataset built at night, the applications going out from a borrowed room. I don't have to hide any of it until it becomes a win. If God brings me through it, and I believe He will, these will be the scars that say healing happened here. What represents pain right now can become the testimony later. I'd rather embrace them now than pretend I never had them.
+
 ## Why I'm okay doing a bunch at once
 
 I'm doing a lot right now. Two startups, coursework, open source, applications, this blog. I'm okay with that, and honestly it's more than okay. I like being busy. I wake up every day with a bunch of things in my head and I just get right to work.
