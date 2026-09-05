@@ -1,5 +1,12 @@
 [
   {
+    "slug": "the-search-that-should-have-been-the-start",
+    "title": "The Search That Should Have Been the Start",
+    "date": "2026-09-05",
+    "dateDisplay": "September 5, 2026",
+    "tldr": "I spent an evening hunting a pair of boots across eBay, Instagram, Depop, Facebook Marketplace and half a dozen boutique stores. It made me angry enough to build the thing MDFLD should have started with almost two years ago. It now indexes about thirty one thousand listings from our little server."
+  },
+  {
     "slug": "large-visual-models",
     "title": "Large Visual Models Don't Exist Yet. I Want to Build Them.",
     "date": "2026-08-23",
@@ -12,12 +19,5 @@
     "date": "2026-08-16",
     "dateDisplay": "August 16, 2026",
     "tldr": "Between two startups, the one whose problem I love most is the one getting the least of me right now. Some honesty about why, and about the crossroads I'm actually at."
-  },
-  {
-    "slug": "teaching-agents-your-voice",
-    "title": "Teaching an AI to write like you",
-    "date": "2026-08-10",
-    "dateDisplay": "August 10, 2026",
-    "tldr": "Our agents drafted messages that sounded like an AI. The fix was not a better prompt or a fine-tune, it was noticing that every edit staff already made was a free training signal we were throwing away. Shipped this week."
   }
 ]

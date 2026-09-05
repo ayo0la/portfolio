@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Search That Should Have Been the Start — Ayoola Morakinyo</title>
+<link rel="stylesheet" href="/blog/blog.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+<div class="blog-page">
+  <a class="blog-back" href="/">← back to portfolio</a>
+  <article class="blog-post">
+    <h1>The Search That Should Have Been the Start</h1>
+    <p class="blog-date">September 5, 2026</p>
+    <div class="blog-body"><p>It has been two weeks since I posted here. For someone who wrote a whole post about liking to be busy, going quiet on the one place I said I&#39;d think out loud is a little embarrassing. So, yeah, noted, haha. Here&#39;s what I was doing instead.</p>
+<h2>The search</h2>
+<p>Late in August I needed a pair of boots. Not for content or the dataset. I needed a replacement so I can have something to play in. I had a model in mind, the Predator Absolado LZ, my size obviously, and a number I wasn&#39;t willing to go above.</p>
+<p>So I did what I always do, what every boot head does, and what I somehow keep forgetting is completely insane. I opened eBay. I opened three boutique stores I trust. I went through a handful of Instagram accounts that sell retro pairs out of their DMs. I checked Facebook Marketplace. I checked Depop. Then I went back to eBay and searched again with different words, because eBay doesn&#39;t know what a boot is. It knows what a shoe is, and it knows what &quot;size 11&quot; is, and it has no idea that the thing I&#39;m looking for has a model, a generation, a colorway, and a sole type, and that all of those matter more than the word &quot;predator&quot; in a title.</p>
+<p>I found the pair eventually. Right size, right price, on eBay, from a seller whose photos I zoomed into for a long time before I paid. It&#39;s a great pair and I&#39;m extremely happy with it.</p>
+<p>I was furious after the purchase, and the reason is obvious in hindsight. I run a company whose entire reason to exist is trust in your boots and kits. I&#39;ve spent almost two years on it. And when I, personally, needed a pair, MDFLD did nothing for me. I went through the exact same scattered, squinting, tab-hoarding process as anyone else, and I settled for the same bad experience.</p>
+<p>That was the moment my mind started racing.</p>
+<h2>The second time frustration built something</h2>
+<p>The first time I felt this exact frustration, it turned into MDFLD. A marketplace where the listings are real and the boots are what they claim to be. That idea is still right. But a marketplace needs supply before it&#39;s useful to anyone, and supply is the slowest thing in the world to build from zero.</p>
+<p>This time the frustration pointed somewhere else. I didn&#39;t need a better place to buy. I needed a better place to look. Every boot I could have bought that night already existed on someone&#39;s site. What didn&#39;t exist was a single front door that understood boots and could show me all of them at once.</p>
+<p>So I stopped work on other things and built that. The mental model was Kayak: be the front door, not the warehouse.</p>
+<h2>What it actually is</h2>
+<p>The aggregator pulls listings from other places and lays the MDFLD taxonomy over them. Model, generation, colorway, size. That taxonomy already existed, it&#39;s the same data behind the <a href="https://mdfld.co/explore">boot cloud on the explore page</a>, and it turned out to be the most valuable thing I&#39;d built without knowing it.</p>
+<p>The sources so far are eBay through its official API, and retro specialists that run on Shopify. Depop and Mercari are wired up but off, because both of them block headless browsers and I&#39;d rather have a couple sources that work than 10 that flake.</p>
+<p>The real product is the normalizer, the code that reads a seller&#39;s title and figures out what boot it is. Sellers write titles like they&#39;re texting. The normalizer pulls out the size, the product code if there is one, the sole type, the condition, and then matches what&#39;s left against the taxonomy. When it&#39;s confident, the listing lands under the right boot. When it isn&#39;t, it doesn&#39;t guess, and I fix it by hand in an admin queue. Every correction becomes a rule, so the thing gets a little smarter each week.</p>
+<p>Right now it holds about thirty one thousand active listings across about fourteen hundred boots, and it&#39;s live on <a href="https://mdfld.co">mdfld.co</a>.</p>
+<h2>Running it on one small box</h2>
+<p>All of this runs on one server, next to the same Postgres database that runs the rest of the site. No queue, no orchestration, nothing with a control plane.</p>
+<p>The ingest is a systemd timer that fires every six hours. Each run takes a Postgres advisory lock before it starts, so if one pass runs long, the next one sees the lock and quietly goes back to sleep instead of stacking on top of it. There&#39;s a retention pass that expires listings we haven&#39;t seen in a while, and a weekly job that re-runs the matcher over old listings once the rules have improved, so mistakes from last month get fixed without me touching them.</p>
+<p>It&#39;s boring, and it has not needed my attention once since it went in. I&#39;ll take boring lol.</p>
+<h2>This should have been where I started</h2>
+<p>Here&#39;s the part that&#39;s harder to write.</p>
+<p>Working on this, I kept having the same thought: this is where I should have started. Before the marketplace, before the checkout, before the shipping labels, before the verification work I care so much about. An index that understands boots creates value the first day it runs, for anyone who searches, with no sellers needed. Everything else I built needed someone else to show up first.</p>
+<p>I&#39;ve made a lot of mistakes in close to two years on MDFLD. I built in the order that made sense to me instead of the order that would have made something useful fastest. I&#39;m only now starting to understand how this has to work, and the honest reason I understand it is that I got to feel the original problem again, as a customer, on a Monday night.</p>
+<p>I wrote <a href="/blog/mine-to-solve/">a few weeks ago</a> that this problem feels like mine to solve whether or not MDFLD is the vehicle. I still think that. What changed is that I now know which door the solution comes through. It comes through the search. Everything else, the trust layer, the price history, the legit check, hangs off the moment someone types in the boot they want and finally sees all of them in one place.</p>
+<p>Nearly two years to learn that. It&#39;s worth it, I think, but I&#39;d rather you learn it from this post than the way I did.</p>
+</div>
+  </article>
+</div>
+</body>
+</html>
