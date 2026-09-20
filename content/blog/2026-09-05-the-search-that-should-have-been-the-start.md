@@ -1,20 +1,22 @@
 ---
 title: "The Search That Should Have Been the Start"
 date: 2026-09-05
-tldr: "I spent an evening hunting a pair of boots across eBay, Instagram, Depop, Facebook Marketplace and half a dozen boutique stores. It made me angry enough to build the thing MDFLD should have started with almost two years ago. It now indexes about thirty one thousand listings from our little server."
+tldr: "One evening I hunted a single pair of boots across eBay, Instagram, Depop, Facebook Marketplace and half a dozen boutique stores, knocking on every door but the right one. The anger that followed built the thing MDFLD should have started with almost two years ago, and it now indexes about thirty one thousand listings from our little server."
 ---
 
-It has been two weeks since I posted here. For someone who wrote a whole post about liking to be busy, going quiet on the one place I said I'd think out loud is a little embarrassing. So, yeah, noted, haha. Here's what I was doing instead.
+Two weeks have passed since I last posted here. For a man who wrote a whole post about liking to be busy, going quiet on the one place I said I'd think out loud is a little embarrassing. So, yeah, noted, haha. Here's what I was doing instead.
 
 ## The search
 
-Late in August I needed a pair of boots. Not for content or the dataset. I needed a replacement so I can have something to play in. I had a model in mind, the Predator Absolado LZ, my size obviously, and a number I wasn't willing to go above.
+Late in August I needed a pair of boots. Not for content, not for the dataset. I needed a replacement so I can have something to play in. I had a model in mind, the Predator Absolado LZ, my size obviously, and a number I was not willing to go above. Thus armed, I set out on the hunt.
 
-So I did what I always do, what every boot head does, and what I somehow keep forgetting is completely insane. I opened eBay. I opened three boutique stores I trust. I went through a handful of Instagram accounts that sell retro pairs out of their DMs. I checked Facebook Marketplace. I checked Depop. Then I went back to eBay and searched again with different words, because eBay doesn't know what a boot is. It knows what a shoe is, and it knows what "size 11" is, and it has no idea that the thing I'm looking for has a model, a generation, a colorway, and a sole type, and that all of those matter more than the word "predator" in a title.
+So began the ritual. Every boot head knows it, and I somehow keep forgetting that it is completely insane. eBay first. Then three boutique stores I trust. Then a handful of Instagram accounts that sell retro pairs out of their DMs. Then Facebook Marketplace. Then Depop. Then back to eBay, searching again with different words, because eBay doesn't know what a boot is. It knows what a shoe is, and it knows what "size 11" is, and it has no idea that the thing I'm looking for has a model, a generation, a colorway, and a sole type, and that all of those matter more than the word "predator" in a title. A search box like that reads a title the way a stranger reads a name off a door: it can say the thing out loud, but it knows nothing at all about who lives there.
 
-I found the pair eventually. Right size, right price, on eBay, from a seller whose photos I zoomed into for a long time before I paid. It's a great pair and I'm extremely happy with it.
+Door after door, then, each one opening onto a room that had never heard of what I was asking for.
 
-I was furious after the purchase, and the reason is obvious in hindsight. I run a company whose entire reason to exist is trust in your boots and kits. I've spent almost two years on it. And when I, personally, needed a pair, MDFLD did nothing for me. I went through the exact same scattered, squinting, tab-hoarding process as anyone else, and I settled for the same bad experience.
+Victory came, eventually. Right size, right price, on eBay, from a seller whose photos I zoomed into for a long time before I paid. It's a great pair and I'm extremely happy with it.
+
+Fury arrived after the purchase, and the reason is obvious in hindsight. I run a company whose entire reason to exist is trust in your boots and kits. Almost two years I have spent on it. And when I, personally, needed a pair, MDFLD did nothing for me. I went through the exact same scattered, squinting, tab-hoarding process as anyone else, and I settled for the same bad experience. What does it say about a man who builds a company for this exact problem, then solves it the way everyone else does, by hand, tab by tab, late at night? It cost me an evening, a long squint at a stranger's photos, and whatever pride a founder has left when his own company cannot help him.
 
 That was the moment my mind started racing.
 
@@ -22,7 +24,7 @@ That was the moment my mind started racing.
 
 The first time I felt this exact frustration, it turned into MDFLD. A marketplace where the listings are real and the boots are what they claim to be. That idea is still right. But a marketplace needs supply before it's useful to anyone, and supply is the slowest thing in the world to build from zero.
 
-This time the frustration pointed somewhere else. I didn't need a better place to buy. I needed a better place to look. Every boot I could have bought that night already existed on someone's site. What didn't exist was a single front door that understood boots and could show me all of them at once.
+This time the frustration pointed somewhere else. What I needed, after the tabs and the DMs and the second search with different words, was not a better place to buy but a better place to look. Every boot I could have bought that night already existed on someone's site. What didn't exist was a single front door that understood boots and could show me all of them at once.
 
 So I stopped work on other things and built that. The mental model was Kayak: be the front door, not the warehouse.
 
@@ -48,10 +50,10 @@ It's boring, and it has not needed my attention once since it went in. I'll take
 
 Here's the part that's harder to write.
 
-Working on this, I kept having the same thought: this is where I should have started. Before the marketplace, before the checkout, before the shipping labels, before the verification work I care so much about. An index that understands boots creates value the first day it runs, for anyone who searches, with no sellers needed. Everything else I built needed someone else to show up first.
+Working on this, the same thought kept returning: this is where I should have started. Before the marketplace, before the checkout, before the shipping labels, before the verification work I care so much about. An index that understands boots creates value the first day it runs, for anyone who searches, with no sellers needed. Everything else I built needed someone else to show up first.
 
-I've made a lot of mistakes in close to two years on MDFLD. I built in the order that made sense to me instead of the order that would have made something useful fastest. I'm only now starting to understand how this has to work, and the honest reason I understand it is that I got to feel the original problem again, as a customer, on a Monday night.
+I've made a lot of mistakes in close to two years on MDFLD. I built in the order that made sense to me instead of the order that would have made something useful fastest. Only now am I starting to understand how this has to work, and the honest reason I understand it is that I got to feel the original problem again, as a customer, on a Monday night.
 
 I wrote [a few weeks ago](/blog/mine-to-solve/) that this problem feels like mine to solve whether or not MDFLD is the vehicle. I still think that. What changed is that I now know which door the solution comes through. It comes through the search. Everything else, the trust layer, the price history, the legit check, hangs off the moment someone types in the boot they want and finally sees all of them in one place.
 
-Nearly two years to learn that. It's worth it, I think, but I'd rather you learn it from this post than the way I did.
+Nearly two years to find the door. Worth it, I think. But I'd rather you learn where it is from this post than the way I did, one closed door at a time.

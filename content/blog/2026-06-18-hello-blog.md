@@ -6,5 +6,5 @@ tldr: "Why I'm writing this and what to expect."
 
 ## Why this exists
 
-I'll be posting progress on FGVCM and other thoughts here as I go. We're gonna uncover and discover some pretty cool and useful things!
+Every expedition needs a logbook, and this one is mine. Here I shall record the progress of FGVCM, along with whatever other thoughts refuse to leave me alone. We are going to uncover and discover some pretty cool and useful things. Onward we go!
 
