@@ -1,5 +1,12 @@
 [
   {
+    "slug": "at-26-the-finish-line-looked-close",
+    "title": "At 26, the Finish Line Looked Close",
+    "date": "2026-09-20",
+    "dateDisplay": "September 20, 2026",
+    "tldr": "A friend I've had since I was twelve told me he is seriously ill. It was the same week I met a newborn, posted for MDFLD for the first time in three months, and stopped being so relaxed about time."
+  },
+  {
     "slug": "the-search-that-should-have-been-the-start",
     "title": "The Search That Should Have Been the Start",
     "date": "2026-09-05",
@@ -12,12 +19,5 @@
     "date": "2026-08-23",
     "dateDisplay": "August 23, 2026",
     "tldr": "What you couldn't do six months ago, you can do now. Everyone is using AI as search while it quietly became a build tool. And the thing I want to build with it is the LLM equivalent for the visual world."
-  },
-  {
-    "slug": "mine-to-solve",
-    "title": "The Problem I Still Think Is Mine to Solve",
-    "date": "2026-08-16",
-    "dateDisplay": "August 16, 2026",
-    "tldr": "Between two startups, the one whose problem I love most is the one getting the least of me right now. Some honesty about why, and about the crossroads I'm actually at."
   }
 ]
