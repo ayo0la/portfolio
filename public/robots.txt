@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ayoola-morakinyo.vercel.app/sitemap.xml

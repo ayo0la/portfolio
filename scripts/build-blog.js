@@ -8,6 +8,7 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { parsePost, sortByDateDesc, toIndexEntries } from './blog-transform.js'
 import { renderPostHtml, renderIndexHtml } from './blog-templates.js'
+import { renderRss, renderSitemap, injectHomeBlogCards } from './site-feeds.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -17,10 +18,12 @@ const DEFAULTS = {
   styleSrc: resolve(__dirname, '../src/blog-style.css'),
   styleOut: resolve(__dirname, '../public/blog/blog.css'),
   indexJsonOut: resolve(__dirname, '../src/data/blog-index.json'),
+  siteDir: resolve(__dirname, '../public'),
+  homeHtml: resolve(__dirname, '../index.html'),
 }
 
 export function buildBlog(paths = {}) {
-  const { contentDir, outDir, styleSrc, styleOut, indexJsonOut } = { ...DEFAULTS, ...paths }
+  const { contentDir, outDir, styleSrc, styleOut, indexJsonOut, siteDir, homeHtml } = { ...DEFAULTS, ...paths }
 
   const files = existsSync(contentDir)
     ? readdirSync(contentDir).filter(f => f.endsWith('.md'))
@@ -46,6 +49,16 @@ export function buildBlog(paths = {}) {
 
   mkdirSync(dirname(indexJsonOut), { recursive: true })
   writeFileSync(indexJsonOut, JSON.stringify(toIndexEntries(posts), null, 2))
+
+  // Site-wide files only when the caller targets real paths (tests pass temp
+  // dirs for these, or leave them out to keep the real site untouched).
+  if (!paths.contentDir || paths.siteDir) {
+    writeFileSync(resolve(siteDir, 'rss.xml'), renderRss(posts))
+    writeFileSync(resolve(siteDir, 'sitemap.xml'), renderSitemap(posts))
+  }
+  if ((!paths.contentDir || paths.homeHtml) && existsSync(homeHtml)) {
+    writeFileSync(homeHtml, injectHomeBlogCards(readFileSync(homeHtml, 'utf-8'), toIndexEntries(posts)))
+  }
 
   return posts
 }

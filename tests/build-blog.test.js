@@ -66,3 +66,16 @@ describe('buildBlog', () => {
     expect(json).toEqual([])
   })
 })
+
+describe('buildBlog site files', () => {
+  it('writes rss.xml and sitemap.xml and fills the homepage blog list', () => {
+    const siteDir = join(root, 'site')
+    const homeHtml = join(root, 'index.html')
+    mkdirSync(siteDir, { recursive: true })
+    writeFileSync(homeHtml, '<div id="blog-cards" class="projects-grid"></div>')
+    buildBlog({ contentDir, outDir, styleSrc, styleOut, indexJsonOut, siteDir, homeHtml })
+    expect(readFileSync(join(siteDir, 'rss.xml'), 'utf-8')).toContain('/blog/fgvm-first-results/')
+    expect(readFileSync(join(siteDir, 'sitemap.xml'), 'utf-8')).toContain('/blog/fgvm-first-results/')
+    expect(readFileSync(homeHtml, 'utf-8')).toContain('href="/blog/fgvm-first-results/"')
+  })
+})

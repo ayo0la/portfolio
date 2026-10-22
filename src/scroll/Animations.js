@@ -112,14 +112,6 @@ function _animateMdfld() {
     ease: 'power2.out',
   })
 
-  gsap.from('.mdfld-bg-word', {
-    scrollTrigger: { trigger: '#mdfld', start: 'top 70%' },
-    opacity: 0,
-    scale: 1.05,
-    duration: 1,
-    ease: 'power2.out',
-  })
-
   gsap.from('.mdfld-desc', {
     scrollTrigger: { trigger: '#mdfld', start: 'top 70%' },
     y: 20,

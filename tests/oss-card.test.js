@@ -8,18 +8,23 @@ const html = readFileSync(resolve(__dirname, '../index.html'), 'utf-8')
 
 function ossCard() {
   const start = html.indexOf('id="oss-card"')
-  const end = html.indexOf('npm-collapse-hint', start)
+  const end = html.indexOf('GITHUB →', start)
   return html.slice(start, end)
 }
 
-describe('open source card', () => {
-  it('lists the merged rf-detr PR #1325', () => {
-    expect(ossCard()).toContain('https://github.com/roboflow/rf-detr/pull/1325')
-  })
+const MERGED = [
+  ['supervision #2479', 'https://github.com/roboflow/supervision/pull/2479'],
+  ['supervision #2558', 'https://github.com/roboflow/supervision/pull/2558'],
+  ['supervision #2559', 'https://github.com/roboflow/supervision/pull/2559'],
+  ['rf-detr #1325', 'https://github.com/roboflow/rf-detr/pull/1325'],
+  ['imageio #1208', 'https://github.com/imageio/imageio/pull/1208'],
+]
 
-  it('marks both Roboflow PRs as merged', () => {
+describe('open source card', () => {
+  it('lists every merged upstream PR, each marked merged', () => {
     const card = ossCard()
-    for (const name of ['roboflow/supervision · PR #2479', 'roboflow/rf-detr · PR #1325']) {
+    for (const [name, url] of MERGED) {
+      expect(card, `${name} link present`).toContain(url)
       const start = card.indexOf(name)
       expect(start, `${name} row present`).toBeGreaterThan(-1)
       const row = card.slice(start, card.indexOf('</a>', start))
@@ -27,11 +32,17 @@ describe('open source card', () => {
     }
   })
 
-  it('shows the rf-detr star count', () => {
-    expect(ossCard()).toContain('9k ★')
+  it('does not list PRs that are still open', () => {
+    expect(ossCard()).not.toContain('hiring-agent')
   })
 
-  it('summarizes the combined star count as 65,000+', () => {
-    expect(ossCard()).toContain('65,000+ combined stars')
+  it('shows the merged count on the cover', () => {
+    expect(ossCard()).toContain('5× MERGED')
+  })
+
+  it('summarizes the combined star count of the merged repos', () => {
+    const card = ossCard()
+    expect(card).toContain('62,000+ combined stars')
+    expect(card).toContain('62K')
   })
 })

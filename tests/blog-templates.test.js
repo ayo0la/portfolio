@@ -124,3 +124,38 @@ describe('HTML escaping in renderIndexHtml', () => {
     expect(html).not.toContain('<tag>')
   })
 })
+
+describe('post and index metadata', () => {
+  const SITE = 'https://ayoola-morakinyo.vercel.app'
+  const html = renderPostHtml(post)
+  const index = renderIndexHtml([post])
+
+  it('uses the tldr as the description and preview text', () => {
+    expect(html).toContain('<meta name="description" content="Early accuracy numbers and what surprised me.">')
+    expect(html).toContain('<meta property="og:description" content="Early accuracy numbers and what surprised me.">')
+  })
+
+  it('gives each post an article preview with absolute URLs', () => {
+    expect(html).toContain('<meta property="og:type" content="article">')
+    expect(html).toContain(`<meta property="og:url" content="${SITE}/blog/fgvm-first-results/">`)
+    expect(html).toContain(`<meta property="og:image" content="${SITE}/og.png">`)
+    expect(html).toContain('<meta name="twitter:card" content="summary_large_image">')
+    expect(html).toContain(`<link rel="canonical" href="${SITE}/blog/fgvm-first-results/">`)
+  })
+
+  it('titles pages without em dashes', () => {
+    expect(html).toContain('<title>First results from FGVM | Ayoola Morakinyo</title>')
+    expect(index).toContain('<title>Blog | Ayoola Morakinyo</title>')
+  })
+
+  it('links the RSS feed from both pages', () => {
+    for (const page of [html, index]) {
+      expect(page).toContain('<link rel="alternate" type="application/rss+xml" title="Ayoola Morakinyo" href="/rss.xml">')
+    }
+  })
+
+  it('gives the index a description and canonical URL', () => {
+    expect(index).toContain('<meta name="description" content=')
+    expect(index).toContain(`<link rel="canonical" href="${SITE}/blog/">`)
+  })
+})

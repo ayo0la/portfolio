@@ -25,5 +25,3 @@ So two Notion boards sit open. One is jobs. One is grad school. I am applying to
 What I do know is this. Whatever the boards decide, whatever league I end up playing in, whichever team pays my bills, the problem does not go away for me. That part I am sure of. The rest, I am figuring out in public, starting with this post.
 
 The player is still on my team sheet. Benched for now, and absolutely not for sale.
-
-More on this out loud in The Audio Blog.

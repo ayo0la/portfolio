@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Ayoola Morakinyo</title>
+    <link>https://ayoola-morakinyo.vercel.app/blog/</link>
+    <description>Founder of MDFLD. Machine learning and software engineer building computer vision for football boots and kit. Atlanta.</description>
+    <language>en</language>
+    <item>
+      <title>At 26, the Finish Line Looked Close</title>
+      <link>https://ayoola-morakinyo.vercel.app/blog/at-26-the-finish-line-looked-close/</link>
+      <guid>https://ayoola-morakinyo.vercel.app/blog/at-26-the-finish-line-looked-close/</guid>
+      <pubDate>Sun, 20 Sep 2026 00:00:00 GMT</pubDate>
+      <description>A friend I have had since I was twelve told me he is seriously ill. He is 26. In the same week I met a newborn at his start line, MDFLD posted for the first time in three months, and I renewed my outlook on time.</description>
+    </item>
+    <item>
+      <title>The Search That Should Have Been the Start</title>
+      <link>https://ayoola-morakinyo.vercel.app/blog/the-search-that-should-have-been-the-start/</link>
+      <guid>https://ayoola-morakinyo.vercel.app/blog/the-search-that-should-have-been-the-start/</guid>
+      <pubDate>Sat, 05 Sep 2026 00:00:00 GMT</pubDate>
+      <description>One evening I hunted a single pair of boots across eBay, Instagram, Depop, Facebook Marketplace and half a dozen boutique stores, knocking on every door but the right one. The anger that followed built the thing MDFLD should have started with almost two years ago, and it now indexes about thirty one thousand listings from our little server.</description>
+    </item>
+    <item>
+      <title>Large Visual Models Don&#39;t Exist Yet. I Want to Build Them.</title>
+      <link>https://ayoola-morakinyo.vercel.app/blog/large-visual-models/</link>
+      <guid>https://ayoola-morakinyo.vercel.app/blog/large-visual-models/</guid>
+      <pubDate>Sun, 23 Aug 2026 00:00:00 GMT</pubDate>
+      <description>What you could not do six months ago, you can do now. The world is using AI as a search box while it quietly became a build tool, and the thing I intend to build with it is the LLM equivalent for the visual world.</description>
+    </item>
+    <item>
+      <title>The Problem I Still Think Is Mine to Solve</title>
+      <link>https://ayoola-morakinyo.vercel.app/blog/mine-to-solve/</link>
+      <guid>https://ayoola-morakinyo.vercel.app/blog/mine-to-solve/</guid>
+      <pubDate>Sun, 16 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Between two startups, the one whose problem I love most is the one I have left on the bench. Some honesty about why, and about the crossroads I am actually standing at.</description>
+    </item>
+    <item>
+      <title>Teaching an AI to write like you</title>
+      <link>https://ayoola-morakinyo.vercel.app/blog/teaching-agents-your-voice/</link>
+      <guid>https://ayoola-morakinyo.vercel.app/blog/teaching-agents-your-voice/</guid>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Our agents drafted messages that sounded like an AI. The fix was not a better prompt or a fine-tune, it was noticing that every edit staff already made was free film we were throwing away. Shipped this week.</description>
+    </item>
+    <item>
+      <title>How I ship as a company of one</title>
+      <link>https://ayoola-morakinyo.vercel.app/blog/company-of-one/</link>
+      <guid>https://ayoola-morakinyo.vercel.app/blog/company-of-one/</guid>
+      <pubDate>Sun, 09 Aug 2026 00:00:00 GMT</pubDate>
+      <description>The system that lets one engineer ship for two companies: specs before code, tests before implementation, and AI agents that do the typing while I keep the thinking.</description>
+    </item>
+    <item>
+      <title>Starting this blog</title>
+      <link>https://ayoola-morakinyo.vercel.app/blog/hello-blog/</link>
+      <guid>https://ayoola-morakinyo.vercel.app/blog/hello-blog/</guid>
+      <pubDate>Thu, 18 Jun 2026 00:00:00 GMT</pubDate>
+      <description>Why I&#39;m writing this and what to expect.</description>
+    </item>
+  </channel>
+</rss>

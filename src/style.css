@@ -102,6 +102,10 @@ section {
   position: relative;
 }
 
+/* Short sections size to their content instead of a full screen each. */
+#about, #mdfld, #blog, #activity { min-height: 0; }
+#contact { min-height: 60vh; }
+
 .section-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -546,10 +550,12 @@ section {
 
 .track-list {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .track {
@@ -1556,8 +1562,13 @@ a.track:focus-visible .track-name {
   .shelf-wall { gap: 2.5rem; }
   .cover-name { font-size: 1.3rem; }
   .cover-pill { display: none; }
-  /* Flipped card grows only slightly on small screens so it stays in view */
-  .shelf-row .shelf-card[data-flipped="true"] .cover { transform: scale(1.08); }
+  /* Flipped card takes the full shelf width on small screens so its list fits */
+  .shelf-row .shelf-card[data-flipped="true"] { grid-column: 1 / -1; }
+  .shelf-row .shelf-card[data-flipped="true"] .cover { width: 100%; transform: none; }
+  .shelf-card[data-flipped="true"] .back-blurb { font-size: 0.8rem; }
+  .shelf-card[data-flipped="true"] .track { padding: 0.55rem 0; }
+  .shelf-card[data-flipped="true"] .track-name { font-size: 0.78rem; }
+  .shelf-card[data-flipped="true"] .track-meta { font-size: 0.66rem; }
   .face-back { padding: 0.7rem; }
   .back-blurb { font-size: 0.55rem; margin-bottom: 0.35rem; }
   .track { padding: 0.3rem 0; }
