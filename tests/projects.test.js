@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { initProjects } from '../src/sections/projects.js'
+import { initProjects, mountChessGame } from '../src/sections/projects.js'
 
 const CARD_IDS = ['squarea-card', 'oss-card', 'npm-card', 'client-card']
 
@@ -135,7 +135,7 @@ describe('initProjects — pointer tilt', () => {
   })
 })
 
-describe('initProjects — cover scenes', () => {
+describe('initProjects — chess', () => {
   function sceneDom() {
     document.body.innerHTML = `
       <div class="shelf-wall"><div class="shelf-row">
@@ -151,22 +151,6 @@ describe('initProjects — cover scenes', () => {
             <div class="face face-back"></div>
           </div></div>
         </div>
-        <div class="shelf-card" id="mathtrail-card" data-flipped="false" role="button" tabindex="0">
-          <div class="cover"><div class="flipper">
-            <div class="face face-front cover-gen cover-mathtrail"><div class="cover-motif">
-              <span class="glyph">∑</span><span class="glyph">∫</span>
-            </div></div>
-            <div class="face face-back"></div>
-          </div></div>
-        </div>
-        <div class="shelf-card" id="matchday-card" data-flipped="false" role="button" tabindex="0">
-          <div class="cover"><div class="flipper">
-            <div class="face face-front cover-gen cover-matchday"><div class="cover-motif">
-              <span class="md-clock">90'+4</span>
-            </div></div>
-            <div class="face face-back"></div>
-          </div></div>
-        </div>
       </div></div>
       <div class="shelf-index"></div>
     `
@@ -176,21 +160,7 @@ describe('initProjects — cover scenes', () => {
     window.matchMedia = vi.fn((q) => ({ matches: q.includes('hover'), addEventListener: vi.fn() }))
   }
 
-  function move(card, x = 10, y = 10) {
-    card.getBoundingClientRect = () => ({ left: 0, top: 0, width: 200, height: 200 })
-    card.dispatchEvent(new MouseEvent('mousemove', { clientX: x, clientY: y, bubbles: true }))
-  }
-
   afterEach(() => { delete window.matchMedia })
-
-  it('sets --mx and --my on the front face on mousemove', () => {
-    mockHover(); sceneDom(); initProjects()
-    const card = document.getElementById('chess-card')
-    move(card, 150, 50)
-    const front = card.querySelector('.face-front')
-    expect(front.style.getPropertyValue('--mx')).not.toBe('')
-    expect(front.style.getPropertyValue('--my')).not.toBe('')
-  })
 
   it('builds a 64-square chess board with the starting position', () => {
     sceneDom(); initProjects()
@@ -264,41 +234,29 @@ describe('initProjects — cover scenes', () => {
     expect(board.querySelector('[data-sq="e4"]').textContent).toBe('')
     vi.useRealTimers()
   })
+})
 
-  it('scatters math glyphs away from the cursor', () => {
-    mockHover(); sceneDom(); initProjects()
-    const card = document.getElementById('mathtrail-card')
-    card.querySelectorAll('.glyph').forEach((g, i) => {
-      g.getBoundingClientRect = () => ({ left: 40 + i * 60, top: 90, width: 20, height: 20 })
-    })
-    move(card, 50, 100)
-    const glyphs = [...card.querySelectorAll('.glyph')]
-    expect(glyphs.every(g => g.classList.contains('steered'))).toBe(true)
-    expect(glyphs.every(g => g.style.transform.includes('translate'))).toBe(true)
-  })
+describe('mountChessGame', () => {
+  function playBlock() {
+    document.body.innerHTML = `<div class="chess-play"><div class="chess-board"></div><span class="chess-status"></span><button class="chess-reset" type="button">r</button></div>`
+    return document.querySelector('.chess-play')
+  }
+  afterEach(() => { delete window.matchMedia })
 
-  it('runs the matchday clock while hovered and resets on leave', () => {
-    vi.useFakeTimers()
-    mockHover(); sceneDom(); initProjects()
-    const card = document.getElementById('matchday-card')
-    const clock = card.querySelector('.md-clock')
-    move(card, 100, 100)
-    vi.advanceTimersByTime(2000)
-    expect(clock.textContent).not.toBe("90'+4")
-    card.dispatchEvent(new MouseEvent('mouseleave'))
-    expect(clock.textContent).toBe("90'+4")
-    vi.useRealTimers()
-  })
-
-  it('does not throw for cards without a scene', () => {
-    mockHover()
-    document.body.innerHTML = `
-      <div class="shelf-wall"><div class="shelf-row">${cardMarkup('squarea-card')}</div></div>
-      <div class="shelf-index"></div>
-    `
-    initProjects()
-    const card = document.getElementById('squarea-card')
-    expect(() => move(card)).not.toThrow()
+  it('builds 64 squares on a fresh block and reset() restores the start position', () => {
+    window.matchMedia = vi.fn((q) => ({ matches: q.includes('hover'), addEventListener: vi.fn() }))
+    const play = playBlock()
+    const game = mountChessGame(play)
+    const board = play.querySelector('.chess-board')
+    expect(board.querySelectorAll('.sq')).toHaveLength(64)
+    board.querySelector('[data-sq="e2"]').click()
+    board.querySelector('[data-sq="e4"]').click()
+    expect(board.querySelector('[data-sq="e4"]').textContent).toBe('♟')
+    game.reset()
+    expect(board.querySelector('[data-sq="e2"]').textContent).toBe('♟')
+    expect(board.querySelector('[data-sq="e4"]').textContent).toBe('')
+    game.destroy()
+    expect(board.querySelectorAll('.sq')).toHaveLength(0)
   })
 })
 

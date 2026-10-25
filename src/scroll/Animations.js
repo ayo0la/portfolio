@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 export function initAnimations() {
-  // Independent guards — mobile skips all; reduced-motion skips GSAP only
+  // Independent guards - mobile skips all; reduced-motion skips GSAP only
   if (window.innerWidth < 768) return
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return

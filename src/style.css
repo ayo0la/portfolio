@@ -87,7 +87,8 @@ body {
   #cursor { display: block; }
 }
 
-#cursor.hover {
+#cursor.hover,
+#cursor.pull {
   width: 36px;
   height: 36px;
 }
@@ -328,7 +329,7 @@ section {
 }
 
 
-/* ── §4 Projects — lit gallery wall ───────────────────────── */
+/* ── §4 Projects - lit gallery wall ───────────────────────── */
 #projects {
   background:
     radial-gradient(120% 70% at 50% 18%, rgba(255,250,232,0.85), transparent 60%),
@@ -415,7 +416,7 @@ section {
   color: var(--gold);
 }
 
-/* ── §4 Shelf — Other Work as flippable cover art ─────────── */
+/* ── §4 Shelf - Other Work as flippable cover art ─────────── */
 .shelf-wall {
   display: flex;
   flex-direction: column;
@@ -440,7 +441,7 @@ section {
   background: radial-gradient(58% 85% at 50% 40%, rgba(255,249,228,0.75), transparent 72%);
 }
 
-/* The shelf ledge — a real plank with thickness and cast shadow */
+/* The shelf ledge - a real plank with thickness and cast shadow */
 .shelf-row::after {
   content: '';
   position: absolute;
@@ -481,7 +482,7 @@ section {
 .shelf-row .shelf-card:nth-child(4n+3) .cover { width: 100%; }
 .shelf-row .shelf-card:nth-child(4n+4) .cover { width: 91%; transform: rotate(0.9deg); }
 
-/* Ground shadow under the cover — reacts while the cover turns */
+/* Ground shadow under the cover - reacts while the cover turns */
 .cover::after {
   content: '';
   position: absolute;
@@ -530,7 +531,7 @@ section {
     0 2px 5px rgba(60,54,42,0.35);
 }
 
-/* Back face — the album's track list */
+/* Back face - the album's track list */
 .face-back {
   transform: rotateY(180deg);
   display: flex;
@@ -648,7 +649,12 @@ a.track:focus-visible .track-name {
   }
 }
 
-.cover-shot > img {
+/* Canvas covers paint their own tag and name; the DOM copies stay for assistive tech */
+.cover-art .cover-tag,
+.cover-art .cover-name { visibility: hidden; }
+
+.cover-shot > img,
+.cover-art > .cover-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -660,7 +666,7 @@ a.track:focus-visible .track-name {
 .cover-scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.3) 30%, rgba(8,8,8,0.35) 55%, rgba(8,8,8,0.92) 100%);
+  background: linear-gradient(180deg, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.3) 30%, rgba(8,8,8,0.35) 55%, rgba(8,8,8,0.9) 74%, rgba(8,8,8,0.99) 100%);
 }
 
 .cover-gen::after {
@@ -678,8 +684,11 @@ a.track:focus-visible .track-name {
   font-family: var(--font-mono);
   font-size: 0.5rem;
   letter-spacing: 2px;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.9);
   text-transform: uppercase;
+  padding: 0.18rem 0.4rem;
+  border-radius: 3px;
+  background: rgba(8,8,8,0.72);
 }
 
 .cover-name {
@@ -695,7 +704,7 @@ a.track:focus-visible .track-name {
 }
 
 /* Iridescent sticker badge, Editions "NOW PLAYING" style.
-   Decorative only — it must never eat a click (on the chess cover a
+   Decorative only - it must never eat a click (on the chess cover a
    swallowed click reads as a broken board), and it would cover the
    top ranks of the chess board, so it stays hidden there. */
 .cover-sticker {
@@ -730,6 +739,16 @@ a.track:focus-visible .track-name {
   opacity: 1;
 }
 
+/* One-line pitch for search engines and screen readers, not shown on the cover */
+.cover-pitch {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .cover-pill {
   position: absolute;
   right: 0.8rem;
@@ -754,9 +773,7 @@ a.track:focus-visible .track-name {
   transform: none;
 }
 
-/* Generative cover motifs — each cover is a little animated scene.
-   --mx/--my (0..1) are the cursor's position inside the cover; the art
-   drifts with the cursor while the labels drift against it for depth. */
+/* Chess keeps a live generative cover; the other covers are stills or canvases. */
 .cover-motif {
   position: absolute;
   inset: 0;
@@ -766,253 +783,9 @@ a.track:focus-visible .track-name {
   font-family: var(--font-mono);
   font-weight: 700;
   color: rgba(255,255,255,0.14);
-  translate: calc((var(--mx, 0.5) - 0.5) * 12px) calc((var(--my, 0.5) - 0.5) * 12px);
-  transition: translate 0.25s ease-out;
 }
 
-.cover-tag,
-.cover-name {
-  translate: calc((0.5 - var(--mx, 0.5)) * 6px) calc((0.5 - var(--my, 0.5)) * 6px);
-  transition: translate 0.25s ease-out;
-}
-
-/* Square A — breathing app tiles on a drifting blueprint grid */
-.cover-squarea {
-  background:
-    repeating-linear-gradient(0deg, rgba(126,231,135,0.05) 0 1px, transparent 1px 24px),
-    repeating-linear-gradient(90deg, rgba(126,231,135,0.05) 0 1px, transparent 1px 24px),
-    linear-gradient(145deg, #101014, #0a0a0c);
-  animation: grid-drift 14s linear infinite;
-}
-
-@keyframes grid-drift {
-  to { background-position: 24px 24px, 24px 24px, 0 0; }
-}
-
-.shelf-card:hover .cover-squarea .motif-block {
-  border-color: rgba(126,231,135,0.95);
-  box-shadow: 0 0 40px rgba(126,231,135,0.55), inset 0 0 22px rgba(126,231,135,0.22);
-}
-
-.motif-block {
-  width: 27%;
-  aspect-ratio: 1;
-  border: 2px solid rgba(126,231,135,0.75);
-  border-radius: 12px;
-  box-shadow: 0 0 26px rgba(126,231,135,0.3), inset 0 0 16px rgba(126,231,135,0.12);
-  animation: tile-breathe 3.2s ease-in-out infinite;
-}
-
-.motif-block:last-child {
-  transform: translate(-34%, 34%);
-  border-color: rgba(255,255,255,0.5);
-  background: rgba(126,231,135,0.14);
-  box-shadow: 0 0 20px rgba(255,255,255,0.15);
-  animation: tile-breathe-b 3.2s ease-in-out infinite 1.6s;
-}
-
-@keyframes tile-breathe {
-  50% { transform: scale(1.06); box-shadow: 0 0 40px rgba(126,231,135,0.5), inset 0 0 20px rgba(126,231,135,0.2); }
-}
-
-@keyframes tile-breathe-b {
-  50% { transform: translate(-34%, 34%) scale(1.06); }
-}
-
-/* Upstream — diff stripes scrolling up behind the twinkling star */
-.cover-oss {
-  background:
-    repeating-linear-gradient(180deg,
-      rgba(63,185,80,0.13) 0 8px, transparent 8px 24px,
-      rgba(248,81,73,0.13) 24px 32px, transparent 32px 48px),
-    #0d1117;
-  animation: diff-scroll 9s linear infinite;
-}
-
-@keyframes diff-scroll {
-  to { background-position: 0 -48px, 0 0; }
-}
-
-.cover-oss .cover-motif {
-  font-size: 3.1rem;
-  letter-spacing: 2px;
-  color: rgba(255,255,255,0.45);
-  text-shadow: 0 0 30px rgba(255,255,255,0.25);
-}
-
-.motif-star {
-  color: rgba(255,215,0,0.9);
-  text-shadow: 0 0 24px rgba(255,215,0,0.55);
-  display: inline-block;
-  animation: star-twinkle 2.6s ease-in-out infinite;
-  transition: transform 0.25s ease-out;
-}
-
-.motif-star.steered { animation: none; text-shadow: 0 0 40px rgba(255,215,0,0.9); }
-
-.shelf-card:hover .cover-oss { filter: brightness(1.12); }
-
-@keyframes star-twinkle {
-  50% { transform: scale(1.18) rotate(12deg); text-shadow: 0 0 40px rgba(255,215,0,0.9); }
-}
-
-/* Allstar Kids — bouncing alphabet blocks and a spinning star */
-.cover-allstar { background: linear-gradient(160deg, #0d1530, #080d1e); }
-
-.cover-allstar .cover-motif { gap: 0.45rem; }
-
-.block {
-  display: grid;
-  place-items: center;
-  width: 19%;
-  aspect-ratio: 1;
-  border-radius: 8px;
-  font-size: 1.2rem;
-  color: #0d1530;
-  animation: block-bounce 2.4s ease-in-out infinite;
-  transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.4, 1);
-}
-
-.block.steered { animation: none; }
-
-.block-a { background: #ffce31; }
-.block-b { background: #ff8a3d; animation-delay: 0.25s; }
-.block-c { background: #6ec1ff; animation-delay: 0.5s; }
-
-@keyframes block-bounce {
-  0%, 100% { transform: translateY(0); }
-  35% { transform: translateY(-14%) rotate(-4deg); }
-  55% { transform: translateY(0); }
-}
-
-.allstar-star {
-  position: absolute;
-  top: 18%;
-  right: 16%;
-  font-size: 1.6rem;
-  color: #ffce31;
-  text-shadow: 0 0 20px rgba(255,206,49,0.6);
-  animation: star-spin 8s linear infinite;
-  transition: transform 0.3s ease-out;
-}
-
-.allstar-star.steered { animation: none; }
-
-@keyframes star-spin {
-  to { transform: rotate(360deg); }
-}
-
-/* npm — terminal window typing the install on loop */
-.cover-npm { background: linear-gradient(160deg, #17120f, #0d0b0a); }
-
-.cover-npm .cover-motif {
-  inset: 20% 10% 34%;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 2rem 0.9rem 0;
-  font-size: 0.8rem;
-  line-height: 1.7;
-  color: rgba(240,96,95,0.95);
-  text-shadow: 0 0 16px rgba(203,56,55,0.4);
-  background: #221d1a;
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 10px;
-  box-shadow: 0 14px 30px rgba(0,0,0,0.55);
-}
-
-.cover-npm .cover-motif::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 20px;
-  background: #2e2724;
-  border-radius: 10px 10px 0 0;
-}
-
-.cover-npm .cover-motif::after {
-  content: '';
-  position: absolute;
-  top: 7px;
-  left: 12px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #ff5f57;
-  box-shadow: 11px 0 0 #febc2e, 22px 0 0 #28c840;
-}
-
-.npm-line {
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 100%;
-  border-right: 2px solid rgba(240,96,95,0.9);
-  animation: npm-type 5s steps(18, end) infinite, npm-caret 0.7s step-end infinite;
-}
-
-@keyframes npm-type {
-  0% { width: 0; }
-  45% { width: 100%; }
-  90% { width: 100%; }
-  100% { width: 0; }
-}
-
-@keyframes npm-caret {
-  50% { border-color: transparent; }
-}
-
-.npm-done {
-  position: absolute;
-  left: 0.9rem;
-  bottom: 0.7rem;
-  font-size: 0.62rem;
-  color: #6ee07a;
-  text-shadow: 0 0 14px rgba(110,224,122,0.5);
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.3s ease 0.15s, transform 0.3s ease 0.15s;
-}
-
-.shelf-card:hover .npm-done {
-  opacity: 1;
-  transform: none;
-}
-
-/* Math Trail — glyphs floating over gold graph paper */
-.cover-mathtrail {
-  background:
-    repeating-linear-gradient(0deg, rgba(255,215,0,0.06) 0 1px, transparent 1px 26px),
-    repeating-linear-gradient(90deg, rgba(255,215,0,0.06) 0 1px, transparent 1px 26px),
-    radial-gradient(80% 80% at 30% 20%, #12151c, #0a0a0c);
-  animation: grid-drift 18s linear infinite reverse;
-}
-
-.cover-mathtrail .cover-motif {
-  gap: 0.9rem;
-  font-size: 2.1rem;
-  color: rgba(255,215,0,0.65);
-  text-shadow: 0 0 26px rgba(255,215,0,0.4);
-}
-
-.glyph {
-  display: inline-block;
-  animation: glyph-float 3.4s ease-in-out infinite;
-  transition: transform 0.3s ease-out;
-}
-
-.glyph.steered { animation: none; }
-
-.glyph:nth-child(2) { animation-delay: 0.5s; }
-.glyph:nth-child(3) { animation-delay: 1s; }
-.glyph:nth-child(4) { animation-delay: 1.5s; }
-
-@keyframes glyph-float {
-  50% { transform: translateY(-9px) rotate(6deg); }
-}
-
-/* Chess Rivals — the knight hops around a vignetted board */
+/* Chess Rivals - vignetted checker backdrop behind the playable board */
 .cover-chess {
   background:
     radial-gradient(90% 90% at 50% 40%, transparent 40%, rgba(0,0,0,0.55) 100%),
@@ -1023,7 +796,7 @@ a.track:focus-visible .track-name {
 
 .cover-chess .cover-sticker { display: none; }
 
-/* The status chip lives where the tag would sit — one voice up top */
+/* The status chip lives where the tag would sit - one voice up top */
 .cover-chess .cover-tag { display: none; }
 
 /* The playable board: parallax off so the squares hold still under the cursor */
@@ -1132,82 +905,7 @@ a.track:focus-visible .track-name {
   transform: rotate(-180deg);
 }
 
-/* Matchday — scoreboard with a pulsing live dot and stadium light sweep */
-.cover-matchday {
-  background:
-    radial-gradient(120% 60% at 50% 115%, rgba(63,185,80,0.14), transparent 60%),
-    linear-gradient(170deg, #0c1224, #080b16);
-}
-
-.cover-matchday::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.07) 45%, transparent 60%);
-  background-size: 250% 100%;
-  animation: light-sweep 5.5s ease-in-out infinite;
-}
-
-@keyframes light-sweep {
-  0% { background-position: 120% 0; }
-  60%, 100% { background-position: -60% 0; }
-}
-
-.shelf-card:hover .cover-matchday::before {
-  animation: none;
-  background-position: calc(120% - var(--mx, 0.5) * 180%) 0;
-  transition: background-position 0.2s ease-out;
-}
-
-.cover-matchday .cover-motif { flex-direction: column; gap: 0.5rem; }
-
-.md-live {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.5rem;
-  letter-spacing: 2.5px;
-  color: rgba(255,255,255,0.7);
-}
-
-.md-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #ff4d4d;
-  animation: live-pulse 1.4s ease-in-out infinite;
-}
-
-@keyframes live-pulse {
-  50% { box-shadow: 0 0 0 5px rgba(255,77,77,0.25); opacity: 0.6; }
-}
-
-.md-score {
-  display: flex;
-  align-items: baseline;
-  gap: 0.55rem;
-  font-size: 2.6rem;
-  color: rgba(255,255,255,0.92);
-  text-shadow: 0 0 26px rgba(255,255,255,0.25);
-}
-
-.md-sep { color: rgba(255,255,255,0.4); font-size: 1.8rem; }
-
-.md-num-away { animation: score-bump 6s ease infinite; }
-
-@keyframes score-bump {
-  0%, 88%, 100% { transform: none; color: rgba(255,255,255,0.92); }
-  92% { transform: translateY(-6px) scale(1.15); color: var(--gold); }
-  96% { transform: none; }
-}
-
-.md-clock {
-  font-size: 0.55rem;
-  letter-spacing: 2px;
-  color: rgba(255,215,0,0.75);
-}
-
-/* Client sites — fanned stack that spreads on hover */
+/* Client sites - fanned stack that spreads on hover */
 .cover-fan { background: linear-gradient(160deg, #101010, #0a0a0a); }
 
 .cover-fan .fan img {
@@ -1232,12 +930,274 @@ a.track:focus-visible .track-name {
 .shelf-card:hover .fan img:nth-child(3) { transform: rotate(-5deg) translate(-5%, 5%); }
 .shelf-card:hover .fan img:nth-child(4) { transform: rotate(11deg) translate(5%, 4%); }
 
-.shelf-card:hover .fan img.fan-near:nth-child(1) { transform: rotate(-13deg) translate(-8%, -9%) scale(1.08); z-index: 2; }
-.shelf-card:hover .fan img.fan-near:nth-child(2) { transform: rotate(12deg) translate(8%, -10%) scale(1.08); z-index: 2; }
-.shelf-card:hover .fan img.fan-near:nth-child(3) { transform: rotate(-8deg) translate(-7%, 9%) scale(1.08); z-index: 2; }
-.shelf-card:hover .fan img.fan-near:nth-child(4) { transform: rotate(14deg) translate(7%, 8%) scale(1.08); z-index: 2; }
 
-/* Index strip — timeline under the shelves */
+/* ── 3D shelf island: the HTML wall stays in the DOM (SEO, keyboard) but hides ── */
+#shelf-3d { display: none; }
+
+.shelf-3d-active { overflow-x: clip; }
+
+.shelf-3d-active .section-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.shelf-3d-active #shelf-3d {
+  display: block;
+  order: 1;
+  /* full-bleed: the room is wider than the text column */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  height: 100svh;
+  min-height: 560px;
+}
+
+.shelf-3d-active .shelf-index { order: 2; }
+
+.shelf-3d-active .shelf-wall {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The room is the section: same colour as the room, tag over the canvas, no cream band. */
+#projects.shelf-3d-active {
+  --room-bg: #121110;
+  --room-mix: 0;
+  background: var(--room-bg);
+}
+@media (prefers-color-scheme: light) {
+  #projects.shelf-3d-active { --room-bg: #a89a83; --room-mix: 1; }
+}
+.shelf-3d-active .section-inner { padding-top: 0; }
+.shelf-3d-active .section-tag {
+  position: absolute;
+  top: clamp(1.25rem, 3vw, 2.5rem);
+  left: clamp(1.5rem, 6vw, 6rem);
+  margin: 0;
+  z-index: 2;
+  color: color-mix(in srgb, #4a3f30 calc(var(--room-mix) * 100%), #b4ab98);
+}
+#projects.shelf-3d-active .section-tag { color: color-mix(in srgb, #4a3f30 calc(var(--room-mix) * 100%), #b4ab98); }
+.shelf-3d-active .shelf-index { border-top-color: color-mix(in srgb, #2a2118 calc(var(--room-mix) * 100%), #5a5240); margin-top: 2rem; }
+.shelf-3d-active .shelf-index-entry { color: color-mix(in srgb, #1b150e calc(var(--room-mix) * 100%), #e9e2d2); }
+.shelf-3d-active .sie-year,
+.shelf-3d-active .sie-cat { color: color-mix(in srgb, #4a3f30 calc(var(--room-mix) * 100%), #a39b88); }
+.shelf-3d-active .shelf-index-entry:hover .sie-name,
+.shelf-3d-active .shelf-index-entry:focus-visible .sie-name,
+.shelf-3d-active .shelf-index-entry.is-active .sie-name { color: color-mix(in srgb, #6b4f0c calc(var(--room-mix) * 100%), #e8b931); }
+@media (max-width: 699px) {
+  .shelf-3d-active #shelf-3d { height: 70svh; min-height: 420px; }
+}
+
+/* ── 3D shelf overlay: scrim, open panel, back face, chess board ── */
+.shelf-3d-active #shelf-3d { position: relative; }
+
+.shelf-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.shelf-scrim {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s;
+  background: linear-gradient(90deg, rgba(13,12,10,0.85), rgba(13,12,10,0.35) 55%, rgba(13,12,10,0.1));
+}
+.shelf-scrim.is-day {
+  background: linear-gradient(90deg, rgba(40,32,24,0.78), rgba(40,32,24,0.3) 55%, rgba(40,32,24,0));
+}
+.shelf-scrim.on { opacity: 1; }
+
+.shelf-panel {
+  position: absolute;
+  left: 6vw;
+  top: 50%;
+  translate: 0 -50%;
+  max-width: min(34vw, 420px);
+  color: #f3ede0;
+  pointer-events: auto;
+}
+.shelf-panel.is-day { color: #fbf6ec; }
+.shelf-panel-tag {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: #e8b931;
+}
+.shelf-panel.is-day .shelf-panel-tag { color: #f3d9a4; }
+.shelf-panel-name {
+  margin: 0.25em 0 0.3em;
+  font-size: clamp(2.1rem, 4.4vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+.shelf-panel-pitch {
+  margin: 0 0 1.3em;
+  font-size: 1.05rem;
+  line-height: 1.45;
+  opacity: 0.88;
+}
+.shelf-panel-actions,
+.shelf-panel-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.shelf-panel-nav { margin-top: 0.75rem; }
+
+.shelf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.shelf-btn:hover { background: rgba(255,255,255,0.12); }
+.shelf-btn:focus-visible { outline: 2px solid #e8b931; outline-offset: 2px; }
+.shelf-btn-pri { background: #e8b931; border-color: #e8b931; color: #141210; }
+.shelf-btn-pri:hover { background: #f0c64d; }
+.shelf-btn-round { width: 2.3rem; height: 2.3rem; padding: 0; justify-content: center; font-size: 1.3rem; }
+.shelf-btn-close { margin-left: 0.25rem; opacity: 0.85; }
+
+/* Record faces: a 400px element warped onto the projected record face (FaceLayer) */
+.shelf-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  pointer-events: none; /* the chess board is decorative on touch and must not block swipes */
+  /* hidden whenever the record or camera is moving; fades in once both sit on the pose it is
+     warped to (the last third of a flip). Hiding is quick so it never shows off the record. */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.08s linear, visibility 0s linear 0.08s;
+}
+.shelf-face.is-ready {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease-out, visibility 0s;
+}
+.shelf-face .bf,
+.shelf-face .chess-play[data-live="true"] { pointer-events: auto; }
+.bf,
+.chess-overlay {
+  width: 400px;
+  height: 400px;
+  box-sizing: border-box;
+}
+
+.bf {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 26px 22px;
+  border-radius: 6px;
+  color: #f3ede0;
+  background:
+    radial-gradient(120% 90% at 80% 0%, rgba(232,185,49,0.1), transparent 55%),
+    linear-gradient(165deg, #1b1913, #0d0c0a 70%);
+  box-shadow: inset 0 0 0 1px rgba(232,185,49,0.28);
+  font-family: var(--font-body, inherit);
+}
+.bf-blurb { margin: 0 0 12px; font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.72); }
+.bf-totals { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 0 0 10px; font-family: var(--font-mono); font-size: 22px; font-weight: 700; }
+.bf-add { color: #6fcf8c; }
+.bf-del { color: #e87a6c; }
+.bf-totals-note { flex-basis: 100%; font-size: 11px; font-weight: 400; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); }
+.bf-tracks { flex: 1; min-height: 0; list-style: none; margin: 0; padding: 0; overflow: hidden; }
+.bf-track {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: inherit;
+  text-decoration: none;
+}
+.bf-track-name { font-size: 14px; line-height: 1.3; color: rgba(255,255,255,0.94); }
+.bf-track-meta { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: rgba(255,255,255,0.5); white-space: nowrap; }
+a.bf-track:hover .bf-track-name,
+a.bf-track:focus-visible .bf-track-name { color: #e8b931; }
+.bf-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; }
+.bf-credit { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; color: rgba(255,255,255,0.4); }
+.bf-open {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #0d0c0a;
+  background: #e8b931;
+  padding: 7px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+.bf-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.chess-overlay { padding: 0; background: #0c0c0f; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08); }
+.chess-overlay .chess-play { position: relative; inset: auto; translate: none; display: block; width: 100%; height: 100%; }
+.chess-overlay .chess-board { height: calc(100% - 30px); width: auto; aspect-ratio: 1; margin: 0 auto; }
+.chess-overlay .sq { font-size: 34px; }
+.chess-overlay .chess-status {
+  top: auto;
+  bottom: 6px;
+  left: 4px;
+  right: auto;
+  font-size: 11px;
+}
+.chess-overlay .chess-reset { bottom: 1px; right: 2px; width: 26px; height: 26px; font-size: 14px; }
+
+@media (max-width: 699px) {
+  .shelf-scrim { background: linear-gradient(180deg, rgba(13,12,10,0), rgba(13,12,10,0.1) 45%, rgba(13,12,10,0.8)); }
+  .shelf-scrim.is-day { background: linear-gradient(180deg, rgba(40,32,24,0), rgba(40,32,24,0.1) 45%, rgba(40,32,24,0.78)); }
+  .shelf-panel {
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: 12px;
+    translate: none;
+    max-width: none;
+    padding: 14px 16px 14px;
+    border-radius: 14px;
+    background: rgba(13,12,10,0.82);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .shelf-panel.is-day { background: rgba(40,32,24,0.86); }
+  .shelf-panel-name { font-size: 1.9rem; margin: 0.15em 0 0.2em; }
+  .shelf-panel-pitch { font-size: 0.9rem; margin-bottom: 0.8em; }
+  .shelf-panel-actions { flex-wrap: nowrap; }
+  .shelf-panel-nav { margin-top: 0.5rem; }
+  .shelf-panel-nav .shelf-btn-close { margin-left: auto; }
+  /* flipped, the record fills the canvas: the sheet shrinks to its controls */
+  .shelf-panel.is-flipped { padding-top: 10px; padding-bottom: 10px; }
+  .shelf-panel.is-flipped .shelf-panel-tag,
+  .shelf-panel.is-flipped .shelf-panel-pitch { display: none; }
+  .shelf-panel.is-flipped .shelf-panel-name { font-size: 1.25rem; margin: 0 0 0.4rem; }
+}
+
+/* Index strip - timeline under the shelves */
 .shelf-index {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
@@ -1297,19 +1257,6 @@ a.track:focus-visible .track-name {
   }
 
   .shelf-card[data-flipped="true"] .cover::after,
-  .cover-squarea,
-  .motif-block,
-  .cover-oss,
-  .motif-star,
-  .block,
-  .allstar-star,
-  .npm-line,
-  .cover-mathtrail,
-  .glyph,
-  .knight,
-  .cover-matchday::before,
-  .md-dot,
-  .md-num-away,
   .sq.hint::after {
     animation: none !important;
   }
@@ -1322,7 +1269,7 @@ a.track:focus-visible .track-name {
 }
 
 /* ── §5 Contact ──────────────────────────────────────────── */
-/* Note: #050505 bg — --text-muted (rgba 255,255,255,0.55) passes WCAG AA here too */
+/* Note: #050505 bg - --text-muted (rgba 255,255,255,0.55) passes WCAG AA here too */
 #contact {
   background: #050505;
   display: flex;
@@ -1579,4 +1526,58 @@ a.track:focus-visible .track-name {
 
   .activity-stats { flex-wrap: wrap; gap: 1.5rem; }
   .activity-grid { overflow-x: auto; }
+}
+
+/* Index entry lit while its record is hovered in the 3D room */
+.shelf-index-entry.is-active .sie-name { color: #8a6d00; }
+
+/* Phone shelf position: dots, a "n / 8 . Swipe" label and chevrons under the shelf */
+.shelf-pan { display: none; }
+@media (max-width: 699px) {
+  .shelf-pan {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
+    pointer-events: none;
+  }
+  .shelf-pan-dots { display: flex; align-items: center; gap: 2px; pointer-events: auto; }
+  .shelf-pan-dot {
+    position: relative;
+    width: 22px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .shelf-pan-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 4px;
+    translate: -50% -50%;
+    background: rgba(255, 255, 255, 0.35);
+    transition: width 0.25s, background 0.25s;
+  }
+  .shelf-pan-dot.is-active::after { width: 20px; background: #e8b931; }
+  .shelf-pan-dot:focus-visible { outline: 2px solid #e8b931; outline-offset: -2px; border-radius: 6px; }
+  .shelf-pan-label {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .shelf-pan-chev { color: #e8b931; font-size: 1.1rem; line-height: 1; }
 }

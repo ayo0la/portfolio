@@ -8,7 +8,7 @@ import { initHeroLogo }     from './hero/HeroLogo.js'
 import { initHero }         from './sections/hero.js'
 import { initAbout }        from './sections/about.js'
 import { initMdfld }        from './sections/mdfld.js'
-import { initProjects }     from './sections/projects.js'
+import { initShelf }        from './shelf/mount.js'
 import { initBlog }         from './sections/blog.js'
 import { initActivity }     from './sections/activity.js'
 import { initContact }      from './sections/contact.js'
@@ -22,7 +22,7 @@ initSmoothScroll()
 initHero()
 initAbout()
 initMdfld()
-initProjects()
+initShelf()
 initBlog(blogPosts)
 initActivity(bakedData)
 initContact()

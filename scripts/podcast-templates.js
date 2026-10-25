@@ -11,7 +11,7 @@ export function renderEpisodeHtml(episode) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${escapeHtml(episode.title)} — Ayoola Morakinyo</title>
+<title>${escapeHtml(episode.title)} - Ayoola Morakinyo</title>
 <link rel="stylesheet" href="/blog/blog.css">
 <link rel="stylesheet" href="/podcast/podcast.css">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -48,7 +48,7 @@ export function renderIndexHtml(episodes) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Audio Blog — Ayoola Morakinyo</title>
+<title>The Audio Blog - Ayoola Morakinyo</title>
 <link rel="stylesheet" href="/blog/blog.css">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" href="/favicon.png">

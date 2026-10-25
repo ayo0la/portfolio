@@ -19,7 +19,12 @@ export function initCursor() {
     node.addEventListener('mouseleave', () => el.classList.remove('hover'))
   })
 
-  // Click flash — auto-removes after 100ms (not on mouseup, which would linger on long press)
+  // Sections can ask for the grown ring with <body data-cursor="pull"> (the 3D shelf does this
+  // while a record is hovered, since its canvas has no DOM children to enter and leave)
+  const syncPull = () => el.classList.toggle('pull', document.body.dataset.cursor === 'pull')
+  new MutationObserver(syncPull).observe(document.body, { attributes: true, attributeFilter: ['data-cursor'] })
+
+  // Click flash - auto-removes after 100ms (not on mouseup, which would linger on long press)
   window.addEventListener('mousedown', () => {
     el.classList.add('clicking')
     setTimeout(() => el.classList.remove('clicking'), 100)

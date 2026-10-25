@@ -23,7 +23,7 @@ export async function initNpmSection() {
             <span class="activity-npm-desc">${p.desc}</span>
           </div>
           <div class="activity-npm-meta">
-            <span class="activity-npm-downloads">—</span>
+            <span class="activity-npm-downloads">-</span>
             <span class="activity-npm-downloads-label">/ week</span>
           </div>
         </a>

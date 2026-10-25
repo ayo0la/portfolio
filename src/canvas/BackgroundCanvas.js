@@ -185,7 +185,7 @@ export function initBackgroundCanvas() {
   if (!isTouch) {
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY })
   } else {
-    // Tap updates mx/my — same attraction model as desktop cursor
+    // Tap updates mx/my - same attraction model as desktop cursor
     window.addEventListener('touchstart', e => {
       const t = e.changedTouches[0]
       mx = t.clientX

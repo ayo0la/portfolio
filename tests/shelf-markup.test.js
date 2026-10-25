@@ -2,6 +2,8 @@ import { describe, it, expect, beforeAll } from 'vitest'
 import { readFileSync, existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { injectShelf } from '../scripts/shelf-markup.js'
+import { PROJECTS } from '../src/shelf/projects.js'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -76,18 +78,30 @@ describe('Other Work shelf markup', () => {
     }
   })
 
-  it('only the client-sites fan uses screenshots; the rest are generative art', () => {
+  it('scroll covers use /covers/live/ stills; oss and npm use canvases', () => {
+    for (const id of ['squarea-card', 'allstar-card', 'matchday-card', 'mathtrail-card']) {
+      const img = doc.getElementById(id).querySelector('.face-front img.cover-still')
+      expect(img, `${id} still`).not.toBeNull()
+      expect(img.getAttribute('src')).toMatch(/^\/covers\/live\/[a-z-]+\.webp$/)
+      expect(existsSync(join(root, 'public', img.getAttribute('src').replace(/^\//, '')))).toBe(true)
+    }
+    for (const id of ['oss-card', 'npm-card']) {
+      expect(doc.getElementById(id).querySelector('.face-front canvas.cover-canvas'), id).not.toBeNull()
+    }
     const fanImgs = doc.querySelectorAll('#client-card .face-front img')
     expect(fanImgs.length).toBe(4)
     for (const img of fanImgs) {
       expect(existsSync(join(root, 'public', img.getAttribute('src').replace(/^\//, '')))).toBe(true)
     }
-    for (const id of TILE_IDS.filter(t => t !== 'client-card')) {
-      const front = doc.getElementById(id).querySelector('.face-front')
-      expect(front.querySelector('img'), `${id} has no screenshot`).toBeNull()
-      expect(front.classList.contains('cover-gen'), `${id} is generative`).toBe(true)
-      expect(front.querySelector('.cover-motif'), `${id} has motif art`).not.toBeNull()
-    }
+  })
+
+  it('index.html shelf equals injectShelf(index.html, PROJECTS), so the committed output is current', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8')
+    expect(injectShelf(html, PROJECTS)).toBe(html)
+  })
+
+  it('has the 3D mount point', () => {
+    expect(doc.querySelector('#projects #shelf-3d[aria-hidden="true"]')).not.toBeNull()
   })
 
   it('marks every cover image lazy and alt-texted', () => {

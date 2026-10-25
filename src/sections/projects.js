@@ -4,162 +4,9 @@ import { Chess } from 'chess.js'
 export function initProjects() {
   initFlipCards()
   initPointerTilt()
-  initCoverScenes()
   initChessGame()
   initShelfIndex()
-  fetchNpmDownloads()
-}
-
-/* ── Cover scenes — the art inside each cover reacts to the cursor ── */
-
-const mathScene = {
-  move(front, nx, ny, e) {
-    front.querySelectorAll('.glyph').forEach((glyph) => {
-      const r = glyph.getBoundingClientRect()
-      const cx = r.left + r.width / 2
-      const cy = r.top + r.height / 2
-      let dx = cx - e.clientX
-      let dy = cy - e.clientY
-      const dist = Math.max(Math.hypot(dx, dy), 20)
-      const push = Math.min(1400 / dist, 26)
-      dx = (dx / dist) * push
-      dy = (dy / dist) * push
-      glyph.classList.add('steered')
-      glyph.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`
-    })
-  },
-  leave(front) {
-    front.querySelectorAll('.glyph').forEach((glyph) => {
-      glyph.classList.remove('steered')
-      glyph.style.transform = ''
-    })
-  },
-}
-
-function makeMatchdayScene() {
-  let timer = null
-  let extra = 4
-  return {
-    move(front) {
-      if (timer) return
-      const clock = front.querySelector('.md-clock')
-      if (!clock) return
-      timer = setInterval(() => {
-        extra += 1
-        clock.textContent = `90'+${extra}`
-        if (extra >= 9) {
-          clock.textContent = 'FT 2–1'
-          clearInterval(timer)
-          timer = null
-        }
-      }, 650)
-    },
-    leave(front) {
-      const clock = front.querySelector('.md-clock')
-      if (timer) clearInterval(timer)
-      timer = null
-      extra = 4
-      if (clock) clock.textContent = "90'+4"
-    },
-  }
-}
-
-const allstarScene = {
-  move(front, nx, ny, e) {
-    const blocks = [...front.querySelectorAll('.block')]
-    if (!blocks.length) return
-    let nearest = null
-    let best = Infinity
-    blocks.forEach((block) => {
-      const r = block.getBoundingClientRect()
-      const d = Math.hypot(r.left + r.width / 2 - e.clientX, r.top + r.height / 2 - e.clientY)
-      if (d < best) { best = d; nearest = block }
-    })
-    blocks.forEach((block) => {
-      block.classList.add('steered')
-      block.style.transform = block === nearest ? 'translateY(-18%) rotate(-5deg) scale(1.1)' : ''
-    })
-    const star = front.querySelector('.allstar-star')
-    if (star) {
-      star.classList.add('steered')
-      star.style.transform = `translate(${((nx - 0.5) * 26).toFixed(0)}px, ${((ny - 0.5) * 26).toFixed(0)}px) rotate(${(nx * 180).toFixed(0)}deg)`
-    }
-  },
-  leave(front) {
-    front.querySelectorAll('.block, .allstar-star').forEach((el) => {
-      el.classList.remove('steered')
-      el.style.transform = ''
-    })
-  },
-}
-
-const ossScene = {
-  move(front, nx, ny) {
-    const star = front.querySelector('.motif-star')
-    if (!star) return
-    star.classList.add('steered')
-    star.style.transform = `translate(${((nx - 0.5) * 22).toFixed(0)}px, ${((ny - 0.5) * 22).toFixed(0)}px) scale(1.15)`
-  },
-  leave(front) {
-    const star = front.querySelector('.motif-star')
-    if (!star) return
-    star.classList.remove('steered')
-    star.style.transform = ''
-  },
-}
-
-const fanScene = {
-  move(front, nx, ny, e) {
-    const imgs = [...front.querySelectorAll('.fan img')]
-    if (!imgs.length) return
-    let nearest = null
-    let best = Infinity
-    imgs.forEach((img) => {
-      const r = img.getBoundingClientRect()
-      const d = Math.hypot(r.left + r.width / 2 - e.clientX, r.top + r.height / 2 - e.clientY)
-      if (d < best) { best = d; nearest = img }
-    })
-    imgs.forEach((img) => img.classList.toggle('fan-near', img === nearest))
-  },
-  leave(front) {
-    front.querySelectorAll('.fan img').forEach((img) => img.classList.remove('fan-near'))
-  },
-}
-
-function initCoverScenes() {
-  const hoverFine = window.matchMedia?.('(hover: hover) and (pointer: fine)')
-  const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')
-  if (!hoverFine?.matches || reduced?.matches) return
-
-  const scenes = {
-    'mathtrail-card': mathScene,
-    'matchday-card': makeMatchdayScene(),
-    'allstar-card': allstarScene,
-    'oss-card': ossScene,
-    'client-card': fanScene,
-  }
-
-  document.querySelectorAll('.shelf-card[data-flipped]').forEach((card) => {
-    const front = card.querySelector('.face-front')
-    if (!front) return
-    const scene = scenes[card.id]
-
-    card.addEventListener('mousemove', (e) => {
-      if (card.dataset.flipped === 'true') return
-      const r = card.getBoundingClientRect()
-      const nx = Math.min(Math.max((e.clientX - r.left) / (r.width || 1), 0), 1)
-      const ny = Math.min(Math.max((e.clientY - r.top) / (r.height || 1), 0), 1)
-      front.style.setProperty('--mx', nx.toFixed(3))
-      front.style.setProperty('--my', ny.toFixed(3))
-      scene?.move(front, nx, ny, e)
-    })
-
-    card.addEventListener('mouseleave', () => {
-      front.style.setProperty('--mx', '0.5')
-      front.style.setProperty('--my', '0.5')
-      scene?.leave(front)
-    })
-  })
+  fetchNpmDownloadsOnce()
 }
 
 // Editions-style parallax: the cover leans toward the cursor while unflipped
@@ -237,7 +84,7 @@ function initFlipCards() {
 
     const toggle = (e) => {
       // Links on the back face navigate and moves on a live chess board
-      // are gameplay — neither toggles the flip
+      // are gameplay, neither toggles the flip
       if (e.target.closest('a, .chess-play[data-live="true"]')) return
       const flipped = card.dataset.flipped === 'true'
       unflipOthers(card)
@@ -257,16 +104,23 @@ function initFlipCards() {
 }
 
 
-/* ── Chess Rivals cover — a real playable game (you are white) ── */
+/* ── Chess Rivals cover - a real playable game (you are white) ── */
 
 const CHESS_GLYPHS = { p: '♟', n: '♞', b: '♝', r: '♜', q: '♛', k: '♚' }
 
 function initChessGame() {
   const play = document.querySelector('#chess-card .chess-play')
+  if (play) mountChessGame(play)
+}
+
+// Builds the playable board inside a .chess-play block (board, status and reset children).
+// The 2D card and the 3D overlay both use it. Returns { reset, destroy }.
+export function mountChessGame(play) {
   const boardEl = play?.querySelector('.chess-board')
   const statusEl = play?.querySelector('.chess-status')
   const resetEl = play?.querySelector('.chess-reset')
-  if (!play || !boardEl) return
+  const none = { reset() {}, destroy() {} }
+  if (!play || !boardEl) return none
 
   const game = new Chess()
   const files = 'abcdefgh'
@@ -314,7 +168,7 @@ function initChessGame() {
   }
 
   function endStatus() {
-    if (game.isCheckmate()) return game.turn() === 'b' ? 'MATE — YOU WIN' : 'MATE — GG'
+    if (game.isCheckmate()) return game.turn() === 'b' ? 'MATE · YOU WIN' : 'MATE · GG'
     if (game.isDraw() || game.isStalemate()) return 'DRAW'
     return null
   }
@@ -327,7 +181,7 @@ function initChessGame() {
     game.move(pick)
     render()
     markLastMove()
-    setStatus(endStatus() ?? (game.isCheck() ? 'CHECK — YOUR MOVE' : 'YOUR MOVE'))
+    setStatus(endStatus() ?? (game.isCheck() ? 'CHECK · YOUR MOVE' : 'YOUR MOVE'))
   }
 
   function reset() {
@@ -338,18 +192,26 @@ function initChessGame() {
     clearHints()
     boardEl.querySelectorAll('.last').forEach((el) => el.classList.remove('last'))
     render()
-    setStatus('YOU PLAY WHITE — CLICK A GOLD PIECE')
+    setStatus('YOU PLAY WHITE · CLICK A GOLD PIECE')
   }
 
   render()
-  setStatus('YOU PLAY WHITE — CLICK A GOLD PIECE')
+  setStatus('YOU PLAY WHITE · CLICK A GOLD PIECE')
 
   // Gameplay only makes sense with a fine pointer; on touch the board is art
   const hoverFine = window.matchMedia?.('(hover: hover) and (pointer: fine)')
-  if (!hoverFine?.matches) return
+  const destroy = () => {
+    if (replyTimer) clearTimeout(replyTimer)
+    replyTimer = null
+    boardEl.removeEventListener('click', onBoardClick)
+    resetEl?.removeEventListener('click', reset)
+    boardEl.replaceChildren()
+    delete play.dataset.live
+  }
+  if (!hoverFine?.matches) return { reset, destroy }
   play.dataset.live = 'true'
 
-  boardEl.addEventListener('click', (e) => {
+  function onBoardClick(e) {
     const el = e.target.closest('.sq')
     if (!el || game.isGameOver() || game.turn() !== 'w') return
     const sq = el.dataset.sq
@@ -376,9 +238,11 @@ function initChessGame() {
     } else if (piece && piece.color === 'b') {
       setStatus('THE GOLD PIECES ARE YOURS')
     }
-  })
+  }
 
+  boardEl.addEventListener('click', onBoardClick)
   resetEl?.addEventListener('click', reset)
+  return { reset, destroy }
 }
 
 function initShelfIndex() {
@@ -392,6 +256,35 @@ function initShelfIndex() {
   })
 }
 
+/* ── npm weekly downloads: one fetch feeds the back-face rows and the 2D npm cover ── */
+
+const npmDownloads = {}
+const npmListeners = new Set()
+
+export function getNpmDownloads() {
+  return { ...npmDownloads }
+}
+
+// Calls fn(downloads) now if anything has arrived, and again on every update
+export function onNpmDownloads(fn) {
+  npmListeners.add(fn)
+  if (Object.keys(npmDownloads).length) fn(getNpmDownloads())
+  return () => npmListeners.delete(fn)
+}
+
+export function setNpmDownloads(map) {
+  Object.assign(npmDownloads, map)
+  npmListeners.forEach((fn) => fn(getNpmDownloads()))
+}
+
+let npmFetchStarted = false
+// The 3D island calls this instead of initProjects(); it shares the same store and fetch.
+export function fetchNpmDownloadsOnce() {
+  if (npmFetchStarted) return
+  npmFetchStarted = true
+  return fetchNpmDownloads()
+}
+
 async function fetchNpmDownloads() {
   const rows = document.querySelectorAll('[data-npm-pkg]')
   await Promise.all([...rows].map(async (row) => {
@@ -403,8 +296,9 @@ async function fetchNpmDownloads() {
       if (!res.ok) return
       const data = await res.json()
       el.textContent = `${data.downloads.toLocaleString()} / wk`
+      setNpmDownloads({ [pkg]: data.downloads })
     } catch {
-      // silently fail — downloads just won't show
+      // silently fail: downloads just won't show
     }
   }))
 }
